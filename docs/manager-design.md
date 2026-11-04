@@ -20,6 +20,8 @@ Replace the current one-shot installer with a small **mod manager** for the Bloo
 | Downloads | GitHub: direct. Nexus Premium: direct with the player's API key. Nexus free: open the file page, the player clicks *Manual download*, the manager watches the Downloads folder and installs the zip. Fallback: a zip dropped next to the manager. |
 | Conflicts | Merge what can be merged into a generated folder at the end of the load order. For what cannot be merged, the player chooses who wins; **Blood Reborn wins** is pre-selected as the recommendation. The choice is remembered. |
 | zCompat warnings | Kept. |
+| Mod list | The *Mods* page shows **every mod in the catalog, without exception** (decided 2026-11-04), plus any local package that is not in the catalog. A mod with no package on the PC gets **Download and install**. Someone who downloads only the manager from GitHub sees the full list. |
+| Publishing order | GitHub first, then Nexus Mods. |
 | Boss Arena | Out of scope. |
 
 ## 3. Components
@@ -62,6 +64,8 @@ When the BB Port's Python is not available (an unknown port build), the manager 
 ```
 
 `download`, `nexus_mod_id` and `nexus_file_id` are `null` until the mod is published there; the manager then skips that source.
+
+Each mod also carries `"summary": {"en": "...", "pt": "...", "es": "...", "zh": "..."}` (missing languages fall back to English): the card text for a mod that is not on the PC yet. The list on the *Mods* page is the catalog (every mod, without exception) joined with the local packages; without network it uses the last saved catalog, whatever its age. A mod with no download source yet (all `null`) shows *Download and install* disabled, with *Coming soon*.
 
 ## 6. Update flow
 
