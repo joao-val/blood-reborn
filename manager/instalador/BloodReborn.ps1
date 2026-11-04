@@ -93,6 +93,7 @@ $TXT = @{
   d_csem = 'A compatibilidade {0} não está em nenhum pacote encontrado.'
   d_sobre = 'O mod "{0}" carrega depois e substitui arquivos do Blood Reborn ({1}). Para o Blood Reborn valer, deixe-o abaixo dele na lista do BB Port.'
   d_desc = 'O BB Port não carrega a pasta "{0}" (não é do Blood Reborn: não mexo).'
+  d_nova = '{0}: versão {1} instalada, {2} disponível (use Atualizar na página Mods).'
  }
  en = @{
   app_sub = 'Mod installer'; busca = 'Search...   Ctrl+F'; nav_mods = 'Mods'; nav_fix = 'Error repair'; nav_ajuda = 'How to install'
@@ -133,6 +134,7 @@ $TXT = @{
   d_csem = 'The compatibility {0} is not in any package found.'
   d_sobre = 'The mod "{0}" loads later and replaces Blood Reborn files ({1}). Move Blood Reborn below it in the BB Port list.'
   d_desc = 'The BB Port does not load the folder "{0}" (not Blood Reborn: left alone).'
+  d_nova = '{0}: version {1} installed, {2} available (use Update on the Mods page).'
  }
  es = @{
   app_sub = 'Instalador de mods'; busca = 'Buscar...   Ctrl+F'; nav_mods = 'Mods'; nav_fix = 'Corrección de errores'; nav_ajuda = 'Cómo instalar'
@@ -173,6 +175,7 @@ $TXT = @{
   d_csem = 'La compatibilidad {0} no está en ningún paquete encontrado.'
   d_sobre = 'El mod "{0}" se carga después y reemplaza archivos de Blood Reborn ({1}). Pon Blood Reborn debajo en la lista del BB Port.'
   d_desc = 'El BB Port no carga la carpeta "{0}" (no es de Blood Reborn: no la toco).'
+  d_nova = '{0}: versión {1} instalada, {2} disponible (usa Actualizar en la página Mods).'
  }
  zh = @{
   app_sub = '模组安装器'; busca = '搜索...   Ctrl+F'; nav_mods = '模组'; nav_fix = '错误修复'; nav_ajuda = '安装说明'
@@ -213,6 +216,7 @@ $TXT = @{
   d_csem = '在找到的安装包中没有兼容文件 {0}。'
   d_sobre = '模组 "{0}" 在之后加载，会替换 Blood Reborn 的文件（{1}）。请在 BB Port 列表中把 Blood Reborn 放在它下面。'
   d_desc = 'BB Port 不会加载文件夹 "{0}"（不是 Blood Reborn 的：不做改动）。'
+  d_nova = '{0}：已安装版本 {1}，可用版本 {2}（请在“模组”页面点击“更新”）。'
  }
 }
 function T([string]$chave) {
@@ -246,8 +250,9 @@ function Versao-Num([string]$v) {
     return [version]$s
 }
 function Ler-Pacotes {
-    $achados = @{}; $cima = Split-Path -Parent $script:Aqui
-    $lugares = @($script:Aqui, (Join-Path $script:Aqui '2 - Mods'), $cima, (Join-Path $cima '2 - Mods'))
+    # 04/11 (fase 2): também <dados>\pacotes (os baixados pelo gerenciador) e TODAS as versões em $script:TodosPacotes
+    $achados = @{}; $cima = Split-Path -Parent $script:Aqui; $todos = New-Object Collections.ArrayList
+    $lugares = @($script:Aqui, (Join-Path $script:Aqui '2 - Mods'), $cima, (Join-Path $cima '2 - Mods'), (Join-Path $script:Dados 'pacotes'))
     foreach ($lugar in $lugares) {
         if (-not $lugar -or -not [IO.Directory]::Exists($lugar)) { continue }
         foreach ($z in [IO.Directory]::GetFiles($lugar, 'Blood_Reborn_*.zip')) {
@@ -277,6 +282,7 @@ function Ler-Pacotes {
                     Nome = [string]$info.nome; Versao = [string]$info.versao; Pasta = [string]$info.pasta
                     Patches = @($info.patches | Where-Object { $_ }); CompatDef = @($info.compat | Where-Object { $_ })
                     Zip = $z; Topo = $topo; Prefixo = $pre; Desc = $desc; Arquivos = $arqs; Maior = $maior }
+                [void]$todos.Add($pac)
                 $velho = $achados[$pac.Pasta]
                 if (-not $velho -or (Versao-Num $pac.Versao) -gt (Versao-Num $velho.Versao)) { $achados[$pac.Pasta] = $pac }
             } catch {
@@ -284,6 +290,7 @@ function Ler-Pacotes {
         }
     }
     $script:Pacotes = @($achados.Values | Sort-Object { $i = [array]::IndexOf($PREFERENCIA, $_.Pasta); if ($i -lt 0) { 99 } else { $i } }, Nome)
+    $script:TodosPacotes = @($todos)
     $script:PastasPacote = @($script:Pacotes | ForEach-Object { $_.Pasta })
     # compatibilidades: a definição vem dos blood_reborn.json; a fonte, do 1º zip que tem a pasta
     $cs = @{}
@@ -334,7 +341,8 @@ function Conferir-Pasta([string]$zip, [string]$prefixo, [string]$pasta, [switch]
         }
     } finally { $arq.Dispose() }
     $base = $pasta.TrimEnd('\').Length + 1
-    foreach ($f in [IO.Directory]::GetFiles($pasta, '*', 'AllDirectories')) { if (-not $vistos.Contains($f.Substring($base))) { $ruins++ } }
+    # o registro da instalação (fase 2) não é arquivo do pacote: não conta como sobrando
+    foreach ($f in [IO.Directory]::GetFiles($pasta, '*', 'AllDirectories')) { $r = $f.Substring($base); if ($r -ne $REGISTRO -and -not $vistos.Contains($r)) { $ruins++ } }
     return $ruins
 }
 function Conferir-Arquivo([string]$zip, [string]$entrada, [string]$arquivo) {
@@ -485,14 +493,26 @@ function Aplicar-Escolha([string]$porto, [string[]]$quero) {
         $alvo = Join-Path $dm $p.Pasta
         if ($quero -contains $p.Pasta) {
             Passo $p.Nome
-            if ((Conferir-Pasta $p.Zip $p.Prefixo $alvo) -ne 0) { Extrair-Pasta $p.Zip $p.Prefixo $alvo; $feitos += $p.Nome }
-            foreach ($x in $p.Patches) {
-                $e = $p.Topo + 'patches/' + $x; $f = Join-Path $dp $x
-                if (-not (Conferir-Arquivo $p.Zip $e $f)) { Extrair-Arquivo $p.Zip $e $f }
+            # 04/11 (fase 2): o APLICAR instala e conserta, mas não troca de versão sozinho (isso é do botão Atualizar);
+            # conserta com o pacote da versão instalada, se ele estiver no computador
+            $reg = Ler-Registro $alvo; $pv = $p
+            if ($reg -and $reg.version) { $pv = Pacote-Da-Versao $p.Pasta ([string]$reg.version) }
+            $estadoReg = Conferir-Registro $alvo
+            if (-not [IO.Directory]::Exists($alvo) -or ($estadoReg -gt 0 -and $pv) -or ($estadoReg -lt 0 -and (Conferir-Pasta $p.Zip $p.Prefixo $alvo) -ne 0)) {
+                if (-not $pv) { $pv = $p }
+                Extrair-Pasta $pv.Zip $pv.Prefixo $alvo; Gravar-Registro $alvo $pv $script:FonteInstalacao; $feitos += $pv.Nome
+            } elseif ($estadoReg -lt 0) { Gravar-Registro $alvo $p 'zip' }
+            if ($pv) {
+                foreach ($x in $pv.Patches) {
+                    $e = $pv.Topo + 'patches/' + $x; $f = Join-Path $dp $x
+                    if (-not (Conferir-Arquivo $pv.Zip $e $f)) { Extrair-Arquivo $pv.Zip $e $f }
+                }
             }
         } else {
+            # sai também o patch que só a versão instalada tinha (o registro guarda os patches dela)
+            $reg = Ler-Registro $alvo; $saem = @($p.Patches) + @($reg.patches | Where-Object { $_ })
             if ([IO.Directory]::Exists($alvo)) { Passo $p.Nome; Remove-Item -LiteralPath $alvo -Recurse -Force; $tirados += $p.Nome }
-            foreach ($x in $p.Patches) { $f = Join-Path $dp $x; if ([IO.File]::Exists($f)) { Remove-Item -LiteralPath $f -Force } }
+            foreach ($x in $saem) { $f = Join-Path $dp ([string]$x); if ([IO.File]::Exists($f)) { Remove-Item -LiteralPath $f -Force } }
         }
     }
     $compatOk = @()
@@ -545,10 +565,17 @@ function Diagnosticar([string]$porto) {
         $alvo = Join-Path $dm $p.Pasta
         if ([IO.Directory]::Exists($alvo)) {
             Passo $p.Nome; $ok = $true
-            $ruins = Conferir-Pasta $p.Zip $p.Prefixo $alvo
+            # 04/11 (fase 2): confere pelo registro da instalação (vale para qualquer versão); sem registro, pelo pacote
+            $ruins = Conferir-Registro $alvo
+            if ($ruins -lt 0) { $ruins = Conferir-Pasta $p.Zip $p.Prefixo $alvo }
             if ($ruins -gt 0) { [void]$L.Add((Item 'erro' ((T 'd_ruim') -f $p.Nome, $ruins) $true)); $ok = $false }
-            foreach ($x in $p.Patches) {
-                if (-not (Conferir-Arquivo $p.Zip ($p.Topo + 'patches/' + $x) (Join-Path $dp $x))) { [void]$L.Add((Item 'erro' ((T 'd_patch') -f $p.Nome, $x) $true)); $ok = $false }
+            $vi = Versao-Instalada $porto $p.Pasta
+            if ($vi -and $vi -ne 'unknown' -and (Versao-Num $p.Versao) -gt (Versao-Num $vi)) {
+                [void]$L.Add((Item 'aviso' ((T 'd_nova') -f $p.Nome, $vi, $p.Versao) $false))
+            }
+            $pv = Pacote-Da-Versao $p.Pasta $vi; if (-not $pv) { $pv = $p }
+            foreach ($x in $pv.Patches) {
+                if (-not (Conferir-Arquivo $pv.Zip ($pv.Topo + 'patches/' + $x) (Join-Path $dp $x))) { [void]$L.Add((Item 'erro' ((T 'd_patch') -f $p.Nome, $x) $true)); $ok = $false }
             }
             if ($cfg.B -contains $p.Pasta -and $p.Patches.Count -gt 0) { [void]$L.Add((Item 'erro' ((T 'd_desl') -f $p.Nome) $true)); $ok = $false }
             foreach ($k in $pj.B) { foreach ($x in $p.Patches) { if ($k.StartsWith($x + '/')) { [void]$L.Add((Item 'erro' ((T 'd_pdesl') -f $k) $true)); $ok = $false } } }
@@ -646,6 +673,10 @@ function Buscar-Ports([int]$fundo = 5, [int]$limite = 60000) {
     }
     return $achados
 }
+
+# ---------------------------------------------------------------- atualizações (fase 2)
+$script:FonteInstalacao = 'zip'
+. (Join-Path $script:Aqui 'Atualizacoes.ps1')
 
 # ---------------------------------------------------------------- idioma
 $script:Ling = 'en'
