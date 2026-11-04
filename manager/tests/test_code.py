@@ -7,6 +7,7 @@ from pathlib import Path
 
 CODE = Path(__file__).resolve().parents[1] / 'manager'
 FILES = ('BloodReborn.ps1', 'Atualizacoes.ps1', 'BloodReborn_janela.ps1')
+STANDALONE = ('Trocar_Gerenciador.ps1',)   # run on its own from %TEMP% (not dot-sourced)
 
 
 class Code(unittest.TestCase):
@@ -21,7 +22,7 @@ class Code(unittest.TestCase):
 
     def test_scripts_keep_the_bom_for_powershell_5(self):
         # Windows PowerShell 5.1 reads a .ps1 without BOM as ANSI: the accents of the texts break
-        for name in FILES:
+        for name in FILES + STANDALONE:
             self.assertEqual((CODE / name).read_bytes()[:3], b'\xef\xbb\xbf', name)
 
 

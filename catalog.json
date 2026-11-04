@@ -8,6 +8,28 @@
     "game_domain": "bloodborne",
     "game_id": 2708
   },
+  "manager": {
+    "version": "2.2.0",
+    "package": "Blood_Reborn_Mod_Manager.zip",
+    "sha256": "e03ab4024d80a337b91dca00e07595b83bf2f2b7d54168615807c63aa27ca3fa",
+    "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-04.3/Blood_Reborn_Mod_Manager.zip",
+    "changes": {
+      "2.2.0": {
+        "en": "Updates itself: UPDATE ALL downloads the new manager, replaces its files, opens again and updates the mods. Every mod of the catalog shows in the list, with Download and install.",
+        "pt": "Atualiza a si mesmo: ATUALIZAR TUDO baixa o gerenciador novo, troca os arquivos, abre de novo e atualiza os mods. Todos os mods do catálogo aparecem na lista, com Baixar e instalar.",
+        "es": "Se actualiza solo: ACTUALIZAR TODO descarga el gestor nuevo, reemplaza sus archivos, se abre de nuevo y actualiza los mods. Todos los mods del catálogo aparecen en la lista, con Descargar e instalar.",
+        "zh": "自动更新：“全部更新”会下载新的管理器、替换文件、重新打开并更新模组。目录中的所有模组都会出现在列表中，可“下载并安装”。"
+      },
+      "2.1.1": {
+        "en": "From the window, Apply and Fix all keep the BB Port's own menu texts.",
+        "pt": "Pela janela, Aplicar e Corrigir tudo mantêm os textos do próprio BB Port no menu."
+      },
+      "2.1.0": {
+        "en": "Keeps the BB Port's own menu texts (Quit to Desktop, PC Settings, Rebirth) when a mod brings menu texts.",
+        "pt": "Mantém os textos do próprio BB Port no menu (Sair para a área de trabalho, Configurações do PC, Renascer) quando um mod traz textos de menu."
+      }
+    }
+  },
   "mods": [
     {
       "key": "arsenal",
@@ -15,6 +37,12 @@
       "folder": "Blood Reborn - Hunters Arsenal",
       "version": "1.0.1",
       "status": "released",
+      "summary": {
+        "pt": "Golpes especiais novos para as armas de truque: R2+L2 com a arma transformada. Inspirados em habilidades do Elden Ring e refeitos para o Bloodborne. Runas e gemas com PACTO: 14 pactos sorteados nas gemas que caem. Traz 9 patches de código. Eles são necessários: o instalador já liga.",
+        "en": "New special attacks for the trick weapons: R2+L2 in the transformed mode. Inspired by Elden Ring skills and rebuilt for Bloodborne. Runes and gems with PACTS: 14 pacts rolled on the gems you find. Includes 9 code patches. The mod needs them: the installer turns them on.",
+        "es": "Ataques especiales nuevos para las armas de truco: R2+L2 con el arma transformada. Inspirados en habilidades de Elden Ring y rehechos para Bloodborne. Runas y gemas con PACTO: 14 pactos sorteados en las gemas que encuentras. Incluye 9 parches de código. El mod los necesita: el instalador ya los activa.",
+        "zh": "为机关武器加入全新的特殊攻击：变形状态下按 R2+L2。 灵感来自《艾尔登法环》的战技，并为《血源诅咒》重新制作。 带有\"契约\"的符文与血宝石：掉落的宝石会随机带上 14 种契约之一。 包含 9 个代码补丁。模组需要它们：安装程序会自动启用。"
+      },
       "package": "Blood_Reborn_Hunters_Arsenal_v1.0.1.zip",
       "sha256": "0359c7996cbae10293b7401de77d79f68038da4f33737d52640713876f833a95",
       "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-04.2/Blood_Reborn_Hunters_Arsenal_v1.0.1.zip",
@@ -37,6 +65,12 @@
       "folder": "Blood Reborn - Merciless Night",
       "version": "1.31",
       "status": "released",
+      "summary": {
+        "pt": "Chefes e inimigos mais desafiadores e mais modernos. Segunda barra de vida e novas fases em vários chefes. Menos tempo parado entre os golpes, IA mais agressiva, vida e dano reajustados. Traz 1 patch de código (conserta a física do pano). O instalador já liga.",
+        "en": "Tougher, more modern bosses and enemies. A second health bar and new phases on several bosses. Shorter recovery between attacks, more aggressive AI, rebalanced health and damage. Includes 1 code patch (fixes the cloth physics). The installer turns it on.",
+        "es": "Jefes y enemigos más desafiantes y más modernos. Segunda barra de vida y nuevas fases en varios jefes. Menos tiempo de recuperación entre golpes, IA más agresiva, vida y daño reajustados. Incluye 1 parche de código (corrige la física de la tela). El instalador ya lo activa.",
+        "zh": "更具挑战、更现代的首领与敌人。 多个首领拥有第二条血条和新的阶段。 攻击间隙更短、AI 更具攻击性，生命值与伤害重新平衡。 包含 1 个代码补丁（修复布料物理）。安装程序会自动启用。"
+      },
       "package": "Blood_Reborn_Merciless_Night_v1.31.zip",
       "sha256": "af45114578bcff57906a7f1abd8ae0272977673108baf5605a0a60f451706c4e",
       "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-04/Blood_Reborn_Merciless_Night_v1.31.zip",
@@ -55,6 +89,12 @@
       "folder": "Blood Reborn - Fogside Lantern",
       "version": "1.6.1",
       "status": "testing",
+      "summary": {
+        "pt": "Morreu numa luta de chefe? Você renasce do lado de fora da névoa do chefe, na lanterna do chefe. Nada de fazer o caminho inteiro de novo!",
+        "en": "Died in a boss fight? You respawn right outside the boss fog, at the boss lantern. No more walking the whole way back!",
+        "es": "¿Moriste en una pelea contra un jefe? Reapareces justo fuera de la niebla del jefe, en el farol del jefe. ¡Nada de recorrer todo el camino otra vez!",
+        "zh": "在首领战中死亡？你会在首领雾门外、首领的提灯处复活。 不用再从头跑一遍路了！"
+      },
       "package": "Blood_Reborn_Fogside_Lantern_v1.6.1.zip",
       "sha256": "e2f2085c91fec4bd01ebd0fd3782f4c36bea38766e6123df9b49a7e4c240605b",
       "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-04/Blood_Reborn_Fogside_Lantern_v1.6.1.zip",
@@ -73,6 +113,12 @@
       "folder": "Blood Reborn - Blood Vial Safety Net",
       "version": "1.0.1",
       "status": "testing",
+      "summary": {
+        "pt": "Depois de morrer e renascer, seus Frascos de Sangue voltam para 11. Só completa o que falta (0 vira 11, 7 vira 11). Não recarrega durante a luta.",
+        "en": "After you die and respawn, your Blood Vials go back up to 11. It only adds what is missing (0 becomes 11, 7 becomes 11). Never during a fight.",
+        "es": "Después de morir y reaparecer, tus Viales de sangre vuelven a 11. Solo completa lo que falta (0 pasa a 11, 7 pasa a 11). Nunca durante una pelea.",
+        "zh": "死亡并复活后，你携带的采血瓶会补满到 11 个。 只补足缺少的数量（0 变 11，7 变 11）。战斗中不会补充。"
+      },
       "package": "Blood_Reborn_Blood_Vial_Safety_Net_v1.0.1.zip",
       "sha256": "ca0aa0f743ea9a03d1ae4011d660b7bf079617558b9937dc591813623033daa3",
       "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-04/Blood_Reborn_Blood_Vial_Safety_Net_v1.0.1.zip",

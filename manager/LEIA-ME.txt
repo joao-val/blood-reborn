@@ -1,0 +1,51 @@
+﻿🩸 BLOOD REBORN — GERENCIADOR DE MODS
+Mods grátis de Bloodborne para o BB Port.
+🌍 English below · Español e 中文 dentro do gerenciador
+
+✅ VOCÊ PRECISA TER
+  🎮 O BB Port instalado e funcionando (a pasta com o "Play Bloodborne.exe").
+  💿 O seu Bloodborne (CUSA03173), versão 1.09.
+  🌐 Internet: o gerenciador baixa os mods do GitHub sozinho.
+
+🚀 INSTALAR (5 passos)
+  1️⃣ Botão direito neste zip ➜ "Extrair tudo".
+     ⚠️ Não abra o gerenciador de dentro do zip: extraia primeiro.
+  2️⃣ Feche o jogo e o BB Port.
+  3️⃣ Abra a pasta extraída e dê 2 cliques em "Blood Reborn Mod Manager.bat".
+     🛡️ Apareceu "O Windows protegeu o computador"? Clique em "Mais informações" ➜ "Executar assim mesmo".
+  4️⃣ Na página "Mods", clique em "Baixar e instalar" nos mods que você quer.
+     🤝 A compatibilidade entre os mods entra sozinha.
+  5️⃣ Abra o BB Port ➜ "Mods e patches". Confira se os mods estão ligados ✅ e se não aparece nenhuma linha "Não carregado". Bom jogo! 🎉
+  🎮 O jogo continua abrindo pelo BB Port, como sempre: o gerenciador só cuida dos mods.
+
+🔄 ATUALIZAR (não precisa baixar o gerenciador de novo)
+  Quando sair versão nova do gerenciador ou de algum mod, aparece uma faixa azul em cima da lista com "ATUALIZAR TUDO".
+  Um clique: o gerenciador baixa a versão nova dele, fecha, troca os próprios arquivos, abre de novo e atualiza os mods.
+  Mod novo no Blood Reborn aparece sozinho na lista, com "Baixar e instalar".
+  Não gostou da versão nova de um mod? "Voltar" devolve a anterior.
+
+🛠️ DEU ERRO?
+  Por exemplo: números no menu (119001...), gemas com "パラメータ名称" e "9999", linha "Não carregado" ou mod que não funciona.
+  Abra o gerenciador ➜ "Correção de erros" ➜ CORRIGIR TUDO. Ele confere e conserta os arquivos dos mods sozinho.
+
+🔁 TROCAR OU TIRAR UM MOD
+  Abra o gerenciador, ligue ou desligue os mods e clique em APLICAR. O mod desligado sai do BB Port.
+
+📦 SEM INTERNET?
+  Baixe os zips dos mods (Blood_Reborn_*.zip) na página de lançamentos do GitHub e ponha na pasta do gerenciador: ele lê os zips direto.
+
+🔒 O seu jogo nunca é alterado: o BB Port monta uma cópia com os mods ao abrir.
+❤️ Feito por fã, de graça. Sem ligação com a Sony ou a FromSoftware.
+
+───────────────────────────────────────────────
+🇬🇧 ENGLISH — BLOOD REBORN MOD MANAGER
+  ✅ You need: the BB Port working + your own Bloodborne (CUSA03173) v1.09 + internet (the manager downloads the mods from GitHub).
+  1️⃣ Right-click this zip ➜ "Extract All" (do not run it from inside the zip).
+  2️⃣ Close the game and the BB Port.
+  3️⃣ Open the extracted folder and double-click "Blood Reborn Mod Manager.bat" (Windows warning? "More info" ➜ "Run anyway").
+  4️⃣ Pick English in the manager and click "Download and install" on the mods you want.
+  5️⃣ BB Port ➜ "Mods & patches": your mods are on and there is no "Not loaded" line. Enjoy! 🎉
+  🎮 You still start the game from the BB Port: the manager only handles the mods.
+  🔄 New version of the manager or of a mod? A blue bar shows "UPDATE ALL": the manager updates itself (it closes, replaces its files and opens again) and then the mods. No need to download the manager again.
+  🛠️ Something wrong? Manager ➜ "Error repair" ➜ FIX ALL.
+  📦 No internet? Put the mod zips (Blood_Reborn_*.zip, from the GitHub releases page) in the manager folder.

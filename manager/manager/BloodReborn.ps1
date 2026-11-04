@@ -31,7 +31,9 @@ param(
     [string]$ChaveNexus = '',
     [int]$EsperaDownload = 1800,
     [switch]$SemRede,
-    [switch]$SemNavegador
+    [switch]$SemNavegador,
+    # 2.2 (04/11/2026): aberto pelo ajudante depois de se atualizar: segue atualizando os mods
+    [switch]$Continuar
 )
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.IO.Compression, System.IO.Compression.FileSystem
@@ -47,7 +49,7 @@ $EXTRAS = @('', '.txt', '.md', '.ini', '.json', '.pdf', '.rtf', '.nfo', '.url', 
 $SOLTOS = @('instalador.ps1', 'Instalar - Install.bat', 'Desinstalar - Uninstall.bat', 'LEIA-ME_PT.txt', 'README_EN.txt', 'LEAME_ES.txt', 'README_ZH.txt', 'blood_reborn.json')
 $PREFERENCIA = @('Blood Reborn - Hunters Arsenal', 'Blood Reborn - Merciless Night', 'Blood Reborn - Fogside Lantern', 'Blood Reborn - Blood Vial Safety Net')
 $LEIAME = @{ pt = 'LEIA-ME_PT.txt'; en = 'README_EN.txt'; es = 'LEAME_ES.txt'; zh = 'README_ZH.txt' }
-$VERSAO_GERENCIADOR = '2.1.1'
+$VERSAO_GERENCIADOR = '2.2.0'
 $REGISTRO = 'blood_reborn_installed.json'
 # 04/11/2026: os textos do próprio BB Port junto com os dos nossos mods (gerada aqui; ver Compor-Textos)
 $COMPAT_TEXTOS = 'Blood Reborn - zCompat BB Port texts'
@@ -76,7 +78,7 @@ $TXT = @{
   aplicar = 'APLICAR'; verificar = 'VERIFICAR'; corrigir = 'CORRIGIR TUDO'; comecar = 'VER OS MODS'
   st_inst = 'Instalado'; st_nao = 'Não instalado'; st_rep = 'Precisa reparar'
   compat = 'Compatibilidade automática: {0}'; compat0 = 'Nenhuma compatibilidade necessária para essa escolha.'
-  sem_pac = 'Nenhum pacote do Blood Reborn (Blood_Reborn_*.zip) foi encontrado na pasta do gerenciador nem em "2 - Mods".'
+  sem_pac = 'Nenhum mod encontrado: não há pacotes do Blood Reborn no computador e não deu para ler a lista no GitHub (sem internet?). Clique em PROCURAR ATUALIZAÇÕES quando a internet voltar.'
   aberto = 'Feche o jogo e o BB Port antes de continuar.'
   confirma = "Instalar ou reparar:`n{0}`n`nRemover:`n{1}`n`nContinuar?"; nada = '(nada)'
   pronto = "Pronto!`n`nAbra o BB Port: em ""Mods e patches"" os mods aparecem ligados e nenhuma linha ""Não carregado""."
@@ -112,6 +114,11 @@ $TXT = @{
   d_tok = '{0}: textos do BB Port junto com os dos mods.'
   d_tsem = 'O BB Port ainda não gravou os textos dele: abra o jogo uma vez e depois clique em Verificar (sem isso o menu do Arsenal pode mostrar números no lugar de "Sair para a área de trabalho").'
   t_falhou = 'Não deu para juntar os textos do BB Port com os dos mods: {0}'
+  g_faixa = 'Gerenciador v{0} disponível (você tem a v{1}).'; g_faixa_mods = '{0} mod(s) com versão nova.'; g_tudo = 'ATUALIZAR TUDO'
+  g_confirma = "Atualizar o gerenciador para a v{0}{1}?`n`nEle fecha, troca os próprios arquivos e abre de novo sozinho."; g_emods = ' e os mods'
+  g_ok = 'Gerenciador atualizado para a v{0}.'; g_falhou = 'A atualização do gerenciador não deu certo e a versão anterior continua: {0}'
+  g_baixar = 'Baixar e instalar'; g_embreve = 'Em breve'; st_disp = 'Disponível'; g_instalado = '{0} baixado e instalado.'
+  g_mods_ok = "Mods atualizados:`n{0}"
  }
  en = @{
   app_sub = 'Mod manager'; busca = 'Search...   Ctrl+F'; nav_mods = 'Mods'; nav_fix = 'Error repair'; nav_ajuda = 'How to install'
@@ -132,7 +139,7 @@ $TXT = @{
   aplicar = 'APPLY'; verificar = 'CHECK'; corrigir = 'FIX ALL'; comecar = 'GO TO MODS'
   st_inst = 'Installed'; st_nao = 'Not installed'; st_rep = 'Needs repair'
   compat = 'Automatic compatibility: {0}'; compat0 = 'No compatibility needed for this choice.'
-  sem_pac = 'No Blood Reborn package (Blood_Reborn_*.zip) was found in the manager folder or in "2 - Mods".'
+  sem_pac = 'No mods found: there are no Blood Reborn packages on this PC and the list on GitHub could not be read (no internet?). Click CHECK FOR UPDATES when the internet is back.'
   aberto = 'Close the game and the BB Port before continuing.'
   confirma = "Install or repair:`n{0}`n`nRemove:`n{1}`n`nContinue?"; nada = '(nothing)'
   pronto = "Done!`n`nOpen the BB Port: under ""Mods & patches"" your mods are on and there is no ""Not loaded"" line."
@@ -168,6 +175,11 @@ $TXT = @{
   d_tok = '{0}: BB Port texts merged with the mods.'
   d_tsem = 'The BB Port has not written its own texts yet: start the game once, then click Check (until then the Arsenal menu may show numbers instead of "Quit to Desktop").'
   t_falhou = 'Could not merge the BB Port texts with the mods: {0}'
+  g_faixa = 'Manager v{0} available (you have v{1}).'; g_faixa_mods = '{0} mod(s) with a new version.'; g_tudo = 'UPDATE ALL'
+  g_confirma = "Update the manager to v{0}{1}?`n`nIt closes, replaces its own files and opens again by itself."; g_emods = ' and the mods'
+  g_ok = 'Manager updated to v{0}.'; g_falhou = 'The manager update did not work and the previous version is kept: {0}'
+  g_baixar = 'Download and install'; g_embreve = 'Coming soon'; st_disp = 'Available'; g_instalado = '{0} downloaded and installed.'
+  g_mods_ok = "Mods updated:`n{0}"
  }
  es = @{
   app_sub = 'Gestor de mods'; busca = 'Buscar...   Ctrl+F'; nav_mods = 'Mods'; nav_fix = 'Corrección de errores'; nav_ajuda = 'Cómo instalar'
@@ -188,7 +200,7 @@ $TXT = @{
   aplicar = 'APLICAR'; verificar = 'REVISAR'; corrigir = 'CORREGIR TODO'; comecar = 'VER LOS MODS'
   st_inst = 'Instalado'; st_nao = 'No instalado'; st_rep = 'Necesita reparar'
   compat = 'Compatibilidad automática: {0}'; compat0 = 'No hace falta compatibilidad para esta elección.'
-  sem_pac = 'No se encontró ningún paquete de Blood Reborn (Blood_Reborn_*.zip) en la carpeta del gestor ni en "2 - Mods".'
+  sem_pac = 'No se encontraron mods: no hay paquetes de Blood Reborn en este equipo y no se pudo leer la lista en GitHub (¿sin internet?). Haz clic en BUSCAR ACTUALIZACIONES cuando vuelva internet.'
   aberto = 'Cierra el juego y el BB Port antes de continuar.'
   confirma = "Instalar o reparar:`n{0}`n`nQuitar:`n{1}`n`n¿Continuar?"; nada = '(nada)'
   pronto = "¡Listo!`n`nAbre el BB Port: en ""Mods & patches"" tus mods aparecen activados y sin ninguna línea ""No cargado""."
@@ -224,6 +236,11 @@ $TXT = @{
   d_tok = '{0}: textos del BB Port unidos con los de los mods.'
   d_tsem = 'El BB Port todavía no escribió sus textos: abre el juego una vez y luego haz clic en Revisar (hasta entonces el menú del Arsenal puede mostrar números en lugar de "Salir al escritorio").'
   t_falhou = 'No se pudieron unir los textos del BB Port con los de los mods: {0}'
+  g_faixa = 'Gestor v{0} disponible (tienes la v{1}).'; g_faixa_mods = '{0} mod(s) con versión nueva.'; g_tudo = 'ACTUALIZAR TODO'
+  g_confirma = "¿Actualizar el gestor a la v{0}{1}?`n`nSe cierra, reemplaza sus propios archivos y se abre de nuevo solo."; g_emods = ' y los mods'
+  g_ok = 'Gestor actualizado a la v{0}.'; g_falhou = 'La actualización del gestor no funcionó y se mantiene la versión anterior: {0}'
+  g_baixar = 'Descargar e instalar'; g_embreve = 'Próximamente'; st_disp = 'Disponible'; g_instalado = '{0} descargado e instalado.'
+  g_mods_ok = "Mods actualizados:`n{0}"
  }
  zh = @{
   app_sub = '模组管理器'; busca = '搜索...   Ctrl+F'; nav_mods = '模组'; nav_fix = '错误修复'; nav_ajuda = '安装说明'
@@ -244,7 +261,7 @@ $TXT = @{
   aplicar = '应用'; verificar = '检查'; corrigir = '全部修复'; comecar = '前往模组'
   st_inst = '已安装'; st_nao = '未安装'; st_rep = '需要修复'
   compat = '自动兼容：{0}'; compat0 = '当前选择不需要兼容文件。'
-  sem_pac = '在管理器文件夹或 "2 - Mods" 中没有找到 Blood Reborn 安装包（Blood_Reborn_*.zip）。'
+  sem_pac = '没有找到模组：电脑上没有 Blood Reborn 安装包，也无法读取 GitHub 上的列表（没有网络？）。网络恢复后请点击“检查更新”。'
   aberto = '继续之前请关闭游戏和 BB Port。'
   confirma = "安装或修复：`n{0}`n`n移除：`n{1}`n`n继续吗？"; nada = '（无）'
   pronto = "完成！`n`n打开 BB Port：在 ""Mods & patches"" 中你的模组已启用，并且没有""未加载""的行。"
@@ -280,6 +297,11 @@ $TXT = @{
   d_tok = '{0}：BB Port 的文本已与模组合并。'
   d_tsem = 'BB Port 还没有写入它自己的文本：请先启动一次游戏，然后点击“检查”（在此之前 Arsenal 的菜单可能显示数字，而不是“退出到桌面”）。'
   t_falhou = '无法把 BB Port 的文本与模组合并：{0}'
+  g_faixa = '管理器 v{0} 可用（你现在是 v{1}）。'; g_faixa_mods = '{0} 个模组有新版本。'; g_tudo = '全部更新'
+  g_confirma = "把管理器更新到 v{0}{1}吗？`n`n它会关闭，替换自己的文件，然后自动重新打开。"; g_emods = '并更新模组'
+  g_ok = '管理器已更新到 v{0}。'; g_falhou = '管理器更新没有成功，已保留之前的版本：{0}'
+  g_baixar = '下载并安装'; g_embreve = '即将推出'; st_disp = '可用'; g_instalado = '{0} 已下载并安装。'
+  g_mods_ok = "已更新的模组：`n{0}"
  }
 }
 function T([string]$chave) {
@@ -921,6 +943,20 @@ if ($Acao) {
         'corrigir' { [void](Corrigir-Tudo $PastaPort) }
         'verificar' { }
         'atualizar' { foreach ($x in $quero) { [void](Atualizar-Mod $PastaPort $x) } }
+        # 2.2: mods do catálogo, atualizar tudo e o próprio gerenciador
+        'baixar' { foreach ($x in $quero) { Baixar-Instalar $PastaPort $x } }
+        'atualizar_tudo' { [void](Atualizar-Todos $PastaPort) }
+        'gerenciador' {
+            $json = ConvertTo-Json -InputObject (Estado-Gerenciador -Forcar) -Depth 8
+            if ($Relatorio) { [IO.File]::WriteAllText($Relatorio, $json, $script:Utf8) } else { $json }
+            exit 0
+        }
+        'atualizar_gerenciador' {
+            $eg = Estado-Gerenciador -Forcar
+            if (-not $eg.Atualizar) { throw (T 'u_nada_novo') }
+            $topo = Baixar-Gerenciador $eg
+            if ((Trocar-Gerenciador $topo $eg.Disponivel -Agora) -ne 0) { throw ((T 'g_falhou') -f (Avisos-Da-Troca).Falhou) }
+        }
         'voltar' { foreach ($x in $quero) { Voltar-Mod $PastaPort $x } }
         'atualizacoes' {
             # fase 2: o estado de atualização de cada mod (instalada, disponível, notas, fontes), sem cache

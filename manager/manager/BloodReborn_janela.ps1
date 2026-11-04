@@ -218,6 +218,17 @@ $XAML = @'
                 <TextBlock x:Name="SecMods" FontSize="13" FontWeight="Bold" Foreground="{StaticResource Ouro}" VerticalAlignment="Center"/>
                 <Button x:Name="BtnAtualizacoes" Grid.Column="1" Style="{StaticResource BotaoEscuro}"/>
               </Grid>
+              <Border x:Name="FaixaAtualizacao" CornerRadius="9" Background="#121A22" BorderBrush="#2E4A66" BorderThickness="1" Padding="16,10" Margin="0,0,0,12" Visibility="Collapsed">
+                <Grid>
+                  <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                  <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="&#xE896;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="#7FB2E5" Margin="0,1,12,0"/>
+                    <TextBlock x:Name="TxtFaixa" FontSize="13.5" Foreground="{StaticResource Texto}" TextWrapping="Wrap" VerticalAlignment="Center" MaxWidth="420"/>
+                  </StackPanel>
+                  <Button x:Name="BtnNotasGer" Grid.Column="1" Style="{StaticResource BotaoEscuro}" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                  <Button x:Name="BtnTudo" Grid.Column="2" Style="{StaticResource BotaoSangue}" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                </Grid>
+              </Border>
               <StackPanel x:Name="ListaMods"/>
               <Border x:Name="CaixaCompat" CornerRadius="8" Background="#121014" BorderBrush="#3A2A20" BorderThickness="1" Padding="14,10" Margin="0,4,0,0">
                 <StackPanel Orientation="Horizontal">
@@ -284,10 +295,10 @@ foreach ($nome in @('Emblema', 'TituloApp', 'SubApp', 'CaixaBusca', 'DicaBusca',
                     'LblIdioma', 'LingPT', 'LingEN', 'LingES', 'LingZH', 'Rodape', 'Arte', 'Topo', 'TituloPagina', 'SubPagina', 'BtnMin', 'BtnFechar',
                     'PagMods', 'SecMods', 'ListaMods', 'CaixaCompat', 'TxtCompat', 'PagFix', 'SecFix', 'CaixaResumo', 'IconeResumo', 'ResumoFix',
                     'ListaProblemas', 'PagAjuda', 'SecAjuda', 'ListaPassos', 'TxtDica', 'LblPasta', 'CaixaPasta', 'BtnProcurar', 'BtnBuscarPC',
-                    'IconePasta', 'EstadoPasta', 'BtnSecundario', 'BtnPrincipal', 'BtnAtualizacoes')) {
+                    'IconePasta', 'EstadoPasta', 'BtnSecundario', 'BtnPrincipal', 'BtnAtualizacoes', 'FaixaAtualizacao', 'TxtFaixa', 'BtnNotasGer', 'BtnTudo')) {
     $script:U[$nome] = $script:Win.FindName($nome)
 }
-$script:PaginaAtual = 'mods'; $script:Itens = @(); $script:Chaves = @{}; $script:Estados = @()
+$script:PaginaAtual = 'mods'; $script:Itens = @(); $script:Chaves = @{}; $script:Estados = @(); $script:EstadoGer = $null
 $script:FonteTitulo = New-Object Windows.Media.FontFamily('Palatino Linotype')
 $script:FonteTexto = New-Object Windows.Media.FontFamily('Segoe UI')
 function Cor([string]$hex) { return (New-Object Windows.Media.SolidColorBrush ([Windows.Media.ColorConverter]::ConvertFromString($hex))) }
@@ -372,7 +383,7 @@ function Mostrar-Pagina([string]$qual) {
             $U.PagMods.Visibility = 'Visible'; $U.NavMods.Tag = 'sel'
             $U.TituloPagina.Text = T 't_mods'; $U.SubPagina.Text = T 's_mods'; $U.BtnPrincipal.Content = T 'aplicar'
             $U.BtnPrincipal.IsEnabled = [bool]($script:Porto -and @($script:Pacotes).Count)
-            $U.BtnAtualizacoes.Content = T 'u_procurar'; $U.BtnAtualizacoes.IsEnabled = [bool]$script:Porto
+            $U.BtnAtualizacoes.Content = T 'u_procurar'; $U.BtnAtualizacoes.IsEnabled = $true
         }
         'correcao' {
             $U.PagFix.Visibility = 'Visible'; $U.NavFix.Tag = 'sel'
@@ -411,7 +422,10 @@ function Montar-Cartoes {
     $L = $script:U.ListaMods; $antes = @{}
     foreach ($k in $script:Chaves.Keys) { $antes[$k] = $script:Chaves[$k].IsChecked }
     $L.Children.Clear(); $script:Chaves = @{}
-    if (@($script:Pacotes).Count -eq 0) { [void]$L.Children.Add((Novo-Texto (T 'sem_pac') 13 '#E07A76')); Atualizar-Compat; return }
+    # 2.2: os mods do catálogo que não estão no computador (Baixar e instalar)
+    $locais = @($script:Pacotes | ForEach-Object { $_.Pasta })
+    $catSo = @($script:Estados | Where-Object { $_ -and $_.Cat -and $_.Disponivel -and $locais -notcontains $_.Pasta })
+    if (@($script:Pacotes).Count -eq 0 -and $catSo.Count -eq 0) { [void]$L.Children.Add((Novo-Texto (T 'sem_pac') 13 '#E07A76')); Atualizar-Compat; Mostrar-Faixa; return }
     $dm = $null; if ($script:Porto) { $dm = Join-Path $script:Porto 'mods' }
     # fase 2 (04/11): o estado de atualização da última busca (Procurar-UI), por pasta
     $est = @{}; foreach ($x in @($script:Estados)) { if ($x -and $x.Pasta) { $est[$x.Pasta] = $x } }
@@ -462,7 +476,43 @@ function Montar-Cartoes {
         $card.Child = $g; $card.Tag = ($p.Nome + ' ' + $p.Pasta + ' ' + $desc.Text).ToLowerInvariant()
         [void]$L.Children.Add($card); $script:Chaves[$p.Pasta] = $chk
     }
-    Atualizar-Compat; Filtrar
+    foreach ($e in $catSo) {
+        $card = Novo-Cartao
+        $g = New-Object Windows.Controls.Grid
+        foreach ($w in @('Auto', '*', 'Auto')) { $cd = New-Object Windows.Controls.ColumnDefinition; $cd.Width = $w; [void]$g.ColumnDefinitions.Add($cd) }
+        $ic = Novo-Texto ([string][char]0xE896) 18 '#7FB2E5'; $ic.FontFamily = New-Object Windows.Media.FontFamily('Segoe MDL2 Assets')
+        $ic.Width = 46; $ic.TextAlignment = 'Center'; $ic.Margin = '0,3,18,0'; $ic.VerticalAlignment = 'Top'
+        [Windows.Controls.Grid]::SetColumn($ic, 0); [void]$g.Children.Add($ic)
+        $pilha = New-Object Windows.Controls.StackPanel
+        $linha = New-Object Windows.Controls.StackPanel; $linha.Orientation = 'Horizontal'
+        $nome = Novo-Texto $e.Nome 16.5 '#F1EADD' 'SemiBold'; $nome.TextWrapping = 'NoWrap'; [void]$linha.Children.Add($nome)
+        $ver = Novo-Texto ('v' + $e.Disponivel) 11.5 '#8F897E'; $ver.Margin = '9,5,0,0'; [void]$linha.Children.Add($ver)
+        [void]$pilha.Children.Add($linha)
+        $resumo = ''; if ($e.Cat.summary) { $resumo = [string]$e.Cat.summary.$script:Ling; if (-not $resumo) { $resumo = [string]$e.Cat.summary.en } }
+        $desc = Novo-Texto $resumo 12.5 '#A7A094'; $desc.Margin = '0,7,0,0'; $desc.LineHeight = 19; [void]$pilha.Children.Add($desc)
+        [Windows.Controls.Grid]::SetColumn($pilha, 1); [void]$g.Children.Add($pilha)
+        $dir = New-Object Windows.Controls.StackPanel; $dir.Margin = '14,1,0,0'
+        $chip = Novo-Chip (T 'st_disp') '#7FB2E5' '#14202B'; $chip.HorizontalAlignment = 'Right'; [void]$dir.Children.Add($chip)
+        $b = New-Object Windows.Controls.Button; $b.Style = $script:Win.FindResource('BotaoEscuro'); $b.Margin = '0,8,0,0'; $b.Tag = $e.Pasta
+        if ($e.Cat.download -or $e.Cat.nexus_mod_id) { $b.Content = T 'g_baixar'; $b.Add_Click({ param($s) Baixar-UI ([string]$s.Tag) }) }
+        else { $b.Content = T 'g_embreve'; $b.IsEnabled = $false }
+        [void]$dir.Children.Add($b)
+        [Windows.Controls.Grid]::SetColumn($dir, 2); [void]$g.Children.Add($dir)
+        $card.Child = $g; $card.Tag = ($e.Nome + ' ' + $e.Pasta + ' ' + $resumo).ToLowerInvariant()
+        [void]$L.Children.Add($card)
+    }
+    Atualizar-Compat; Mostrar-Faixa; Filtrar
+}
+function Mostrar-Faixa {
+    # 2.2: a faixa de cima: gerenciador novo e/ou mods com versão nova, com ATUALIZAR TUDO
+    $U = $script:U; $eg = $script:EstadoGer
+    $nm = @($script:Estados | Where-Object { $_ -and $_.Atualizar }).Count; $partes = @()
+    if ($eg -and $eg.Atualizar) { $partes += ((T 'g_faixa') -f $eg.Disponivel, $eg.Atual) }
+    if ($nm -and $script:Porto) { $partes += ((T 'g_faixa_mods') -f $nm) }
+    if ($partes.Count -eq 0) { $U.FaixaAtualizacao.Visibility = 'Collapsed'; return }
+    $U.FaixaAtualizacao.Visibility = 'Visible'; $U.TxtFaixa.Text = $partes -join '  '
+    $U.BtnTudo.Content = T 'g_tudo'; $U.BtnNotasGer.Content = T 'u_notas'
+    if ($eg -and $eg.Atualizar -and @($eg.Notas).Count) { $U.BtnNotasGer.Visibility = 'Visible' } else { $U.BtnNotasGer.Visibility = 'Collapsed' }
 }
 function Escolhidos { return @($script:Pacotes | Where-Object { $script:Chaves[$_.Pasta] -and $script:Chaves[$_.Pasta].IsChecked } | ForEach-Object { $_.Pasta }) }
 function Atualizar-Compat {
@@ -516,7 +566,7 @@ function Filtrar {
 
 # ---------------------------------------------------------------- ações
 function Ocupado([bool]$sim) {
-    foreach ($n in @('BtnPrincipal', 'BtnSecundario', 'BtnAtualizacoes', 'BtnProcurar', 'BtnBuscarPC', 'NavMods', 'NavFix', 'NavAjuda')) { $script:U[$n].IsEnabled = -not $sim }
+    foreach ($n in @('BtnPrincipal', 'BtnSecundario', 'BtnAtualizacoes', 'BtnProcurar', 'BtnBuscarPC', 'NavMods', 'NavFix', 'NavAjuda', 'BtnTudo', 'BtnNotasGer')) { $script:U[$n].IsEnabled = -not $sim }
     if ($sim) { $script:Win.Cursor = [Windows.Input.Cursors]::Wait } else { $script:Win.Cursor = $null; Mostrar-Estado-Pasta; Mostrar-Pagina $script:PaginaAtual }
     Atualizar-Tela
 }
@@ -557,12 +607,53 @@ function Corrigir-UI {
 }
 # ---- fase 2 (04/11): atualizações. $script:Estados = último Estado-Atualizacoes, por pasta.
 function Procurar-UI([switch]$Forcar) {
-    if (-not $script:Porto) { return }
+    # 2.2: também sem a pasta do BB Port (a lista do catálogo e o gerenciador novo aparecem do mesmo jeito)
     Ocupado $true; & $script:AoProgredir (T 'conferindo')
     try { $script:Estados = @(Estado-Atualizacoes $script:Porto -Forcar:$Forcar) } catch { $script:Estados = @() }
+    $rede = $script:AvisoRede
+    try { $script:EstadoGer = Estado-Gerenciador } catch { $script:EstadoGer = $null }   # o catálogo acabou de vir: cache
     Ocupado $false; Montar-Cartoes
-    if ($Forcar -and $script:AvisoRede) { Aviso $script:AvisoRede 'Warning' }   # ao abrir a janela, sem rede fica calado
-    elseif ($Forcar -and -not @($script:Estados | Where-Object { $_.Atualizar }).Count) { Aviso (T 'u_nada_novo') }
+    $algo = @($script:Estados | Where-Object { $_.Atualizar }).Count -or ($script:EstadoGer -and $script:EstadoGer.Atualizar)
+    if ($Forcar -and $rede) { Aviso $rede 'Warning' }   # ao abrir a janela, sem rede fica calado
+    elseif ($Forcar -and -not $algo) { Aviso (T 'u_nada_novo') }
+}
+function Baixar-UI([string]$pasta) {
+    if (-not $script:Porto) { Aviso (T 'porto_nada') 'Warning'; return }
+    if (-not $SemTrava -and (Jogo-Aberto)) { Aviso (T 'aberto') 'Warning'; return }
+    $e = @($script:Estados | Where-Object { $_.Pasta -eq $pasta })[0]
+    $script:Cancelar = $false; Ocupado $true
+    $script:U.BtnAtualizacoes.IsEnabled = $true; $script:U.BtnAtualizacoes.Content = T 'u_cancelar'
+    try { Baixar-Instalar $script:Porto $pasta; Ocupado $false; Procurar-UI; Aviso ((T 'g_instalado') -f $e.Nome) }
+    catch { Ocupado $false; Montar-Cartoes; Aviso ((T 'erro') -f $_.Exception.Message) 'Error' }
+}
+function Tudo-Mods-UI {
+    if (-not $script:Porto) { return }
+    if (-not $SemTrava -and (Jogo-Aberto)) { Aviso (T 'aberto') 'Warning'; return }
+    $script:Cancelar = $false; Ocupado $true
+    $script:U.BtnAtualizacoes.IsEnabled = $true; $script:U.BtnAtualizacoes.Content = T 'u_cancelar'
+    try {
+        $feitos = @(Atualizar-Todos $script:Porto); Ocupado $false; Procurar-UI
+        if ($feitos.Count) { Aviso ((T 'g_mods_ok') -f ((@($feitos) | ForEach-Object { '  - ' + $_ }) -join "`n")) }
+    } catch { Ocupado $false; Montar-Cartoes; Aviso ((T 'erro') -f $_.Exception.Message) 'Error' }
+}
+function Tudo-UI {
+    # ATUALIZAR TUDO: primeiro o gerenciador (ele fecha, troca e abre de novo com -Continuar), depois os mods
+    $eg = $script:EstadoGer; $nm = @($script:Estados | Where-Object { $_.Atualizar }).Count
+    if ($nm -and -not $SemTrava -and (Jogo-Aberto)) { Aviso (T 'aberto') 'Warning'; return }
+    if (-not ($eg -and $eg.Atualizar)) { Tudo-Mods-UI; return }
+    $extra = ''; if ($nm -and $script:Porto) { $extra = T 'g_emods' }
+    if ([Windows.MessageBox]::Show($script:Win, ((T 'g_confirma') -f $eg.Disponivel, $extra), 'Blood Reborn', 'YesNo', 'Question') -ne 'Yes') { return }
+    Ocupado $true; & $script:AoProgredir ((T 'trabalhando') -f ('Blood Reborn Mod Manager v' + $eg.Disponivel))
+    try {
+        $topo = Baixar-Gerenciador $eg
+        [void](Trocar-Gerenciador $topo $eg.Disponivel -Continuar:([bool]($nm -and $script:Porto)))
+        $script:Win.Close()
+    } catch { Ocupado $false; Aviso ((T 'erro') -f $_.Exception.Message) 'Error' }
+}
+function Notas-Ger-UI {
+    $eg = $script:EstadoGer; if (-not $eg) { return }
+    $t = (@($eg.Notas) | ForEach-Object { 'v' + $_.Versao + "`n" + $_.Texto }) -join "`n`n"
+    [void][Windows.MessageBox]::Show($script:Win, $t, ((T 'u_titulo_notas') -f 'Blood Reborn Mod Manager'), 'OK', 'Information')
 }
 function Atualizar-UI([string]$pasta) {
     if (-not $SemTrava -and (Jogo-Aberto)) { Aviso (T 'aberto') 'Warning'; return }
@@ -635,6 +726,8 @@ $U.BtnAtualizacoes.Add_Click({
 $mk = New-Object Windows.Controls.ContextMenu; $mi = New-Object Windows.Controls.MenuItem
 $mk.Add_Opened({ $script:ItemChave.Header = T 'u_btn_chave' }); $script:ItemChave = $mi
 $mi.Add_Click({ Chave-UI }); [void]$mk.Items.Add($mi); $U.BtnAtualizacoes.ContextMenu = $mk
+$U.BtnTudo.Add_Click({ Tudo-UI })
+$U.BtnNotasGer.Add_Click({ Notas-Ger-UI })
 $U.BtnPrincipal.Add_Click({
     switch ($script:PaginaAtual) { 'mods' { Aplicar-UI } 'correcao' { Corrigir-UI } 'ajuda' { Mostrar-Pagina 'mods' } }
 })
@@ -651,7 +744,7 @@ $script:PaginaAtual = $Pagina
 Atualizar-Textos
 if ($Captura) {
     # imagem da janela para conferência, sem mostrar nada na tela
-    if ($script:Porto) { $script:Estados = @(Estado-Atualizacoes $script:Porto -Forcar) }; Montar-Cartoes
+    $script:Estados = @(Estado-Atualizacoes $script:Porto -Forcar); $script:EstadoGer = Estado-Gerenciador; Montar-Cartoes
     if ($Pagina -eq 'correcao') { if ($script:Porto) { $script:Itens = @(Diagnosticar $script:Porto) }; Mostrar-Estado-Pasta; Montar-Problemas }
     $raiz = $script:Win.Content
     $raiz.Measure((New-Object Windows.Size($script:Win.Width, $script:Win.Height)))
@@ -663,11 +756,17 @@ if ($Captura) {
     exit 0
 }
 $script:Win.Add_ContentRendered({
+    # 2.2: o que o ajudante da troca de versão deixou (atualizado / falhou)
+    $av = Avisos-Da-Troca
+    if ($av.Ok) { Aviso ((T 'g_ok') -f $av.Ok) }
+    if ($av.Falhou) { Aviso ((T 'g_falhou') -f $av.Falhou) 'Warning' }
     if (-not $script:Porto) {
         Ocupado $true; $achados = @(Buscar-Ports 4 25000); Ocupado $false
         if ($achados.Count -ge 1) { Definir-Porto $achados[0] } else { Mostrar-Estado-Pasta }
     }
-    if ($script:Porto) { Procurar-UI }   # usa o cache de 24 h: rápido e calado
+    Procurar-UI   # usa o cache de 24 h: rápido e calado
+    # aberto pelo ajudante depois de atualizar o gerenciador: segue com os mods
+    if ($Continuar -and $script:Porto -and @($script:Estados | Where-Object { $_.Atualizar }).Count) { Tudo-Mods-UI }
     if ($script:PaginaAtual -eq 'correcao') { Verificar-UI }
 })
 [void]$script:Win.ShowDialog()

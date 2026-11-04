@@ -82,6 +82,17 @@ Each mod also carries `"summary": {"en": "...", "pt": "...", "es": "...", "zh": 
    Every downloaded zip is checked against `sha256` in the catalog before use.
 6. **Apply:** wait until the game is closed; move the current mod folder to a backup (one previous version kept, for *Roll back*); install the new one; update the code patches; rerun the merge.
 
+### 6.1 Self-update and catalog mods (manager 2.2, built)
+
+Decided on 04/11/2026: the manager updates itself the way the BB Port launcher does, and the player never downloads the manager again.
+
+- **Catalog:** a `manager` entry (`version`, `package`, `sha256`, `download`, `changes`) and a `summary` per mod and language.
+- **Banner:** when the catalog has a newer manager, or installed mods have newer versions, a blue bar on the Mods page shows them with **UPDATE ALL** (and *What changed* for the manager).
+- **UPDATE ALL:** downloads the small manager zip (`Blood_Reborn_Mod_Manager.zip`, only the manager, about 50 KB) from GitHub, checks the SHA-256 and the paths inside (one top folder, no `..`, no drive), and starts `Trocar_Gerenciador.ps1` of the *running* version from `%TEMP%`. The helper waits for the window to close, keeps the current version in `%APPDATA%\BloodReborn\gerenciador\anterior`, replaces the `manager` folder and the top files the new version brings (mod zips and `2 - Mods` beside the manager are left alone), checks every file by SHA-256, and opens the manager again with `-Continuar`, which then updates every installed mod. On any failure it puts the previous version back and leaves the reason in `falhou.txt`, shown at the next start.
+- **Catalog mods not on the PC** show as cards with **Download and install** (GitHub or Nexus, SHA-256 checked); a new mod in the catalog appears without updating the manager.
+- **Release:** `Blood_Reborn_Mod_Manager.zip` is the small zip (built by `ferramentas/distribuicao/gerenciador_zip.py`); the mod zips are separate assets.
+- Tests: `tests/test_self_update.py` (state, swap with backup, wrong SHA, path outside, catalog download, update all, window capture), always on a copy of the manager.
+
 ## 7. Conflict flow (page *Error fixing*)
 
 1. The merge runs after every change made through the manager. On start, the manager compares a fingerprint of the `mods` folder (names, sizes, dates, `mods.json`) with the last merge; if it changed (a mod added by hand), it warns and offers to merge again.

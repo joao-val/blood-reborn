@@ -275,3 +275,101 @@ function Voltar-Mod([string]$porto, [string]$pasta) {
     # 04/11/2026: a versão que voltou pode ter outros textos: refaz a junção com os textos do BB Port
     [void](Juntar-Textos-Port $porto)
 }
+
+# ---------------------------------------------------------------- mods do catálogo e "atualizar tudo" (2.2, 04/11/2026)
+function Baixar-Instalar([string]$porto, [string]$pasta) {
+    # um mod do catálogo que não está no computador: baixa (GitHub ou Nexus, conferido pelo SHA-256) e instala
+    if (-not $SemTrava -and (Jogo-Aberto)) { throw (T 'aberto') }
+    $e = @(Estado-Atualizacoes $porto | Where-Object { $_.Pasta -eq $pasta })[0]
+    if (-not $e -or -not $e.Cat -or -not $e.Disponivel) { throw ((T 'u_falhou') -f $pasta) }
+    $pac = Pacote-Da-Versao $pasta $e.Disponivel
+    if (-not $pac) {
+        $z = Baixar-Pacote $e
+        if (-not $z) { throw ((T 'u_falhou') -f $e.Nome) }
+        Ler-Pacotes; $pac = Pacote-Da-Versao $pasta $e.Disponivel
+        if (-not $pac) { throw ((T 'u_falhou') -f $e.Nome) }
+        $script:FonteInstalacao = if ($e.Cat.download) { 'github' } else { 'nexus' }
+    }
+    $dm = Join-Path $porto 'mods'
+    $quero = @($script:Pacotes | Where-Object { $_.Pasta -eq $pasta -or [IO.Directory]::Exists((Join-Path $dm $_.Pasta)) } | ForEach-Object { $_.Pasta })
+    try { [void](Aplicar-Escolha $porto $quero) } finally { $script:FonteInstalacao = 'zip' }
+}
+function Atualizar-Todos([string]$porto) {
+    # todos os mods instalados que têm versão nova; devolve os nomes atualizados
+    if (-not $SemTrava -and (Jogo-Aberto)) { throw (T 'aberto') }
+    $feitos = @()
+    foreach ($e in @(Estado-Atualizacoes $porto | Where-Object { $_.Atualizar })) {
+        Passo $e.Nome; [void](Atualizar-Mod $porto $e.Pasta); $feitos += ('{0} v{1}' -f $e.Nome, $e.Disponivel)
+    }
+    return $feitos
+}
+
+# ---------------------------------------------------------------- o próprio gerenciador (2.2, 04/11/2026)
+# Como o lançador do BB Port: o catálogo diz a versão nova ("manager"); o zip pequeno (só o gerenciador) vem do GitHub,
+# conferido pelo SHA-256; o ajudante Trocar_Gerenciador.ps1 (DESTA versão, copiado para a pasta temporária) espera a
+# janela fechar, guarda a versão atual em <dados>\gerenciador\anterior, troca os arquivos e abre o gerenciador de novo.
+# Se a troca falhar, ele volta a versão anterior e deixa o motivo em <dados>\gerenciador\falhou.txt.
+function Estado-Gerenciador([switch]$Forcar) {
+    $cat = Ler-Catalogo -Forcar:$Forcar
+    $m = $null; if ($cat) { $m = $cat.manager }
+    $disp = $null; if ($m -and $m.version) { $disp = [string]$m.version }
+    $novo = [bool]($disp -and $m.download -and $m.sha256 -and (Versao-Num $disp) -gt (Versao-Num $VERSAO_GERENCIADOR))
+    return [pscustomobject]@{ Atual = $VERSAO_GERENCIADOR; Disponivel = $disp; Atualizar = $novo; Notas = @(Notas-Entre $m $VERSAO_GERENCIADOR); Cat = $m }
+}
+function Raiz-Gerenciador { return (Split-Path -Parent $script:Aqui) }
+function Baixar-Gerenciador($eg) {
+    # baixa e abre o zip da versão nova em <dados>\gerenciador\novo; devolve a pasta de cima dele (a que tem manager\)
+    $dir = Join-Path $script:Dados 'gerenciador'; [void][IO.Directory]::CreateDirectory($dir)
+    $nome = [string]$eg.Cat.package; if (-not $nome) { $nome = 'Blood_Reborn_Mod_Manager.zip' }
+    $dest = Join-Path $dir ([IO.Path]::GetFileName($nome)); $sha = [string]$eg.Cat.sha256
+    if (-not (Conferir-Sha $dest $sha)) {
+        try { Baixar-Url ([string]$eg.Cat.download) $dest } catch { }
+        if (-not (Conferir-Sha $dest $sha)) {
+            if ([IO.File]::Exists($dest)) { Remove-Item -LiteralPath $dest -Force }
+            throw ((T 'u_falhou') -f ('Blood Reborn Mod Manager v' + $eg.Disponivel))
+        }
+    }
+    $novo = Join-Path $dir 'novo'
+    if ([IO.Directory]::Exists($novo)) { Remove-Item -LiteralPath $novo -Recurse -Force }
+    [void][IO.Directory]::CreateDirectory($novo)
+    $arq = [IO.Compression.ZipFile]::OpenRead($dest); $topos = @{}
+    try {
+        foreach ($e in $arq.Entries) {
+            $n = $e.FullName.Replace('\', '/')
+            if ($n.EndsWith('/')) { continue }
+            # só caminhos simples dentro de uma pasta de cima (nada de C:, /, ..)
+            if ($n.StartsWith('/') -or $n.Contains(':') -or ($n.Split('/') -contains '..') -or $n.Split('/').Count -lt 2) { throw ((T 'g_falhou') -f $n) }
+            $topos[$n.Split('/')[0]] = $true
+            $alvo = Join-Path $novo $n.Replace('/', '\')
+            [void][IO.Directory]::CreateDirectory((Split-Path -Parent $alvo))
+            [IO.Compression.ZipFileExtensions]::ExtractToFile($e, $alvo, $true)
+        }
+    } finally { $arq.Dispose() }
+    if ($topos.Count -ne 1) { throw ((T 'g_falhou') -f 'zip') }
+    $topo = Join-Path $novo (@($topos.Keys)[0])
+    foreach ($f in @('manager\BloodReborn.ps1', 'manager\Atualizacoes.ps1', 'manager\BloodReborn_janela.ps1', 'manager\Trocar_Gerenciador.ps1')) {
+        if (-not [IO.File]::Exists((Join-Path $topo $f))) { throw ((T 'g_falhou') -f $f) }
+    }
+    return $topo
+}
+function Trocar-Gerenciador([string]$topo, [string]$versao, [switch]$Continuar, [switch]$Agora) {
+    # $Agora (testes, sem janela): roda o ajudante aqui e espera ele terminar, sem reabrir o gerenciador
+    $aj = Join-Path ([IO.Path]::GetTempPath()) ('br_troca_' + [guid]::NewGuid().ToString('N') + '.ps1')
+    Copy-Item -LiteralPath (Join-Path $script:Aqui 'Trocar_Gerenciador.ps1') -Destination $aj
+    $q = { param($s) '"' + ([string]$s).TrimEnd('\') + '"' }
+    $a = '-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File ' + (& $q $aj) + ' -Origem ' + (& $q $topo) + ' -Destino ' + (& $q (Raiz-Gerenciador)) +
+         ' -Dados ' + (& $q $script:Dados) + ' -Versao ' + (& $q $versao)
+    if ($Continuar) { $a += ' -Continuar' }
+    if ($Agora) { $p = Start-Process powershell -ArgumentList ($a + ' -Espera 0 -SemReabrir') -WindowStyle Hidden -PassThru -Wait; return $p.ExitCode }
+    Start-Process powershell -ArgumentList ($a + ' -Espera ' + $PID) -WindowStyle Hidden
+    return 0
+}
+function Avisos-Da-Troca {
+    # o que o ajudante deixou (a janela mostra ao abrir): @{ Ok = versão; Falhou = motivo }
+    $dir = Join-Path $script:Dados 'gerenciador'; $r = @{ Ok = $null; Falhou = $null }
+    foreach ($k in @(@('Ok', 'atualizado.txt'), @('Falhou', 'falhou.txt'))) {
+        $f = Join-Path $dir $k[1]
+        if ([IO.File]::Exists($f)) { $r[$k[0]] = ([IO.File]::ReadAllText($f, [Text.Encoding]::UTF8)).Trim(); Remove-Item -LiteralPath $f -Force }
+    }
+    return $r
+}

@@ -45,21 +45,27 @@ class Fake:
                 zf.writestr(top + '/patches/' + p, '<Patch v="%s"/>' % version)
         return z
 
-    def catalog(self, version, sha, download=None, nexus_mod=None, nexus_file=None, notes=None, folder=FOLDER):
+    def catalog(self, version, sha, download=None, nexus_mod=None, nexus_file=None, notes=None, folder=FOLDER, manager=None, summary=None):
+        """the fake catalog; manager: the "manager" entry (2.2 self-update); summary: {lang: text} of the mod"""
         cat = {'schema': 1, 'updated': '2026-11-04', 'github': {'repository': 'test/test'},
                'nexus': {'game_domain': 'bloodborne', 'game_id': 2708},
                'mods': [{'key': 'test', 'name': 'Test Mod', 'folder': folder, 'version': version, 'status': 'released',
                          'package': 'Blood_Reborn_Test_Mod_v%s.zip' % version, 'sha256': sha, 'download': download,
                          'nexus_mod_id': nexus_mod, 'nexus_file_id': nexus_file,
                          'changes': notes or {version: {'en': 'Notes of %s' % version}}}]}
+        if summary:
+            cat['mods'][0]['summary'] = summary
+        if manager:
+            cat['manager'] = manager
         (self.web / 'catalog.json').write_text(json.dumps(cat), encoding='utf-8')
 
-    def run(self, acao, *extra, mods=None, report=True, timeout=180):
-        """runs BloodReborn.ps1 headless; returns (returncode, report JSON or None, stdout+stderr)"""
+    def run(self, acao, *extra, mods=None, report=True, timeout=180, script=None):
+        """runs BloodReborn.ps1 headless; returns (returncode, report JSON or None, stdout+stderr).
+        script: another copy of the manager (self-update tests must never touch the repository's own files)"""
         out = self.root / 'report.json'
         if out.exists():
             out.unlink()
-        args = ['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', str(SCRIPT),
+        args = ['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', str(script or SCRIPT),
                 '-PastaPort', str(self.port), '-PastaDados', str(self.data), '-PastaDownloads', str(self.downloads),
                 '-Acao', acao, '-SemTrava', '-SemNavegador', '-Lingua', 'en', '-Relatorio', str(out)] + list(extra)
         if mods:

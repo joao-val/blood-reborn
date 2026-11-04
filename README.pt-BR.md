@@ -15,15 +15,16 @@
 
 ## ⬇️ Baixar
 
-[![Baixar](https://img.shields.io/badge/Baixar-Gerenciador%20%2B%204%20mods-8b0000?style=for-the-badge)](https://github.com/joao-val/blood-reborn/releases/latest)
+[![Baixar](https://img.shields.io/badge/Baixar-Gerenciador%20de%20mods-8b0000?style=for-the-badge)](https://github.com/joao-val/blood-reborn/releases/latest)
 
-1. Baixe o **`Blood_Reborn_Mod_Manager.zip`** no [último lançamento](https://github.com/joao-val/blood-reborn/releases/latest): o gerenciador e os quatro mods.
+1. Baixe o **`Blood_Reborn_Mod_Manager.zip`** no [último lançamento](https://github.com/joao-val/blood-reborn/releases/latest): só o gerenciador (50 KB). Os mods ele baixa sozinho do GitHub.
 2. Extraia e dê dois cliques em **`Blood Reborn Mod Manager.bat`**.
-3. Ligue os mods que quiser e clique em **APLICAR**. Depois jogue pelo BB Port, como sempre.
+3. Clique em **Baixar e instalar** nos mods que quiser. Depois jogue pelo BB Port, como sempre.
+4. Saiu versão nova? Uma faixa azul mostra **ATUALIZAR TUDO**: o gerenciador se atualiza sozinho (fecha, troca os próprios arquivos e abre de novo) e depois atualiza os mods. Não precisa baixar o gerenciador de novo.
 
 ## ⚔️ Os mods
 
-### 💎 Hunter's Arsenal: Blood Pacts — v1.0
+### 💎 Hunter's Arsenal: Blood Pacts — v1.0.1
 
 **Ataques especiais** novos para as armas de truque (R2+L2 no modo transformado), inspirados nas habilidades do Elden Ring e refeitos para o Bloodborne. Mas o coração deste mod são os **Pactos de Sangue**.
 
