@@ -1,8 +1,13 @@
 {
   "schema": 1,
   "updated": "2026-11-04",
-  "github": {"repository": "joao-val/blood-reborn"},
-  "nexus": {"game_domain": "bloodborne", "game_id": 2708},
+  "github": {
+    "repository": "joao-val/blood-reborn"
+  },
+  "nexus": {
+    "game_domain": "bloodborne",
+    "game_id": 2708
+  },
   "mods": [
     {
       "key": "arsenal",
@@ -12,7 +17,7 @@
       "status": "released",
       "package": "Blood_Reborn_Hunters_Arsenal_v1.0.zip",
       "sha256": "8efb72bcea1b1a7adfdff116736a2e2b532cfc2909b21a818a1682057f6d93fb",
-      "download": null,
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-04/Blood_Reborn_Hunters_Arsenal_v1.0.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {
@@ -30,7 +35,7 @@
       "status": "released",
       "package": "Blood_Reborn_Merciless_Night_v1.31.zip",
       "sha256": "af45114578bcff57906a7f1abd8ae0272977673108baf5605a0a60f451706c4e",
-      "download": null,
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-04/Blood_Reborn_Merciless_Night_v1.31.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {
@@ -48,7 +53,7 @@
       "status": "testing",
       "package": "Blood_Reborn_Fogside_Lantern_v1.6.1.zip",
       "sha256": "e2f2085c91fec4bd01ebd0fd3782f4c36bea38766e6123df9b49a7e4c240605b",
-      "download": null,
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-04/Blood_Reborn_Fogside_Lantern_v1.6.1.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {
@@ -66,7 +71,7 @@
       "status": "testing",
       "package": "Blood_Reborn_Blood_Vial_Safety_Net_v1.0.1.zip",
       "sha256": "ca0aa0f743ea9a03d1ae4011d660b7bf079617558b9937dc591813623033daa3",
-      "download": null,
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-04/Blood_Reborn_Blood_Vial_Safety_Net_v1.0.1.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {

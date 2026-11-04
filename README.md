@@ -13,6 +13,14 @@
 
 ---
 
+## ⬇️ Download
+
+[![Download](https://img.shields.io/badge/Download-Mod%20Manager%20%2B%204%20mods-8b0000?style=for-the-badge)](https://github.com/joao-val/blood-reborn/releases/latest)
+
+1. Download **`Blood_Reborn_Mod_Manager.zip`** from the [latest release](https://github.com/joao-val/blood-reborn/releases/latest): the manager and all four mods.
+2. Extract it and double-click **`Blood Reborn Mod Manager.bat`**.
+3. Switch on the mods you want and click **APPLY**. Then play through the BB Port as usual.
+
 ## ⚔️ The mods
 
 ### 💎 Hunter's Arsenal: Blood Pacts — v1.0

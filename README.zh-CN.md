@@ -13,6 +13,14 @@
 
 ---
 
+## ⬇️ 下载
+
+[![Download](https://img.shields.io/badge/Download-%E7%AE%A1%E7%90%86%E5%99%A8%20%2B%204%20mods-8b0000?style=for-the-badge)](https://github.com/joao-val/blood-reborn/releases/latest)
+
+1. 从[最新发布版本](https://github.com/joao-val/blood-reborn/releases/latest)下载 **`Blood_Reborn_Mod_Manager.zip`**：包含管理器和全部四个模组。
+2. 解压后双击 **`Blood Reborn Mod Manager.bat`**。
+3. 打开你想要的模组并点击 **应用**。之后照常通过 BB Port 进行游戏。
+
 ## ⚔️ 模组
 
 ### 💎 Hunter's Arsenal: Blood Pacts — v1.0
