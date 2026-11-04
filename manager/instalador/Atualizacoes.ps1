@@ -139,3 +139,118 @@ function Estado-Atualizacoes([string]$porto, [switch]$Forcar) {
     }
     return $out
 }
+
+# ---------------------------------------------------------------- download e atualização
+function Baixar-Url([string]$url, [string]$dest) {
+    if ($SemRede) { throw 'offline' }
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+    $w = New-Object Net.WebClient; $w.Headers.Add('User-Agent', 'BloodRebornManager/' + $VERSAO_GERENCIADOR)
+    try { $w.DownloadFile($url, $dest) } finally { $w.Dispose() }
+}
+function Conferir-Sha([string]$f, [string]$esperado) {
+    return [bool]([IO.File]::Exists($f) -and $esperado -and ((Sha-Arquivo $f) -eq $esperado.ToLowerInvariant()))
+}
+function Pasta-Downloads {
+    if ($PastaDownloads) { return $PastaDownloads }
+    # a pasta Downloads de verdade (pode ter sido movida): Known Folder {374DE290-123F-4565-9164-39C4925E467B}
+    try {
+        $v = (Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders').'{374DE290-123F-4565-9164-39C4925E467B}'
+        if ($v) { $v = [Environment]::ExpandEnvironmentVariables($v); if ([IO.Directory]::Exists($v)) { return $v } }
+    } catch { }
+    return (Join-Path $env:USERPROFILE 'Downloads')
+}
+function Esperar-Download([string]$sha, [int]$segundos) {
+    # depois de abrir a página do Nexus: o primeiro .zip da pasta Downloads com o SHA-256 do catálogo (inclusive um que já
+    # estava lá); um arquivo ainda sendo gravado só falha na conferência e é visto de novo na volta seguinte
+    $pasta = Pasta-Downloads; $inicio = Get-Date; $vistos = @{}
+    while (((Get-Date) - $inicio).TotalSeconds -lt $segundos) {
+        if ($script:Cancelar) { return $null }
+        foreach ($f in [IO.Directory]::GetFiles($pasta, '*.zip')) {
+            $t = [IO.File]::GetLastWriteTimeUtc($f).Ticks
+            if ($vistos[$f] -eq $t) { continue }
+            $vistos[$f] = $t
+            try { if (Conferir-Sha $f $sha) { return $f } } catch { }
+        }
+        if ($script:AoProgredir) { & $script:AoProgredir ((T 'u_esperando') -f [int]((Get-Date) - $inicio).TotalSeconds) }
+        Start-Sleep -Milliseconds 1500
+    }
+    return $null
+}
+function Ler-Chave-Nexus {
+    if ($ChaveNexus) { return $ChaveNexus }
+    $cfg = Ler-Config
+    if ($cfg -and $cfg.nexus) {
+        try {
+            $s = ConvertTo-SecureString ([string]$cfg.nexus)
+            return [Runtime.InteropServices.Marshal]::PtrToStringBSTR([Runtime.InteropServices.Marshal]::SecureStringToBSTR($s))
+        } catch { }
+    }
+    return $null
+}
+function Gravar-Chave-Nexus([string]$chave) {
+    # a chave da API do Nexus fica cifrada para este usuário do Windows (DPAPI), nunca em texto puro; vazio apaga a chave
+    $script:ChaveCifrada = if ($chave) { ConvertTo-SecureString $chave -AsPlainText -Force | ConvertFrom-SecureString } else { '' }
+    Gravar-Config
+}
+function Baixar-Pacote($estado) {
+    # o zip da versão disponível, conferido pelo SHA-256 do catálogo, em <dados>\pacotes; tenta GitHub, Nexus Premium e
+    # Nexus grátis (abre a página e vigia a pasta Downloads); $null se nenhum deu certo
+    $m = $estado.Cat
+    if (-not $m -or -not $m.sha256) { return $null }
+    $dir = Join-Path $script:Dados 'pacotes'; [void][IO.Directory]::CreateDirectory($dir)
+    $dest = Join-Path $dir ([string]$m.package)
+    if (Conferir-Sha $dest ([string]$m.sha256)) { return $dest }
+    if ($m.download) {
+        try { Baixar-Url ([string]$m.download) $dest; if (Conferir-Sha $dest ([string]$m.sha256)) { return $dest } } catch { }
+        if ([IO.File]::Exists($dest)) { Remove-Item -LiteralPath $dest -Force }
+    }
+    if ($m.nexus_mod_id -and $m.nexus_file_id) {
+        $chave = Ler-Chave-Nexus
+        if ($chave) {
+            try {
+                $u = '{0}/v1/games/bloodborne/mods/{1}/files/{2}/download_link.json' -f $NexusApi, $m.nexus_mod_id, $m.nexus_file_id
+                $links = @(Web-Json $u 'GET' $null @{ apikey = $chave })
+                Baixar-Url ([string]$links[0].URI) $dest
+                if (Conferir-Sha $dest ([string]$m.sha256)) { return $dest }
+            } catch { }
+            if ([IO.File]::Exists($dest)) { Remove-Item -LiteralPath $dest -Force }
+        }
+        $pagina = 'https://www.nexusmods.com/bloodborne/mods/{0}?tab=files&file_id={1}' -f $m.nexus_mod_id, $m.nexus_file_id
+        # [Console]::Out e não Write-Output: dentro desta função, Write-Output entraria no valor devolvido
+        if ($SemNavegador) { [Console]::Out.WriteLine('ABRIR ' + $pagina) } else { Start-Process $pagina }
+        $z = Esperar-Download ([string]$m.sha256) $EsperaDownload
+        if ($z) { Copy-Item -LiteralPath $z -Destination $dest -Force; return $dest }
+    }
+    return $null
+}
+function Guardar-Anterior([string]$porto, [string]$pasta) {
+    # 1 versão anterior para o Voltar: a pasta do mod e os patches dela
+    $dest = Join-Path (Join-Path $script:Dados 'anterior') $pasta
+    if ([IO.Directory]::Exists($dest)) { Remove-Item -LiteralPath $dest -Recurse -Force }
+    [void][IO.Directory]::CreateDirectory((Join-Path $dest 'patches'))
+    Copy-Item -LiteralPath (Join-Path (Join-Path $porto 'mods') $pasta) -Destination (Join-Path $dest 'mod') -Recurse
+    $reg = Ler-Registro (Join-Path $dest 'mod')
+    foreach ($x in @($reg.patches)) {
+        $f = Join-Path (Join-Path $porto 'patches') ([string]$x)
+        if ($x -and [IO.File]::Exists($f)) { Copy-Item -LiteralPath $f -Destination (Join-Path $dest 'patches') }
+    }
+}
+function Atualizar-Mod([string]$porto, [string]$pasta) {
+    if (-not $SemTrava -and (Jogo-Aberto)) { throw (T 'aberto') }
+    $e = @(Estado-Atualizacoes $porto | Where-Object { $_.Pasta -eq $pasta })[0]
+    if (-not $e -or -not $e.Disponivel) { throw ((T 'u_falhou') -f $pasta) }
+    $pac = Pacote-Da-Versao $pasta $e.Disponivel
+    if (-not $pac) {
+        $z = Baixar-Pacote $e
+        if (-not $z) { throw ((T 'u_falhou') -f $e.Nome) }
+        Ler-Pacotes; $pac = Pacote-Da-Versao $pasta $e.Disponivel
+        if (-not $pac) { throw ((T 'u_falhou') -f $e.Nome) }
+        $script:FonteInstalacao = if ($e.Cat.download) { 'github' } else { 'nexus' }
+    }
+    $dm = Join-Path $porto 'mods'; $alvo = Join-Path $dm $pasta
+    if ([IO.Directory]::Exists($alvo)) { Guardar-Anterior $porto $pasta; Remove-Item -LiteralPath $alvo -Recurse -Force }
+    $quero = @($script:Pacotes | Where-Object { $_.Pasta -eq $pasta -or [IO.Directory]::Exists((Join-Path $dm $_.Pasta)) } | ForEach-Object { $_.Pasta })
+    [void](Aplicar-Escolha $porto $quero)
+    $script:FonteInstalacao = 'zip'
+    return 'ok'
+}

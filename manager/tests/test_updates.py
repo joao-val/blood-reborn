@@ -70,5 +70,54 @@ class State(Base):
         self.assertIn('nexus', e['Fontes'])
 
 
+class Update(Base):
+    def _start(self, **cat):
+        self.f.package('1.0', {'chr/a.txt': 'one'}, patches=['TestMod.xml'])
+        self.f.run('instalar', mods=FOLDER)
+        z = self.f.package('1.1', {'chr/a.txt': 'two'}, patches=['TestMod.xml'], where=self.f.web / 'files')
+        self.f.catalog('1.1', cat.pop('sha', sha256(z)), **cat)
+        return z
+
+    def _update(self, *extra):
+        return self.f.run('atualizar', '-Catalogo', self.s.base + '/catalog.json', '-NexusApi', self.s.base, *extra, mods=FOLDER)
+
+    def test_from_github(self):
+        self._start(download=self.s.base + '/files/Blood_Reborn_Test_Mod_v1.1.zip')
+        code, rep, out = self._update()
+        self.assertEqual(code, 0, out)
+        self.assertEqual(self.f.installed('chr/a.txt'), 'two')
+        self.assertIn('1.1', (self.f.port / 'patches' / 'TestMod.xml').read_text())
+        self.assertTrue((self.f.data / 'anterior' / FOLDER / 'mod' / 'dvdroot_ps4' / 'chr' / 'a.txt').exists())
+
+    def test_wrong_sha_is_refused(self):
+        self._start(download=self.s.base + '/files/Blood_Reborn_Test_Mod_v1.1.zip', sha='bb' * 32)
+        code, rep, out = self._update('-EsperaDownload', '2')
+        self.assertEqual(code, 3, out)
+        self.assertIn('Could not download', out)
+        self.assertEqual(self.f.installed('chr/a.txt'), 'one')
+        self.assertFalse((self.f.data / 'pacotes' / 'Blood_Reborn_Test_Mod_v1.1.zip').exists())
+
+    def test_from_nexus_premium(self):
+        z = self._start(nexus_mod=999, nexus_file=7)
+        self.f.nexus_file = z.name
+        self.f.nexus = {'data': {'legacyModsByDomain': {'nodes': [{'version': '1.1'}]}, 'modFiles': []}}
+        code, rep, out = self._update('-ChaveNexus', 'premium-key')
+        self.assertEqual(code, 0, out)
+        self.assertEqual(self.f.installed('chr/a.txt'), 'two')
+
+    def test_from_nexus_free_by_watching_downloads(self):
+        z = self._start(nexus_mod=999, nexus_file=7)
+        self.f.nexus = {'data': {'legacyModsByDomain': {'nodes': [{'version': '1.1'}]}, 'modFiles': []}}
+
+        def browser_saves_the_file():
+            time.sleep(4)
+            (self.f.downloads / 'Test Mod-999-1-1-1762300000.zip').write_bytes(z.read_bytes())
+        threading.Thread(target=browser_saves_the_file, daemon=True).start()
+        code, rep, out = self._update('-EsperaDownload', '60')
+        self.assertEqual(code, 0, out)
+        self.assertIn('nexusmods.com/bloodborne/mods/999?tab=files&file_id=7', out)
+        self.assertEqual(self.f.installed('chr/a.txt'), 'two')
+
+
 if __name__ == '__main__':
     unittest.main()

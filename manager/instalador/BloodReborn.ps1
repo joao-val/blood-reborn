@@ -95,6 +95,8 @@ $TXT = @{
   d_desc = 'O BB Port não carrega a pasta "{0}" (não é do Blood Reborn: não mexo).'
   d_nova = '{0}: versão {1} instalada, {2} disponível (use Atualizar na página Mods).'
   u_semrede = 'Sem internet ou GitHub/Nexus fora do ar: mostrando o que já está no computador.'
+  u_falhou = 'Não deu para baixar {0}: confira a internet ou baixe o zip e ponha na pasta do instalador.'
+  u_esperando = 'Esperando o download do Nexus na pasta Downloads... {0} s'
  }
  en = @{
   app_sub = 'Mod installer'; busca = 'Search...   Ctrl+F'; nav_mods = 'Mods'; nav_fix = 'Error repair'; nav_ajuda = 'How to install'
@@ -137,6 +139,8 @@ $TXT = @{
   d_desc = 'The BB Port does not load the folder "{0}" (not Blood Reborn: left alone).'
   d_nova = '{0}: version {1} installed, {2} available (use Update on the Mods page).'
   u_semrede = 'No internet, or GitHub/Nexus is down: showing what is already on this PC.'
+  u_falhou = 'Could not download {0}: check your internet, or download the zip and put it next to the manager.'
+  u_esperando = 'Waiting for the Nexus download in your Downloads folder... {0} s'
  }
  es = @{
   app_sub = 'Instalador de mods'; busca = 'Buscar...   Ctrl+F'; nav_mods = 'Mods'; nav_fix = 'Corrección de errores'; nav_ajuda = 'Cómo instalar'
@@ -179,6 +183,8 @@ $TXT = @{
   d_desc = 'El BB Port no carga la carpeta "{0}" (no es de Blood Reborn: no la toco).'
   d_nova = '{0}: versión {1} instalada, {2} disponible (usa Actualizar en la página Mods).'
   u_semrede = 'Sin internet o GitHub/Nexus caído: se muestra lo que ya está en el equipo.'
+  u_falhou = 'No se pudo descargar {0}: revisa internet, o descarga el zip y ponlo en la carpeta del instalador.'
+  u_esperando = 'Esperando la descarga de Nexus en la carpeta Descargas... {0} s'
  }
  zh = @{
   app_sub = '模组安装器'; busca = '搜索...   Ctrl+F'; nav_mods = '模组'; nav_fix = '错误修复'; nav_ajuda = '安装说明'
@@ -221,6 +227,8 @@ $TXT = @{
   d_desc = 'BB Port 不会加载文件夹 "{0}"（不是 Blood Reborn 的：不做改动）。'
   d_nova = '{0}：已安装版本 {1}，可用版本 {2}（请在“模组”页面点击“更新”）。'
   u_semrede = '没有网络，或 GitHub/Nexus 无法访问：显示本机已有的内容。'
+  u_falhou = '无法下载 {0}：请检查网络，或手动下载 zip 并放到管理器所在的文件夹。'
+  u_esperando = '正在“下载”文件夹中等待 Nexus 的下载…… {0} 秒'
  }
 }
 function T([string]$chave) {
@@ -642,7 +650,11 @@ function Ler-Config {
 function Gravar-Config {
     try {
         [void][IO.Directory]::CreateDirectory((Split-Path -Parent $CONFIG))
-        $t = '{"porto": ' + (ConvertTo-Json ([string]$script:Porto)) + ', "lingua": ' + (ConvertTo-Json ([string]$script:Ling)) + '}'
+        # fase 2: a chave do Nexus (cifrada, DPAPI); $null = não mexeu nesta sessão (mantém a guardada); '' = apagar
+        $nx = $script:ChaveCifrada
+        if ($null -eq $nx) { $velha = Ler-Config; if ($velha -and $velha.nexus) { $nx = [string]$velha.nexus } }
+        $t = '{"porto": ' + (ConvertTo-Json ([string]$script:Porto)) + ', "lingua": ' + (ConvertTo-Json ([string]$script:Ling)) +
+             ', "nexus": ' + (ConvertTo-Json ([string]$nx)) + '}'
         [IO.File]::WriteAllText($CONFIG, $t, $script:Utf8)
     } catch { }
 }
@@ -694,10 +706,13 @@ if ($Acao) {
     Ler-Pacotes
     if (-not (E-Port $PastaPort)) { Write-Error 'BB Port não encontrado (-PastaPort)'; exit 2 }
     $quero = @($Mods | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ })
+    # fase 2: uma falha (ex.: download recusado) sai com código 3, para os testes enxergarem
+    try {
     switch ($Acao) {
         'instalar' { [void](Aplicar-Escolha $PastaPort $quero) }
         'corrigir' { [void](Corrigir-Tudo $PastaPort) }
         'verificar' { }
+        'atualizar' { foreach ($x in $quero) { [void](Atualizar-Mod $PastaPort $x) } }
         'atualizacoes' {
             # fase 2: o estado de atualização de cada mod (instalada, disponível, notas, fontes), sem cache
             $est = @(Estado-Atualizacoes $PastaPort -Forcar)
@@ -707,6 +722,7 @@ if ($Acao) {
         }
         default { Write-Error "Ação desconhecida: $Acao"; exit 2 }
     }
+    } catch { [Console]::Error.WriteLine($_.Exception.Message); exit 3 }
     $res = @(Diagnosticar $PastaPort)
     $json = ConvertTo-Json -InputObject $res -Depth 4
     if ($Relatorio) { [IO.File]::WriteAllText($Relatorio, $json, $script:Utf8) } else { $json }
