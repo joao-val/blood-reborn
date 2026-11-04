@@ -56,7 +56,7 @@ Bosses, hunters and beasts were reworked for a **more dynamic, modern and challe
 
 ### 🏮 Fogside Lantern — v1.6.1 *(testing)*
 
-Died in a boss fight? You respawn right outside the boss fog, at the boss lantern. No more long walks back. 🚶‍♂️
+Died in a boss fight? You respawn right outside the boss fog. No more long walks back. 🚶‍♂️
 
 ### 🧪 Blood Vial Safety Net — v1.0.1 *(testing)*
 

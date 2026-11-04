@@ -56,7 +56,7 @@ Chefes, caçadores e feras foram refeitos para um Bloodborne **mais dinâmico, m
 
 ### 🏮 Fogside Lantern — v1.6.1 *(em teste)*
 
-Morreu na luta contra um chefe? Você renasce do lado de fora da névoa, na lanterna do chefe. Nada de caminhada longa de volta. 🚶‍♂️
+Morreu na luta contra um chefe? Você renasce do lado de fora da névoa do chefe. Nada de caminhada longa de volta. 🚶‍♂️
 
 ### 🧪 Blood Vial Safety Net — v1.0.1 *(em teste)*
 

@@ -56,7 +56,7 @@ Jefes, cazadores y bestias fueron rehechos para un Bloodborne **más dinámico, 
 
 ### 🏮 Fogside Lantern — v1.6.1 *(en prueba)*
 
-¿Moriste peleando contra un jefe? Reapareces justo afuera de la niebla, en la lámpara del jefe. Se acabaron las largas caminatas de vuelta. 🚶‍♂️
+¿Moriste peleando contra un jefe? Reapareces justo afuera de la niebla del jefe. Se acabaron las largas caminatas de vuelta. 🚶‍♂️
 
 ### 🧪 Blood Vial Safety Net — v1.0.1 *(en prueba)*
 
