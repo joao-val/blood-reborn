@@ -9,11 +9,17 @@
     "game_id": 2708
   },
   "manager": {
-    "version": "2.2.0",
+    "version": "2.2.1",
     "package": "Blood_Reborn_Mod_Manager.zip",
-    "sha256": "e03ab4024d80a337b91dca00e07595b83bf2f2b7d54168615807c63aa27ca3fa",
-    "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-04.3/Blood_Reborn_Mod_Manager.zip",
+    "sha256": "318fbd0f9ca0a892d184f54631adaeb9638b64753386bd521d20cabe21163ce8",
+    "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-04.4/Blood_Reborn_Mod_Manager.zip",
     "changes": {
+      "2.2.1": {
+        "en": "The window emblem is the red rune of the Hunter's Mark, made from your own game. Mods installed without their zip show as installed, with Update.",
+        "pt": "O emblema da janela é a runa vermelha da Marca do Caçador, tirada do seu próprio jogo. Mods instalados sem o zip aparecem como instalados, com Atualizar.",
+        "es": "El emblema de la ventana es la runa roja de la Marca del Cazador, sacada de tu propio juego. Los mods instalados sin su zip aparecen como instalados, con Actualizar.",
+        "zh": "窗口徽标改为红色的“猎人印记”符文，从你自己的游戏中提取。没有 zip 的已安装模组会显示为已安装，并可“更新”。"
+      },
       "2.2.0": {
         "en": "Updates itself: UPDATE ALL downloads the new manager, replaces its files, opens again and updates the mods. Every mod of the catalog shows in the list, with Download and install.",
         "pt": "Atualiza a si mesmo: ATUALIZAR TUDO baixa o gerenciador novo, troca os arquivos, abre de novo e atualiza os mods. Todos os mods do catálogo aparecem na lista, com Baixar e instalar.",

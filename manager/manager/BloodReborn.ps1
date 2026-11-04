@@ -49,7 +49,7 @@ $EXTRAS = @('', '.txt', '.md', '.ini', '.json', '.pdf', '.rtf', '.nfo', '.url', 
 $SOLTOS = @('instalador.ps1', 'Instalar - Install.bat', 'Desinstalar - Uninstall.bat', 'LEIA-ME_PT.txt', 'README_EN.txt', 'LEAME_ES.txt', 'README_ZH.txt', 'blood_reborn.json')
 $PREFERENCIA = @('Blood Reborn - Hunters Arsenal', 'Blood Reborn - Merciless Night', 'Blood Reborn - Fogside Lantern', 'Blood Reborn - Blood Vial Safety Net')
 $LEIAME = @{ pt = 'LEIA-ME_PT.txt'; en = 'README_EN.txt'; es = 'LEAME_ES.txt'; zh = 'README_ZH.txt' }
-$VERSAO_GERENCIADOR = '2.2.0'
+$VERSAO_GERENCIADOR = '2.2.1'
 $REGISTRO = 'blood_reborn_installed.json'
 # 04/11/2026: os textos do próprio BB Port junto com os dos nossos mods (gerada aqui; ver Compor-Textos)
 $COMPAT_TEXTOS = 'Blood Reborn - zCompat BB Port texts'
@@ -652,7 +652,11 @@ function Rodar-Python-Port([string]$porto, [string[]]$argumentos) {
     # o Python do próprio BB Port: "Bloodborne.exe --script <arquivo> [args]" (é assim que o lançador roda os scripts dele;
     # devolve o código de saída, sem janela). BR_PYTHON (só nos testes): um python.exe no lugar.
     $psi = New-Object Diagnostics.ProcessStartInfo
-    if ($env:BR_PYTHON) { $psi.FileName = $env:BR_PYTHON; $lista = @('-I') + $argumentos }
+    # BR_PYTHON_PRE (testes): o que vai antes do script no lugar do -I (p. ex. vazio, para valer o PYTHONPATH com o Pillow)
+    if ($env:BR_PYTHON) {
+        $pre = @('-I'); if ($null -ne $env:BR_PYTHON_PRE) { $pre = @($env:BR_PYTHON_PRE -split ' ' | Where-Object { $_ }) }
+        $psi.FileName = $env:BR_PYTHON; $lista = $pre + $argumentos
+    }
     else { $psi.FileName = Join-Path $porto 'Bloodborne.exe'; $lista = @('--script') + $argumentos }
     if (-not [IO.File]::Exists($psi.FileName)) { throw ((T 't_falhou') -f ($psi.FileName + ' ?')) }
     $psi.Arguments = (@($lista | ForEach-Object { '"' + ([string]$_ -replace '"', '\"') + '"' })) -join ' '
@@ -945,6 +949,7 @@ if ($Acao) {
         'atualizar' { foreach ($x in $quero) { [void](Atualizar-Mod $PastaPort $x) } }
         # 2.2: mods do catálogo, atualizar tudo e o próprio gerenciador
         'baixar' { foreach ($x in $quero) { Baixar-Instalar $PastaPort $x } }
+        'emblema' { if (-not (Emblema-Marca $PastaPort)) { throw 'emblema' } }
         'atualizar_tudo' { [void](Atualizar-Todos $PastaPort) }
         'gerenciador' {
             $json = ConvertTo-Json -InputObject (Estado-Gerenciador -Forcar) -Depth 8

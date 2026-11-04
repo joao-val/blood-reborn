@@ -92,6 +92,8 @@ Decided on 04/11/2026: the manager updates itself the way the BB Port launcher d
 - **Catalog mods not on the PC** show as cards with **Download and install** (GitHub or Nexus, SHA-256 checked); a new mod in the catalog appears without updating the manager.
 - **Release:** `Blood_Reborn_Mod_Manager.zip` is the small zip (built by `ferramentas/distribuicao/gerenciador_zip.py`); the mod zips are separate assets.
 - Tests: `tests/test_self_update.py` (state, swap with backup, wrong SHA, path outside, catalog download, update all, window capture), always on a copy of the manager.
+- **Emblem (2.2.1):** the red rune of the Hunter's Mark. `manager/emblema_marca.py`, run with the BB Port's Python, reads the player's own `dvdroot_ps4/menu/menu_knowledge_00011.tpf.dcx` (game folder from `%APPDATA%\bbport-launcher\settings.json` `game_dir`, else `CUSA03173` beside the port), deswizzles the PS4 BC7 texture (checked byte for byte against SoulsFormats/fxrtex), cuts the rune out of the stone, paints it red and saves `%APPDATA%\BloodReborn\emblema_marca.png`. Nothing of the game is in the repository; without the game the BB Port's own emblem stays. Tests: `tests/test_emblem.py`.
+- A mod installed in the BB Port without its zip next to the manager (the small manager zip brings no mods) shows its installed version and **Update**, not *Download and install*.
 
 ## 7. Conflict flow (page *Error fixing*)
 

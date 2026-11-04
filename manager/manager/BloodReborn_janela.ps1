@@ -325,7 +325,10 @@ function Carregar-Arte {
     }
     $script:Win.FontFamily = $script:FonteTexto
     foreach ($n in @('TituloApp', 'TituloPagina', 'SecMods', 'SecFix', 'SecAjuda', 'BtnPrincipal', 'LblPasta')) { $script:U[$n].FontFamily = $script:FonteTitulo }
-    if ($assets -and [IO.File]::Exists((Join-Path $assets 'emblem.png'))) {
+    # 2.2.1: a runa vermelha da Marca do Caçador (gerada do jogo da pessoa); sem ela, o símbolo do BB Port
+    $marca = Join-Path $script:Dados 'emblema_marca.png'
+    if ([IO.File]::Exists($marca)) { $script:U.Emblema.Source = Imagem $marca; $script:Win.Icon = $script:U.Emblema.Source }
+    elseif ($assets -and [IO.File]::Exists((Join-Path $assets 'emblem.png'))) {
         $script:U.Emblema.Source = Imagem (Join-Path $assets 'emblem.png'); $script:Win.Icon = $script:U.Emblema.Source
     }
     Trocar-Arte
@@ -448,7 +451,7 @@ function Montar-Cartoes {
         $pilha = New-Object Windows.Controls.StackPanel
         $linha = New-Object Windows.Controls.StackPanel; $linha.Orientation = 'Horizontal'
         $nome = Novo-Texto $p.Nome 16.5 '#F1EADD' 'SemiBold'; $nome.TextWrapping = 'NoWrap'; [void]$linha.Children.Add($nome)
-        $txtVer = if ($inst -and $e -and $e.Disponivel -and $vi -ne $e.Disponivel) { (T 'u_linha') -f $vi, $e.Disponivel } elseif ($inst) { 'v' + $vi } else { 'v' + $p.Versao }
+        $txtVer = if ($inst -and $e -and $e.Disponivel -and $vi -ne $e.Disponivel) { Texto-Versao $vi $e.Disponivel $true } elseif ($inst) { Texto-Versao $vi $null $false } else { 'v' + $p.Versao }
         $ver = Novo-Texto $txtVer 11.5 '#8F897E'; $ver.Margin = '9,5,0,0'; [void]$linha.Children.Add($ver)
         [void]$pilha.Children.Add($linha)
         $desc = Novo-Texto ([string]$p.Desc[$script:Ling]) 12.5 '#A7A094'; $desc.Margin = '0,7,0,0'; $desc.LineHeight = 19
@@ -486,22 +489,42 @@ function Montar-Cartoes {
         $pilha = New-Object Windows.Controls.StackPanel
         $linha = New-Object Windows.Controls.StackPanel; $linha.Orientation = 'Horizontal'
         $nome = Novo-Texto $e.Nome 16.5 '#F1EADD' 'SemiBold'; $nome.TextWrapping = 'NoWrap'; [void]$linha.Children.Add($nome)
-        $ver = Novo-Texto ('v' + $e.Disponivel) 11.5 '#8F897E'; $ver.Margin = '9,5,0,0'; [void]$linha.Children.Add($ver)
+        # instalado no BB Port mas sem o zip aqui (o gerenciador pequeno não traz os mods): mostra a versão instalada
+        $inst = [string]$e.Instalada
+        $txtVer = Texto-Versao $inst $e.Disponivel ([bool]$e.Atualizar)
+        $ver = Novo-Texto $txtVer 11.5 '#8F897E'; $ver.Margin = '9,5,0,0'; [void]$linha.Children.Add($ver)
         [void]$pilha.Children.Add($linha)
         $resumo = ''; if ($e.Cat.summary) { $resumo = [string]$e.Cat.summary.$script:Ling; if (-not $resumo) { $resumo = [string]$e.Cat.summary.en } }
         $desc = Novo-Texto $resumo 12.5 '#A7A094'; $desc.Margin = '0,7,0,0'; $desc.LineHeight = 19; [void]$pilha.Children.Add($desc)
         [Windows.Controls.Grid]::SetColumn($pilha, 1); [void]$g.Children.Add($pilha)
         $dir = New-Object Windows.Controls.StackPanel; $dir.Margin = '14,1,0,0'
-        $chip = Novo-Chip (T 'st_disp') '#7FB2E5' '#14202B'; $chip.HorizontalAlignment = 'Right'; [void]$dir.Children.Add($chip)
-        $b = New-Object Windows.Controls.Button; $b.Style = $script:Win.FindResource('BotaoEscuro'); $b.Margin = '0,8,0,0'; $b.Tag = $e.Pasta
-        if ($e.Cat.download -or $e.Cat.nexus_mod_id) { $b.Content = T 'g_baixar'; $b.Add_Click({ param($s) Baixar-UI ([string]$s.Tag) }) }
-        else { $b.Content = T 'g_embreve'; $b.IsEnabled = $false }
-        [void]$dir.Children.Add($b)
+        if ($inst) {
+            if ($e.Atualizar) { $chip = Novo-Chip (T 'st_nova') '#7FB2E5' '#14202B' } else { $chip = Novo-Chip (T 'st_inst') '#7CC482' '#16241A' }
+            $chip.HorizontalAlignment = 'Right'; [void]$dir.Children.Add($chip)
+            $ic.Text = [string][char]0xE73E; $ic.Foreground = Cor '#7CC482'
+            if ($e.Atualizar) {
+                $b = New-Object Windows.Controls.Button; $b.Style = $script:Win.FindResource('BotaoEscuro'); $b.Margin = '0,8,0,0'; $b.Tag = $e.Pasta
+                $b.Content = (T 'u_btn') -f $e.Disponivel; $b.Add_Click({ param($s) Atualizar-UI ([string]$s.Tag) }); [void]$dir.Children.Add($b)
+            }
+        } else {
+            $chip = Novo-Chip (T 'st_disp') '#7FB2E5' '#14202B'; $chip.HorizontalAlignment = 'Right'; [void]$dir.Children.Add($chip)
+            $b = New-Object Windows.Controls.Button; $b.Style = $script:Win.FindResource('BotaoEscuro'); $b.Margin = '0,8,0,0'; $b.Tag = $e.Pasta
+            if ($e.Cat.download -or $e.Cat.nexus_mod_id) { $b.Content = T 'g_baixar'; $b.Add_Click({ param($s) Baixar-UI ([string]$s.Tag) }) }
+            else { $b.Content = T 'g_embreve'; $b.IsEnabled = $false }
+            [void]$dir.Children.Add($b)
+        }
         [Windows.Controls.Grid]::SetColumn($dir, 2); [void]$g.Children.Add($dir)
         $card.Child = $g; $card.Tag = ($e.Nome + ' ' + $e.Pasta + ' ' + $resumo).ToLowerInvariant()
         [void]$L.Children.Add($card)
     }
     Atualizar-Compat; Mostrar-Faixa; Filtrar
+}
+function Texto-Versao([string]$inst, [string]$disp, [bool]$nova) {
+    # a linha de versão do cartão; versão instalada desconhecida (instalação à mão, sem registro) vira o texto do idioma
+    $vi = if ($inst -eq 'unknown') { T 'st_desc' } else { 'v' + $inst }
+    if ($nova -and $disp) { if ($inst -eq 'unknown') { return $vi + '  ·  v' + $disp }; return (T 'u_linha') -f $inst, $disp }
+    if ($inst) { return $vi }
+    return 'v' + $disp
 }
 function Mostrar-Faixa {
     # 2.2: a faixa de cima: gerenciador novo e/ou mods com versão nova, com ATUALIZAR TUDO
@@ -744,7 +767,8 @@ $script:PaginaAtual = $Pagina
 Atualizar-Textos
 if ($Captura) {
     # imagem da janela para conferência, sem mostrar nada na tela
-    $script:Estados = @(Estado-Atualizacoes $script:Porto -Forcar); $script:EstadoGer = Estado-Gerenciador; Montar-Cartoes
+    $script:Estados = @(Estado-Atualizacoes $script:Porto -Forcar); $script:EstadoGer = Estado-Gerenciador
+    if (Emblema-Marca $script:Porto) { Carregar-Arte }; Montar-Cartoes
     if ($Pagina -eq 'correcao') { if ($script:Porto) { $script:Itens = @(Diagnosticar $script:Porto) }; Mostrar-Estado-Pasta; Montar-Problemas }
     $raiz = $script:Win.Content
     $raiz.Measure((New-Object Windows.Size($script:Win.Width, $script:Win.Height)))
@@ -764,6 +788,8 @@ $script:Win.Add_ContentRendered({
         Ocupado $true; $achados = @(Buscar-Ports 4 25000); Ocupado $false
         if ($achados.Count -ge 1) { Definir-Porto $achados[0] } else { Mostrar-Estado-Pasta }
     }
+    # 2.2.1: na 1ª vez, a runa da Marca do Caçador sai do jogo da pessoa (menos de 1 s) e vira o emblema
+    if ($script:Porto -and -not [IO.File]::Exists((Join-Path $script:Dados 'emblema_marca.png'))) { if (Emblema-Marca $script:Porto) { Carregar-Arte } }
     Procurar-UI   # usa o cache de 24 h: rápido e calado
     # aberto pelo ajudante depois de atualizar o gerenciador: segue com os mods
     if ($Continuar -and $script:Porto -and @($script:Estados | Where-Object { $_.Atualizar }).Count) { Tudo-Mods-UI }

@@ -364,6 +364,34 @@ function Trocar-Gerenciador([string]$topo, [string]$versao, [switch]$Continuar, 
     Start-Process powershell -ArgumentList ($a + ' -Espera ' + $PID) -WindowStyle Hidden
     return 0
 }
+function Pasta-Do-Jogo([string]$porto) {
+    # a pasta do jogo (a que tem dvdroot_ps4): a do lançador (%APPDATA%\bbport-launcher\settings.json, "game_dir"),
+    # senão a padrão do BB Port (CUSA03173 ao lado da pasta do port)
+    $cands = @()
+    try {
+        $st = Join-Path $env:APPDATA 'bbport-launcher\settings.json'
+        if ([IO.File]::Exists($st)) { $g = ([IO.File]::ReadAllText($st, [Text.Encoding]::UTF8) | ConvertFrom-Json).game_dir; if ($g) { $cands += [string]$g } }
+    } catch { }
+    if ($porto) { $cands += (Join-Path (Split-Path -Parent $porto.TrimEnd('\')) 'CUSA03173') }
+    foreach ($c in $cands) { if ([IO.File]::Exists((Join-Path $c 'dvdroot_ps4\menu\menu_knowledge_00011.tpf.dcx'))) { return $c } }
+    return $null
+}
+function Emblema-Marca([string]$porto) {
+    # 2.2.1: a runa da Marca do Caçador, vermelha, tirada do jogo da própria pessoa pelo emblema_marca.py (com o Python do
+    # BB Port) e guardada em <dados>\emblema_marca.png; $null se não deu (fica o símbolo do BB Port)
+    $png = Join-Path $script:Dados 'emblema_marca.png'
+    if ([IO.File]::Exists($png)) { return $png }
+    if (-not $porto) { return $null }
+    $jogo = Pasta-Do-Jogo $porto
+    if (-not $jogo) { return $null }
+    try {
+        [void][IO.Directory]::CreateDirectory($script:Dados)
+        $r = Rodar-Python-Port $porto @((Join-Path $script:Aqui 'emblema_marca.py'), '--jogo', $jogo, '--saida', $png)
+        if ($r.Codigo -eq 0 -and [IO.File]::Exists($png)) { return $png }
+    } catch { }
+    if ([IO.File]::Exists($png)) { Remove-Item -LiteralPath $png -Force -ErrorAction SilentlyContinue }
+    return $null
+}
 function Avisos-Da-Troca {
     # o que o ajudante deixou (a janela mostra ao abrir): @{ Ok = versão; Falhou = motivo }
     $dir = Join-Path $script:Dados 'gerenciador'; $r = @{ Ok = $null; Falhou = $null }
