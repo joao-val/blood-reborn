@@ -47,7 +47,7 @@ $EXTRAS = @('', '.txt', '.md', '.ini', '.json', '.pdf', '.rtf', '.nfo', '.url', 
 $SOLTOS = @('instalador.ps1', 'Instalar - Install.bat', 'Desinstalar - Uninstall.bat', 'LEIA-ME_PT.txt', 'README_EN.txt', 'LEAME_ES.txt', 'README_ZH.txt', 'blood_reborn.json')
 $PREFERENCIA = @('Blood Reborn - Hunters Arsenal', 'Blood Reborn - Merciless Night', 'Blood Reborn - Fogside Lantern', 'Blood Reborn - Blood Vial Safety Net')
 $LEIAME = @{ pt = 'LEIA-ME_PT.txt'; en = 'README_EN.txt'; es = 'LEAME_ES.txt'; zh = 'README_ZH.txt' }
-$VERSAO_GERENCIADOR = '2.1.0'
+$VERSAO_GERENCIADOR = '2.1.1'
 $REGISTRO = 'blood_reborn_installed.json'
 # 04/11/2026: os textos do próprio BB Port junto com os dos nossos mods (gerada aqui; ver Compor-Textos)
 $COMPAT_TEXTOS = 'Blood Reborn - zCompat BB Port texts'
@@ -673,8 +673,9 @@ function Compor-Textos([string]$porto) {
     }
     return $true
 }
-function Atualizar-Textos([string]$porto) {
+function Juntar-Textos-Port([string]$porto) {
     # junta (ou tira) a pasta dos textos e deixa ela por último no mods.json
+    # (nome próprio: a janela já tem um Atualizar-Textos, o dos textos da tela, e ele cobria este no 2.1.0)
     $fica = Compor-Textos $porto
     $mj = Join-Path $porto 'mods.json'; $cfg = Ler-Json2 $mj 'order' 'disabled'
     $ordem = @($cfg.A | Where-Object { $_ -ne $COMPAT_TEXTOS }); if ($fica) { $ordem += $COMPAT_TEXTOS }
@@ -746,7 +747,7 @@ function Aplicar-Escolha([string]$porto, [string[]]$quero) {
         Gravar-Json2 $pc 'enabled' $ativos 'disabled' $desl2
     }
     # 04/11/2026: os textos do próprio BB Port junto com os dos nossos mods, depois de tudo (ver Compor-Textos)
-    if (Atualizar-Textos $porto) { $compatOk += $COMPAT_TEXTOS }
+    if (Juntar-Textos-Port $porto) { $compatOk += $COMPAT_TEXTOS }
     return @{ Feitos = $feitos; Tirados = $tirados; Compat = $compatOk }
 }
 function Corrigir-Tudo([string]$porto) {

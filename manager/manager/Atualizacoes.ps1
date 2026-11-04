@@ -273,5 +273,5 @@ function Voltar-Mod([string]$porto, [string]$pasta) {
     foreach ($f in [IO.Directory]::GetFiles((Join-Path $src 'patches'))) { Copy-Item -LiteralPath $f -Destination $dp -Force }
     Remove-Item -LiteralPath $src -Recurse -Force
     # 04/11/2026: a versão que voltou pode ter outros textos: refaz a junção com os textos do BB Port
-    [void](Atualizar-Textos $porto)
+    [void](Juntar-Textos-Port $porto)
 }
