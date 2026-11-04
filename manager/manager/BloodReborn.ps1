@@ -47,8 +47,11 @@ $EXTRAS = @('', '.txt', '.md', '.ini', '.json', '.pdf', '.rtf', '.nfo', '.url', 
 $SOLTOS = @('instalador.ps1', 'Instalar - Install.bat', 'Desinstalar - Uninstall.bat', 'LEIA-ME_PT.txt', 'README_EN.txt', 'LEAME_ES.txt', 'README_ZH.txt', 'blood_reborn.json')
 $PREFERENCIA = @('Blood Reborn - Hunters Arsenal', 'Blood Reborn - Merciless Night', 'Blood Reborn - Fogside Lantern', 'Blood Reborn - Blood Vial Safety Net')
 $LEIAME = @{ pt = 'LEIA-ME_PT.txt'; en = 'README_EN.txt'; es = 'LEAME_ES.txt'; zh = 'README_ZH.txt' }
-$VERSAO_GERENCIADOR = '2.0.0'
+$VERSAO_GERENCIADOR = '2.1.0'
 $REGISTRO = 'blood_reborn_installed.json'
+# 04/11/2026: os textos do próprio BB Port junto com os dos nossos mods (gerada aqui; ver Compor-Textos)
+$COMPAT_TEXTOS = 'Blood Reborn - zCompat BB Port texts'
+$TEXTOS_REG = 'blood_reborn_texts.json'
 $script:Dados = if ($PastaDados) { $PastaDados } else { Join-Path $env:APPDATA 'BloodReborn' }
 $CONFIG = Join-Path $script:Dados 'instalador.json'
 
@@ -103,6 +106,12 @@ $TXT = @{
   u_cancelar = 'Cancelar'; u_linha = 'Instalada: v{0}  ·  Disponível: v{1}'; u_nada_novo = 'Todos os mods estão na versão mais nova.'
   u_titulo_notas = '{0}: o que mudou'; u_chave = 'Conta Premium do Nexus? Cole a sua chave da API (Nexus Mods ➜ Conta ➜ API Keys). Deixe vazio para apagar.'
   u_btn_chave = 'Chave do Nexus'; u_ok = '{0} atualizado para a versão {1}.'; u_voltou = '{0} voltou para a versão anterior.'
+  d_tfalta = 'Textos do BB Port faltando: o menu do Arsenal cobre "Sair para a área de trabalho", as Configurações do PC e o Renascer (o jogo mostra números como 119001).'
+  d_tvelho = 'Textos do BB Port desatualizados (o BB Port ou um mod mudou depois da última junção): {0}.'
+  d_tsobra = 'Pasta de textos do BB Port sobrando: {0}.'
+  d_tok = '{0}: textos do BB Port junto com os dos mods.'
+  d_tsem = 'O BB Port ainda não gravou os textos dele: abra o jogo uma vez e depois clique em Verificar (sem isso o menu do Arsenal pode mostrar números no lugar de "Sair para a área de trabalho").'
+  t_falhou = 'Não deu para juntar os textos do BB Port com os dos mods: {0}'
  }
  en = @{
   app_sub = 'Mod manager'; busca = 'Search...   Ctrl+F'; nav_mods = 'Mods'; nav_fix = 'Error repair'; nav_ajuda = 'How to install'
@@ -153,6 +162,12 @@ $TXT = @{
   u_cancelar = 'Cancel'; u_linha = 'Installed: v{0}  ·  Available: v{1}'; u_nada_novo = 'Every mod is on the latest version.'
   u_titulo_notas = '{0}: what changed'; u_chave = 'Nexus Premium account? Paste your API key (Nexus Mods ➜ Account ➜ API Keys). Leave it empty to remove it.'
   u_btn_chave = 'Nexus key'; u_ok = '{0} updated to version {1}.'; u_voltou = '{0} went back to the previous version.'
+  d_tfalta = 'BB Port texts missing: the Arsenal menu covers "Quit to Desktop", PC Settings and Rebirth (the game shows numbers like 119001).'
+  d_tvelho = 'BB Port texts out of date (the BB Port or a mod changed after they were merged): {0}.'
+  d_tsobra = 'Unneeded BB Port texts folder: {0}.'
+  d_tok = '{0}: BB Port texts merged with the mods.'
+  d_tsem = 'The BB Port has not written its own texts yet: start the game once, then click Check (until then the Arsenal menu may show numbers instead of "Quit to Desktop").'
+  t_falhou = 'Could not merge the BB Port texts with the mods: {0}'
  }
  es = @{
   app_sub = 'Gestor de mods'; busca = 'Buscar...   Ctrl+F'; nav_mods = 'Mods'; nav_fix = 'Corrección de errores'; nav_ajuda = 'Cómo instalar'
@@ -203,6 +218,12 @@ $TXT = @{
   u_cancelar = 'Cancelar'; u_linha = 'Instalada: v{0}  ·  Disponible: v{1}'; u_nada_novo = 'Todos los mods están en la versión más nueva.'
   u_titulo_notas = '{0}: qué cambió'; u_chave = '¿Cuenta Premium de Nexus? Pega tu clave de la API (Nexus Mods ➜ Cuenta ➜ API Keys). Déjalo vacío para borrarla.'
   u_btn_chave = 'Clave de Nexus'; u_ok = '{0} actualizado a la versión {1}.'; u_voltou = '{0} volvió a la versión anterior.'
+  d_tfalta = 'Faltan los textos del BB Port: el menú del Arsenal tapa "Salir al escritorio", la configuración de PC y Renacer (el juego muestra números como 119001).'
+  d_tvelho = 'Textos del BB Port desactualizados (el BB Port o un mod cambió después de la última unión): {0}.'
+  d_tsobra = 'Carpeta de textos del BB Port sobrante: {0}.'
+  d_tok = '{0}: textos del BB Port unidos con los de los mods.'
+  d_tsem = 'El BB Port todavía no escribió sus textos: abre el juego una vez y luego haz clic en Revisar (hasta entonces el menú del Arsenal puede mostrar números en lugar de "Salir al escritorio").'
+  t_falhou = 'No se pudieron unir los textos del BB Port con los de los mods: {0}'
  }
  zh = @{
   app_sub = '模组管理器'; busca = '搜索...   Ctrl+F'; nav_mods = '模组'; nav_fix = '错误修复'; nav_ajuda = '安装说明'
@@ -253,6 +274,12 @@ $TXT = @{
   u_cancelar = '取消'; u_linha = '已安装：v{0}  ·  可用：v{1}'; u_nada_novo = '所有模组都已是最新版本。'
   u_titulo_notas = '{0}：更新内容'; u_chave = '有 Nexus 高级会员？请粘贴你的 API 密钥（Nexus Mods ➜ 账户 ➜ API Keys）。留空即删除。'
   u_btn_chave = 'Nexus 密钥'; u_ok = '{0} 已更新到版本 {1}。'; u_voltou = '{0} 已回退到之前的版本。'
+  d_tfalta = '缺少 BB Port 的文本：Arsenal 的菜单会盖住“退出到桌面”、PC 设置和“重生”（游戏会显示 119001 这样的数字）。'
+  d_tvelho = 'BB Port 的文本已过期（上次合并之后 BB Port 或某个模组有变化）：{0}。'
+  d_tsobra = '多余的 BB Port 文本文件夹：{0}。'
+  d_tok = '{0}：BB Port 的文本已与模组合并。'
+  d_tsem = 'BB Port 还没有写入它自己的文本：请先启动一次游戏，然后点击“检查”（在此之前 Arsenal 的菜单可能显示数字，而不是“退出到桌面”）。'
+  t_falhou = '无法把 BB Port 的文本与模组合并：{0}'
  }
 }
 function T([string]$chave) {
@@ -316,7 +343,7 @@ function Ler-Pacotes {
                 }
                 $pac = [pscustomobject]@{
                     Nome = [string]$info.nome; Versao = [string]$info.versao; Pasta = [string]$info.pasta
-                    Patches = @($info.patches | Where-Object { $_ }); CompatDef = @($info.compat | Where-Object { $_ })
+                    Patches = @($info.patches | Where-Object { $_ }); CompatDef = @($info.compat | Where-Object { $_ }); Textos = $info.textos
                     Zip = $z; Topo = $topo; Prefixo = $pre; Desc = $desc; Arquivos = $arqs; Maior = $maior }
                 [void]$todos.Add($pac)
                 $velho = $achados[$pac.Pasta]
@@ -517,6 +544,145 @@ function Checar-Caminho([string]$porto) {
     if ($base + $maior -ge 260) { throw ((T 'longo') -f ($base + $maior)) }
 }
 
+# ---------------------------------------------------------------- textos do BB Port (04/11/2026)
+# O BB Port grava, a cada abertura, camadas próprias ABAIXO dos mods (out\quit_text e out\rebirth) com o menu.msgbnd.dcx
+# inteiro de cada idioma: "Sair para a área de trabalho", Configurações do PC (119001...), Renascer. O lançador troca
+# arquivo inteiro (o último vence), então o menu de um mod nosso cobria esses textos e o jogo mostrava os números.
+# A pasta $COMPAT_TEXTOS junta, por idioma, o menu da camada de cima do port com as entradas que os nossos mods mudam
+# (lista do pacote, "textos" no blood_reborn.json, ou do gerenciador, textos_ids.json). Quem junta é o textos_port.py,
+# rodado com o Python do próprio BB Port (Bloodborne.exe --script), com as funções de texto dele.
+function Camada-Textos([string]$porto) {
+    foreach ($c in @('rebirth', 'quit_text')) {
+        $m = Join-Path $porto ('out\' + $c + '\dvdroot_ps4\msg')
+        if ([IO.Directory]::Exists($m) -and @([IO.Directory]::GetFiles($m, 'menu.msgbnd.dcx', 'AllDirectories')).Count -gt 0) { return $m }
+    }
+    return $null
+}
+function Textos-Do-Port-Ligados([string]$porto) {
+    # bbport.ini: sem as três opções desligadas, o BB Port grava textos próprios a cada abertura
+    $ini = Join-Path $porto 'bbport.ini'; $v = @{}
+    if ([IO.File]::Exists($ini)) { foreach ($l in [IO.File]::ReadAllLines($ini)) { if ($l -match '^\s*(\w+)\s*=\s*(.*?)\s*$') { $v[$Matches[1]] = $Matches[2] } } }
+    return @('quit_to_desktop', 'pc_menu', 'rebirth' | Where-Object { $v[$_] -ne '0' }).Count -gt 0
+}
+function Ids-Textos($pac) {
+    if (-not $pac) { return $null }
+    if ($pac.Textos) { return $pac.Textos }
+    if ($null -eq $script:IdsTextos) {
+        $script:IdsTextos = [pscustomobject]@{}
+        $f = Join-Path $script:Aqui 'textos_ids.json'
+        if ([IO.File]::Exists($f)) { $script:IdsTextos = [IO.File]::ReadAllText($f, [Text.Encoding]::UTF8) | ConvertFrom-Json }
+    }
+    return $script:IdsTextos.($pac.Pasta)
+}
+function Mods-Textos([string]$porto) {
+    # os nossos mods ligados, na ordem do BB Port, que trazem menu.msgbnd.dcx e têm a lista de textos
+    $dm = Join-Path $porto 'mods'; $out = @()
+    foreach ($n in @(Selecionados $porto)) {
+        $p = $script:Pacotes | Where-Object { $_.Pasta -eq $n } | Select-Object -First 1
+        if (-not $p) { continue }
+        $reg = Ler-Registro (Join-Path $dm $n); $pv = $p
+        if ($reg -and $reg.version) { $x = Pacote-Da-Versao $n ([string]$reg.version); if ($x) { $pv = $x } }
+        $ids = Ids-Textos $pv
+        $msg = Join-Path $dm ($n + '\dvdroot_ps4\msg')
+        if ($ids -and [IO.Directory]::Exists($msg) -and @([IO.Directory]::GetFiles($msg, 'menu.msgbnd.dcx', 'AllDirectories')).Count -gt 0) {
+            $out += [pscustomobject]@{ Pasta = $n; Msg = $msg; Ids = $ids }
+        }
+    }
+    return $out
+}
+function Estado-Textos([string]$porto) {
+    $cam = Camada-Textos $porto; $mods = @(Mods-Textos $porto); $alvo = Join-Path (Join-Path $porto 'mods') $COMPAT_TEXTOS
+    $r = [pscustomobject]@{ Camada = $cam; Mods = $mods; Alvo = $alvo; Precisa = [bool]($cam -and $mods.Count -gt 0)
+                            Existe = [IO.Directory]::Exists($alvo); EmDia = $false; Chave = '' }
+    if ($r.Precisa) {
+        $t = (@($mods | ForEach-Object { $_.Pasta + '=' + (ConvertTo-Json -InputObject $_.Ids -Depth 4 -Compress) }) -join '|')
+        $r.Chave = ([BitConverter]::ToString($script:Sha.ComputeHash($script:Utf8.GetBytes($t))) -replace '-', '').ToLowerInvariant()
+    }
+    if (-not ($r.Precisa -and $r.Existe)) { return $r }
+    try {
+        $reg = [IO.File]::ReadAllText((Join-Path $alvo $TEXTOS_REG), [Text.Encoding]::UTF8) | ConvertFrom-Json
+        if ([string]$reg.camada -ne $cam -or [string]$reg.chave_ids -ne $r.Chave) { return $r }
+        $linguas = @($reg.linguas.PSObject.Properties | ForEach-Object { $_.Name })
+        foreach ($d in [IO.Directory]::GetDirectories($cam)) {
+            $lg = [IO.Path]::GetFileName($d)
+            if (-not [IO.File]::Exists((Join-Path $d 'menu.msgbnd.dcx'))) { continue }
+            $temMod = @($mods | Where-Object { [IO.File]::Exists((Join-Path $_.Msg ($lg + '\menu.msgbnd.dcx'))) }).Count -gt 0
+            if ($temMod -and $linguas -notcontains $lg) { return $r }
+        }
+        foreach ($lg in $linguas) {
+            $e = $reg.linguas.$lg
+            if ((Sha-Arquivo (Join-Path $cam ($lg + '\menu.msgbnd.dcx'))) -ne [string]$e.camada) { return $r }
+            $saida = Join-Path $alvo ('dvdroot_ps4\msg\' + $lg + '\menu.msgbnd.dcx')
+            if (-not [IO.File]::Exists($saida) -or (Sha-Arquivo $saida) -ne [string]$e.saida) { return $r }
+            $usados = @($e.mods.PSObject.Properties | ForEach-Object { $_.Name })
+            $agora = @($mods | Where-Object { [IO.File]::Exists((Join-Path $_.Msg ($lg + '\menu.msgbnd.dcx'))) })
+            if ((@($agora | ForEach-Object { $_.Pasta }) -join '|') -ne ($usados -join '|')) { return $r }
+            foreach ($m in $agora) { if ((Sha-Arquivo (Join-Path $m.Msg ($lg + '\menu.msgbnd.dcx'))) -ne [string]$e.mods.($m.Pasta)) { return $r } }
+        }
+        $esperados = @($linguas | ForEach-Object { 'dvdroot_ps4\msg\' + $_ + '\menu.msgbnd.dcx' }) + @($TEXTOS_REG)
+        $base = $alvo.TrimEnd('\').Length + 1
+        foreach ($f in [IO.Directory]::GetFiles($alvo, '*', 'AllDirectories')) { if ($esperados -notcontains $f.Substring($base)) { return $r } }
+        $r.EmDia = $true
+    } catch { }
+    return $r
+}
+function Rodar-Python-Port([string]$porto, [string[]]$argumentos) {
+    # o Python do próprio BB Port: "Bloodborne.exe --script <arquivo> [args]" (é assim que o lançador roda os scripts dele;
+    # devolve o código de saída, sem janela). BR_PYTHON (só nos testes): um python.exe no lugar.
+    $psi = New-Object Diagnostics.ProcessStartInfo
+    if ($env:BR_PYTHON) { $psi.FileName = $env:BR_PYTHON; $lista = @('-I') + $argumentos }
+    else { $psi.FileName = Join-Path $porto 'Bloodborne.exe'; $lista = @('--script') + $argumentos }
+    if (-not [IO.File]::Exists($psi.FileName)) { throw ((T 't_falhou') -f ($psi.FileName + ' ?')) }
+    $psi.Arguments = (@($lista | ForEach-Object { '"' + ([string]$_ -replace '"', '\"') + '"' })) -join ' '
+    $psi.UseShellExecute = $false; $psi.CreateNoWindow = $true; $psi.RedirectStandardOutput = $true; $psi.RedirectStandardError = $true
+    $psi.WorkingDirectory = $porto
+    $p = [Diagnostics.Process]::Start($psi)
+    $err = $p.StandardError.ReadToEndAsync(); [void]$p.StandardOutput.ReadToEnd()
+    if (-not $p.WaitForExit(300000)) { try { $p.Kill() } catch { }; throw ((T 't_falhou') -f 'timeout') }
+    return [pscustomobject]@{ Codigo = $p.ExitCode; Erro = [string]$err.Result }
+}
+function Compor-Textos([string]$porto) {
+    # $true = a pasta ficou (em dia); $false = não precisa (e saiu, se existia). Falha: throw (a pasta não fica pela metade)
+    $e = Estado-Textos $porto
+    if (-not $e.Precisa) {
+        if ($e.Existe) { Passo $COMPAT_TEXTOS; Remove-Item -LiteralPath $e.Alvo -Recurse -Force }
+        return $false
+    }
+    if ($e.EmDia) { return $true }
+    Passo $COMPAT_TEXTOS
+    if ($e.Existe) { Remove-Item -LiteralPath $e.Alvo -Recurse -Force }
+    $tmp = Join-Path ([IO.Path]::GetTempPath()) ('br_textos_' + [guid]::NewGuid().ToString('N'))
+    [void][IO.Directory]::CreateDirectory($tmp)
+    try {
+        $rf = Join-Path $tmp 'resultado.json'; $fp = Join-Path $tmp 'plano.json'
+        $plano = [ordered]@{ porto = $porto; camada = $e.Camada; saida = $e.Alvo; chave_ids = $e.Chave; resultado = $rf
+                             mods = @($e.Mods | ForEach-Object { [ordered]@{ pasta = $_.Pasta; msg = $_.Msg; ids = $_.Ids } }) }
+        [IO.File]::WriteAllText($fp, (ConvertTo-Json -InputObject $plano -Depth 6 -Compress), $script:Utf8)
+        $cod = Rodar-Python-Port $porto @((Join-Path $script:Aqui 'textos_port.py'), '--plano', $fp)
+        $res = $null
+        if ([IO.File]::Exists($rf)) { $res = [IO.File]::ReadAllText($rf, [Text.Encoding]::UTF8) | ConvertFrom-Json }
+        if (-not $res -or -not $res.ok) {
+            if ([IO.Directory]::Exists($e.Alvo)) { Remove-Item -LiteralPath $e.Alvo -Recurse -Force }
+            if ($res) { $msg = [string]$res.erro } else { $msg = 'código ' + $cod.Codigo + ' ' + $cod.Erro.Trim() }
+            throw ((T 't_falhou') -f $msg)
+        }
+    } finally { Remove-Item -LiteralPath $tmp -Recurse -Force -ErrorAction SilentlyContinue }
+    if (-not (Estado-Textos $porto).EmDia) {
+        Remove-Item -LiteralPath $e.Alvo -Recurse -Force -ErrorAction SilentlyContinue
+        throw ((T 't_falhou') -f $TEXTOS_REG)
+    }
+    return $true
+}
+function Atualizar-Textos([string]$porto) {
+    # junta (ou tira) a pasta dos textos e deixa ela por último no mods.json
+    $fica = Compor-Textos $porto
+    $mj = Join-Path $porto 'mods.json'; $cfg = Ler-Json2 $mj 'order' 'disabled'
+    $ordem = @($cfg.A | Where-Object { $_ -ne $COMPAT_TEXTOS }); if ($fica) { $ordem += $COMPAT_TEXTOS }
+    $desl = @($cfg.B | Where-Object { $_ -ne $COMPAT_TEXTOS })
+    Gravar-Json2 $mj 'order' $ordem 'disabled' $desl
+    return $fica
+}
+
 # ---------------------------------------------------------------- instalar / remover / reparar
 function Aplicar-Escolha([string]$porto, [string[]]$quero) {
     if (-not $SemTrava -and (Jogo-Aberto)) { throw (T 'aberto') }
@@ -563,7 +729,7 @@ function Aplicar-Escolha([string]$porto, [string[]]$quero) {
         } elseif ([IO.Directory]::Exists($alvo)) { Passo $c.Pasta; Remove-Item -LiteralPath $alvo -Recurse -Force }
     }
     # mods.json: os nossos ligados e no fim, as zCompat por último
-    $nossos = @($script:PastasPacote) + @($script:Compat | ForEach-Object { $_.Pasta })
+    $nossos = @($script:PastasPacote) + @($script:Compat | ForEach-Object { $_.Pasta }) + @($COMPAT_TEXTOS)
     $cfg = Ler-Json2 (Join-Path $porto 'mods.json') 'order' 'disabled'
     $ordem = @($cfg.A | Where-Object { $nossos -notcontains $_ }) + @($script:Pacotes | Where-Object { $quero -contains $_.Pasta } | ForEach-Object { $_.Pasta }) + $compatOk
     $desl = @($cfg.B | Where-Object { $nossos -notcontains $_ })
@@ -579,6 +745,8 @@ function Aplicar-Escolha([string]$porto, [string[]]$quero) {
         $desl2 = @($j.B | Where-Object { -not (& $de $_ $querem) -and -not (& $de $_ $saem) })
         Gravar-Json2 $pc 'enabled' $ativos 'disabled' $desl2
     }
+    # 04/11/2026: os textos do próprio BB Port junto com os dos nossos mods, depois de tudo (ver Compor-Textos)
+    if (Atualizar-Textos $porto) { $compatOk += $COMPAT_TEXTOS }
     return @{ Feitos = $feitos; Tirados = $tirados; Compat = $compatOk }
 }
 function Corrigir-Tudo([string]$porto) {
@@ -641,10 +809,25 @@ function Diagnosticar([string]$porto) {
             if ($ok) { [void]$L.Add((Item 'ok' ((T 'd_cok') -f $c.Pasta) $false)) }
         }
     }
+    # 04/11/2026: os textos do BB Port (camadas out\quit_text e out\rebirth) junto com os dos nossos mods
+    $et = Estado-Textos $porto
+    if ($et.Precisa -and -not $et.Existe) { [void]$L.Add((Item 'erro' (T 'd_tfalta') $true)) }
+    elseif (-not $et.Precisa -and $et.Existe) { [void]$L.Add((Item 'erro' ((T 'd_tsobra') -f $COMPAT_TEXTOS) $true)) }
+    elseif ($et.Precisa) {
+        Passo $COMPAT_TEXTOS; $ok = $true
+        if (-not $et.EmDia) { [void]$L.Add((Item 'erro' ((T 'd_tvelho') -f $COMPAT_TEXTOS) $true)); $ok = $false }
+        $i = [array]::IndexOf($sel, $COMPAT_TEXTOS)
+        $depois = @($et.Mods | Where-Object { [array]::IndexOf($sel, $_.Pasta) -gt $i })
+        if ($i -lt 0 -or $depois.Count -gt 0) { [void]$L.Add((Item 'erro' ((T 'd_cordem') -f $COMPAT_TEXTOS) $true)); $ok = $false }
+        if ($ok) { [void]$L.Add((Item 'ok' ((T 'd_tok') -f $COMPAT_TEXTOS) $false)) }
+    } elseif (-not $et.Camada -and $et.Mods.Count -gt 0 -and (Textos-Do-Port-Ligados $porto)) {
+        [void]$L.Add((Item 'aviso' (T 'd_tsem') $false))
+    }
     # quem fica por último com cada arquivo do Blood Reborn (no BB Port o último da lista vence)
     $nossoArqs = @{}
     foreach ($p in $script:Pacotes) { $nossoArqs[$p.Pasta] = $p.Arquivos }
     foreach ($c in $script:Compat) { $nossoArqs[$c.Pasta] = $c.Arquivos }
+    if ($et.Existe) { $nossoArqs[$COMPAT_TEXTOS] = Arquivos-Mod $et.Alvo }
     $dono = @{}; $nossosAtivos = [Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
     foreach ($n in $sel) {
         if ($nossoArqs.ContainsKey($n)) { $fs = $nossoArqs[$n]; foreach ($f in $fs) { [void]$nossosAtivos.Add($f) } }

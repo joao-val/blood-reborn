@@ -13,14 +13,18 @@
       "key": "arsenal",
       "name": "Hunter's Arsenal: Blood Pacts",
       "folder": "Blood Reborn - Hunters Arsenal",
-      "version": "1.0",
+      "version": "1.0.1",
       "status": "released",
-      "package": "Blood_Reborn_Hunters_Arsenal_v1.0.zip",
-      "sha256": "8efb72bcea1b1a7adfdff116736a2e2b532cfc2909b21a818a1682057f6d93fb",
-      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-04/Blood_Reborn_Hunters_Arsenal_v1.0.zip",
+      "package": "Blood_Reborn_Hunters_Arsenal_v1.0.1.zip",
+      "sha256": "0359c7996cbae10293b7401de77d79f68038da4f33737d52640713876f833a95",
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-04.2/Blood_Reborn_Hunters_Arsenal_v1.0.1.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {
+        "1.0.1": {
+          "en": "Menu texts: only the Arsenal's own lines (gem and rune effects and pacts); leftover texts of another mod removed. With Mod Manager 2.1 the BB Port's own menu texts (Quit to Desktop, PC Settings, Rebirth) are kept.",
+          "pt": "Textos do menu: só as linhas do próprio Arsenal (efeitos e pactos de gemas e runas); saíram textos que eram de outro mod. Com o gerenciador 2.1, os textos do próprio BB Port (Sair para a área de trabalho, Configurações do PC, Renascer) continuam."
+        },
         "1.0": {
           "en": "First Blood Reborn package: trick weapon specials, gem and rune pacts, 9 code patches.",
           "pt": "Primeiro pacote do Blood Reborn: especiais das armas de truque, pactos nas gemas e runas, 9 patches de código."

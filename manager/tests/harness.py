@@ -29,14 +29,15 @@ class Fake:
     def close(self):
         shutil.rmtree(self.root, ignore_errors=True)
 
-    def package(self, version, files, patches=(), where=None, folder=FOLDER):
-        """a package zip; returns its path (default: <data>\\pacotes, where the manager keeps downloads)"""
+    def package(self, version, files, patches=(), where=None, folder=FOLDER, info=None):
+        """a package zip; returns its path (default: <data>\\pacotes, where the manager keeps downloads).
+        files: {path under dvdroot_ps4: str or bytes}; info: extra blood_reborn.json keys (e.g. "textos")"""
         where = Path(where or self.data / 'pacotes')
         top = '%s v%s' % (folder, version)
         z = where / ('Blood_Reborn_%s_v%s.zip' % (folder.split(' - ', 1)[1].replace(' ', '_'), version))
         with zipfile.ZipFile(z, 'w') as zf:
-            zf.writestr(top + '/blood_reborn.json', json.dumps({'nome': folder.split(' - ', 1)[1], 'versao': version, 'pasta': folder,
-                                                                  'patches': list(patches), 'compat': []}))
+            zf.writestr(top + '/blood_reborn.json', json.dumps(dict({'nome': folder.split(' - ', 1)[1], 'versao': version, 'pasta': folder,
+                                                                       'patches': list(patches), 'compat': []}, **(info or {}))))
             zf.writestr(top + '/README_EN.txt', '✨ WHAT THIS MOD DOES\nTest mod %s\n✅ YOU NEED\n' % version)
             for rel, data in files.items():
                 zf.writestr('%s/mods/%s/dvdroot_ps4/%s' % (top, folder, rel), data)

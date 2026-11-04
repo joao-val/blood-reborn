@@ -92,11 +92,21 @@ Each mod also carries `"summary": {"en": "...", "pt": "...", "es": "...", "zh": 
 4. Each conflict shows both mods and what clashes, with **Blood Reborn wins (recommended)** pre-selected and *The other mod wins* as the alternative. Choices are stored in `%APPDATA%\BloodReborn\choices.json` and applied on every merge.
 5. The existing diagnostics stay: patch without its mod, zCompat missing, extra or out of order, disabled mod with its patches on, leftovers of manual installs.
 
+### 7.1 The BB Port's own menu texts (manager 2.1, built)
+
+The BB Port writes, at every start, its own layers **below** every mod (`out\quit_text`, `out\rebirth`), each with the whole `menu.msgbnd.dcx` of every language: Quit to Desktop, PC Settings (text ids 119001–119009 in 1.9.x), Rebirth at the Doll. The launcher replaces whole files (the last one wins), so a Blood Reborn mod that ships `menu.msgbnd.dcx` (Hunter's Arsenal) covered those texts and the game showed the bare ids.
+
+- After every Apply, Update and Back, the manager builds `Blood Reborn - zCompat BB Port texts`: for each language, the menu of the top port layer (`rebirth`, else `quit_text`) plus only the entries our enabled mods change. The list of entries (FMG → ids) comes from the package (`"textos"` in `blood_reborn.json`) or, for packages without it, from `manager/textos_ids.json` (made by comparing the package with the game's menu).
+- The merge is `manager/textos_port.py`, run with the BB Port's own Python (`Bloodborne.exe --script`, the way the launcher runs its scripts) and the port's own text functions (`scripts/quit_menu.py`); nothing of the port is copied into this repository. The script checks its output: our entries with our text, every other entry equal to the port layer.
+- `blood_reborn_texts.json` in that folder records the SHA-256 of every input and output. *Check* reports the folder missing, out of date (the port or a mod changed) or out of order, and *Fix all* rebuilds it. Without any port layer yet (the game never started), *Check* asks to start the game once.
+- Tests: `tests/test_port_texts.py` (needs a BB Port's `quit_menu.py` and the game's menu; skipped otherwise).
+
 ## 8. What the manager writes on the player's PC
 
 | Where | What |
 |---|---|
 | `<BB Port>\mods\Blood Reborn - *\` | the Blood Reborn mods and their `blood_reborn_installed.json` |
+| `<BB Port>\mods\Blood Reborn - zCompat BB Port texts\` | the BB Port's menu texts with ours (7.1) |
 | `<BB Port>\mods\Blood Reborn - zMerge (generated)\` | merged files |
 | `<BB Port>\mods.json` | order and on/off of the Blood Reborn folders only |
 | `<BB Port>\patches\` + `patches.json` | the Blood Reborn code patches |
