@@ -201,13 +201,14 @@ if __name__ == '__main__':
 - [ ] **Step 4: Run it**
 
 Run: `cd blood-reborn/manager/tests && python -m unittest test_updates -v`
-Expected: FAIL — `BloodReborn.ps1` rejects the unknown parameters `-PastaDados`, `-PastaDownloads`, `-SemNavegador`.
+Expected: it PASSES wrongly. Found while executing: the script's `param()` has no `[CmdletBinding()]`, so PowerShell sends unknown parameters silently to `$args` (`-PastaDados` would be ignored and a test would use the real data folder). Add `[CmdletBinding()]` above `param(` first: the test then FAILS with `NamedParameterNotFound`.
 
 - [ ] **Step 5: Accept the parameters**
 
 In `manager/instalador/BloodReborn.ps1`, replace the `param(...)` block (lines 14–23) with:
 
 ```powershell
+[CmdletBinding()]
 param(
     [string]$PastaPort = '',
     [string]$Acao = '',
