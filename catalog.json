@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "updated": "2026-11-04",
+  "github": {"repository": "joao-val/blood-reborn"},
+  "nexus": {"game_domain": "bloodborne", "game_id": 2708},
+  "mods": [
+    {
+      "key": "arsenal",
+      "name": "Hunter's Arsenal: Blood Pacts",
+      "folder": "Blood Reborn - Hunters Arsenal",
+      "version": "1.0",
+      "status": "released",
+      "package": "Blood_Reborn_Hunters_Arsenal_v1.0.zip",
+      "sha256": "8efb72bcea1b1a7adfdff116736a2e2b532cfc2909b21a818a1682057f6d93fb",
+      "download": null,
+      "nexus_mod_id": null,
+      "nexus_file_id": null,
+      "changes": {
+        "1.0": {
+          "en": "First Blood Reborn package: trick weapon specials, gem and rune pacts, 9 code patches.",
+          "pt": "Primeiro pacote do Blood Reborn: especiais das armas de truque, pactos nas gemas e runas, 9 patches de código."
+        }
+      }
+    },
+    {
+      "key": "merciless_night",
+      "name": "Merciless Night",
+      "folder": "Blood Reborn - Merciless Night",
+      "version": "1.31",
+      "status": "released",
+      "package": "Blood_Reborn_Merciless_Night_v1.31.zip",
+      "sha256": "af45114578bcff57906a7f1abd8ae0272977673108baf5605a0a60f451706c4e",
+      "download": null,
+      "nexus_mod_id": null,
+      "nexus_file_id": null,
+      "changes": {
+        "1.31": {
+          "en": "Lady Maria tuning approved; clean release package.",
+          "pt": "Ajustes da Lady Maria aprovados; pacote limpo de lançamento."
+        }
+      }
+    },
+    {
+      "key": "fogside_lantern",
+      "name": "Fogside Lantern",
+      "folder": "Blood Reborn - Fogside Lantern",
+      "version": "1.6.1",
+      "status": "testing",
+      "package": "Blood_Reborn_Fogside_Lantern_v1.6.1.zip",
+      "sha256": "e2f2085c91fec4bd01ebd0fd3782f4c36bea38766e6123df9b49a7e4c240605b",
+      "download": null,
+      "nexus_mod_id": null,
+      "nexus_file_id": null,
+      "changes": {
+        "1.6.1": {
+          "en": "Version included in the first Blood Reborn package.",
+          "pt": "Versão incluída no primeiro pacote do Blood Reborn."
+        }
+      }
+    },
+    {
+      "key": "blood_vial_safety_net",
+      "name": "Blood Vial Safety Net",
+      "folder": "Blood Reborn - Blood Vial Safety Net",
+      "version": "1.0.1",
+      "status": "testing",
+      "package": "Blood_Reborn_Blood_Vial_Safety_Net_v1.0.1.zip",
+      "sha256": "ca0aa0f743ea9a03d1ae4011d660b7bf079617558b9937dc591813623033daa3",
+      "download": null,
+      "nexus_mod_id": null,
+      "nexus_file_id": null,
+      "changes": {
+        "1.0.1": {
+          "en": "Version included in the first Blood Reborn package.",
+          "pt": "Versão incluída no primeiro pacote do Blood Reborn."
+        }
+      }
+    }
+  ]
+}
