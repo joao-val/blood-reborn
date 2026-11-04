@@ -86,6 +86,8 @@ Um gerenciador de mods pequeno, feito só para os mods do Blood Reborn. Ele **n�
 - 🛠️ **Resolve conflitos com qualquer outro mod** da sua pasta `mods`: junta o que dá numa pasta no fim da ordem e lista o que não dá, para você escolher qual mod vence (o Blood Reborn é a escolha recomendada).
 - 🛡️ Nunca escreve nos arquivos do jogo nem nos mods de outras pessoas.
 
+✅ Atualizações: prontas. Próximo passo: conflitos com qualquer mod (fase 3).
+
 📐 Desenho (em inglês): [docs/manager-design.md](docs/manager-design.md)
 
 ## 🔄 Como as atualizações são publicadas

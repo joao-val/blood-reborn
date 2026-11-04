@@ -117,7 +117,7 @@ It never writes to the game files nor to folders of other mods.
 ## 11. Build order
 
 1. Repository and catalog (this commit).
-2. Updates: installed version record, catalog and Nexus check, downloads, apply and roll back, window.
+2. Updates — done (plan: [docs/plans/2026-11-04-phase-2-updates.md](plans/2026-11-04-phase-2-updates.md)).
 3. Merge engine and conflicts page.
 4. Hunter's Mark symbol (read at runtime from the player's game files, never shipped) and window review.
 5. `tools/publish.py` and the first GitHub release.

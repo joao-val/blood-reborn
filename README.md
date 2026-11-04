@@ -86,6 +86,8 @@ A small mod manager, made only for the Blood Reborn mods. It does **not** launch
 - 🛠️ **Fixes conflicts with any other mod** in your `mods` folder: it merges what can be merged into a folder at the end of the load order, and lists what cannot, so you choose which mod wins (Blood Reborn is the recommended choice).
 - 🛡️ Never writes to your game files or to other people's mods.
 
+✅ Updates: ready. Next: conflicts with any mod (phase 3).
+
 📐 Design: [docs/manager-design.md](docs/manager-design.md)
 
 ## 🔄 How updates are published
