@@ -42,7 +42,7 @@ Una muestra de lo que puedes encontrar:
 | La recuperación (rally) también devuelve vigor | Recibes más daño |
 | Más Balas de Azogue | El especial gasta una bala más |
 
-🔧 Incluye 9 parches de código (el instalador los activa por ti).
+🔧 Incluye 9 parches de código (el gestor los activa por ti).
 
 ### 🌙 Merciless Night — v1.31
 
@@ -52,7 +52,7 @@ Jefes, cazadores y bestias fueron rehechos para un Bloodborne **más dinámico, 
 
 💬 **Tus comentarios son muy bienvenidos.** Cuéntanos qué te pareció justo, qué te pareció cruel y qué te pareció *demasiado* cruel.
 
-🔧 Incluye 1 parche de código (el instalador lo activa por ti).
+🔧 Incluye 1 parche de código (el gestor lo activa por ti).
 
 ### 🏮 Fogside Lantern — v1.6.1 *(en prueba)*
 

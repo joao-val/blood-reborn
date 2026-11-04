@@ -1,4 +1,4 @@
-﻿# Blood Reborn - janela do instalador único (carregada pelo BloodReborn.ps1). Estilo do BB Port: tema escuro, barra
+﻿# Blood Reborn Mod Manager - janela do gerenciador de mods (carregada pelo BloodReborn.ps1). Estilo do BB Port: tema escuro, barra
 # lateral, arte e fontes do próprio BB Port (_internal\assets), chaves vermelhas. Nomes: nenhum repete um parâmetro.
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase, System.Windows.Forms
 

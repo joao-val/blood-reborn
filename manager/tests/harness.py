@@ -4,7 +4,7 @@ import hashlib, http.server, json, shutil, subprocess, tempfile, threading, zipf
 from pathlib import Path
 
 MANAGER = Path(__file__).resolve().parents[1]
-SCRIPT = MANAGER / 'instalador' / 'BloodReborn.ps1'
+SCRIPT = MANAGER / 'manager' / 'BloodReborn.ps1'
 FOLDER = 'Blood Reborn - Test Mod'
 
 

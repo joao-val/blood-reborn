@@ -42,7 +42,7 @@ Uma amostra do que você pode encontrar:
 | A recuperação (rally) devolve vigor também | Você recebe mais dano |
 | Mais Balas de Mercúrio | O especial gasta uma bala a mais |
 
-🔧 Traz 9 patches de código (o instalador liga para você).
+🔧 Traz 9 patches de código (o gerenciador liga para você).
 
 ### 🌙 Merciless Night — v1.31
 
@@ -52,7 +52,7 @@ Chefes, caçadores e feras foram refeitos para um Bloodborne **mais dinâmico, m
 
 💬 **Feedback é muito bem-vindo.** Conte o que pareceu justo, o que pareceu cruel e o que pareceu cruel *demais*.
 
-🔧 Traz 1 patch de código (o instalador liga para você).
+🔧 Traz 1 patch de código (o gerenciador liga para você).
 
 ### 🏮 Fogside Lantern — v1.6.1 *(em teste)*
 
