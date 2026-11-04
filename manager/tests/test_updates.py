@@ -38,5 +38,37 @@ class Record(Base):
         self.assertFalse([i for i in rep if i['Nivel'] == 'erro'], rep)
 
 
+class State(Base):
+    def test_reports_the_update_and_the_notes(self):
+        self.f.package('1.0', {'chr/a.txt': 'one'})
+        self.f.run('instalar', mods=FOLDER)
+        self.f.catalog('1.1', 'aa' * 32, notes={'1.1': {'en': 'Harder bosses'}, '1.0': {'en': 'First'}})
+        code, rep, out = self.f.run('atualizacoes', '-Catalogo', self.s.base + '/catalog.json')
+        self.assertEqual(code, 0, out)
+        e = [x for x in rep if x['Pasta'] == FOLDER][0]
+        self.assertEqual((e['Instalada'], e['Disponivel'], e['Atualizar']), ('1.0', '1.1', True))
+        self.assertEqual([n['Versao'] for n in e['Notas']], ['1.1'])
+        self.assertEqual(e['Notas'][0]['Texto'], 'Harder bosses')
+
+    def test_works_offline(self):
+        self.f.package('1.0', {'chr/a.txt': 'one'})
+        self.f.run('instalar', mods=FOLDER)
+        code, rep, out = self.f.run('atualizacoes', '-SemRede')
+        self.assertEqual(code, 0, out)
+        e = [x for x in rep if x['Pasta'] == FOLDER][0]
+        self.assertEqual((e['Instalada'], e['Disponivel'], e['Atualizar']), ('1.0', '1.0', False))
+
+    def test_a_newer_version_on_nexus_counts(self):
+        self.f.package('1.0', {'chr/a.txt': 'one'})
+        self.f.run('instalar', mods=FOLDER)
+        self.f.catalog('1.0', 'aa' * 32, nexus_mod=999, nexus_file=5)
+        self.f.nexus = {'data': {'legacyModsByDomain': {'nodes': [{'version': '1.2', 'updatedAt': '2026-11-05T00:00:00Z'}]},
+                                 'modFiles': [{'fileId': 7, 'name': 'Test', 'version': '1.2', 'category': 'MAIN', 'uri': 'Test-999-1-2.zip'}]}}
+        code, rep, out = self.f.run('atualizacoes', '-Catalogo', self.s.base + '/catalog.json', '-NexusApi', self.s.base)
+        e = [x for x in rep if x['Pasta'] == FOLDER][0]
+        self.assertEqual((e['Disponivel'], e['Atualizar']), ('1.2', True))
+        self.assertIn('nexus', e['Fontes'])
+
+
 if __name__ == '__main__':
     unittest.main()

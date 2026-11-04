@@ -94,6 +94,7 @@ $TXT = @{
   d_sobre = 'O mod "{0}" carrega depois e substitui arquivos do Blood Reborn ({1}). Para o Blood Reborn valer, deixe-o abaixo dele na lista do BB Port.'
   d_desc = 'O BB Port não carrega a pasta "{0}" (não é do Blood Reborn: não mexo).'
   d_nova = '{0}: versão {1} instalada, {2} disponível (use Atualizar na página Mods).'
+  u_semrede = 'Sem internet ou GitHub/Nexus fora do ar: mostrando o que já está no computador.'
  }
  en = @{
   app_sub = 'Mod installer'; busca = 'Search...   Ctrl+F'; nav_mods = 'Mods'; nav_fix = 'Error repair'; nav_ajuda = 'How to install'
@@ -135,6 +136,7 @@ $TXT = @{
   d_sobre = 'The mod "{0}" loads later and replaces Blood Reborn files ({1}). Move Blood Reborn below it in the BB Port list.'
   d_desc = 'The BB Port does not load the folder "{0}" (not Blood Reborn: left alone).'
   d_nova = '{0}: version {1} installed, {2} available (use Update on the Mods page).'
+  u_semrede = 'No internet, or GitHub/Nexus is down: showing what is already on this PC.'
  }
  es = @{
   app_sub = 'Instalador de mods'; busca = 'Buscar...   Ctrl+F'; nav_mods = 'Mods'; nav_fix = 'Corrección de errores'; nav_ajuda = 'Cómo instalar'
@@ -176,6 +178,7 @@ $TXT = @{
   d_sobre = 'El mod "{0}" se carga después y reemplaza archivos de Blood Reborn ({1}). Pon Blood Reborn debajo en la lista del BB Port.'
   d_desc = 'El BB Port no carga la carpeta "{0}" (no es de Blood Reborn: no la toco).'
   d_nova = '{0}: versión {1} instalada, {2} disponible (usa Actualizar en la página Mods).'
+  u_semrede = 'Sin internet o GitHub/Nexus caído: se muestra lo que ya está en el equipo.'
  }
  zh = @{
   app_sub = '模组安装器'; busca = '搜索...   Ctrl+F'; nav_mods = '模组'; nav_fix = '错误修复'; nav_ajuda = '安装说明'
@@ -217,6 +220,7 @@ $TXT = @{
   d_sobre = '模组 "{0}" 在之后加载，会替换 Blood Reborn 的文件（{1}）。请在 BB Port 列表中把 Blood Reborn 放在它下面。'
   d_desc = 'BB Port 不会加载文件夹 "{0}"（不是 Blood Reborn 的：不做改动）。'
   d_nova = '{0}：已安装版本 {1}，可用版本 {2}（请在“模组”页面点击“更新”）。'
+  u_semrede = '没有网络，或 GitHub/Nexus 无法访问：显示本机已有的内容。'
  }
 }
 function T([string]$chave) {
@@ -694,6 +698,13 @@ if ($Acao) {
         'instalar' { [void](Aplicar-Escolha $PastaPort $quero) }
         'corrigir' { [void](Corrigir-Tudo $PastaPort) }
         'verificar' { }
+        'atualizacoes' {
+            # fase 2: o estado de atualização de cada mod (instalada, disponível, notas, fontes), sem cache
+            $est = @(Estado-Atualizacoes $PastaPort -Forcar)
+            $json = ConvertTo-Json -InputObject $est -Depth 8
+            if ($Relatorio) { [IO.File]::WriteAllText($Relatorio, $json, $script:Utf8) } else { $json }
+            exit 0
+        }
         default { Write-Error "Ação desconhecida: $Acao"; exit 2 }
     }
     $res = @(Diagnosticar $PastaPort)
