@@ -97,6 +97,7 @@ $TXT = @{
   u_semrede = 'Sem internet ou GitHub/Nexus fora do ar: mostrando o que já está no computador.'
   u_falhou = 'Não deu para baixar {0}: confira a internet ou baixe o zip e ponha na pasta do instalador.'
   u_esperando = 'Esperando o download do Nexus na pasta Downloads... {0} s'
+  u_semanterior = 'Não há versão anterior guardada para voltar.'
  }
  en = @{
   app_sub = 'Mod installer'; busca = 'Search...   Ctrl+F'; nav_mods = 'Mods'; nav_fix = 'Error repair'; nav_ajuda = 'How to install'
@@ -141,6 +142,7 @@ $TXT = @{
   u_semrede = 'No internet, or GitHub/Nexus is down: showing what is already on this PC.'
   u_falhou = 'Could not download {0}: check your internet, or download the zip and put it next to the manager.'
   u_esperando = 'Waiting for the Nexus download in your Downloads folder... {0} s'
+  u_semanterior = 'There is no previous version saved to go back to.'
  }
  es = @{
   app_sub = 'Instalador de mods'; busca = 'Buscar...   Ctrl+F'; nav_mods = 'Mods'; nav_fix = 'Corrección de errores'; nav_ajuda = 'Cómo instalar'
@@ -185,6 +187,7 @@ $TXT = @{
   u_semrede = 'Sin internet o GitHub/Nexus caído: se muestra lo que ya está en el equipo.'
   u_falhou = 'No se pudo descargar {0}: revisa internet, o descarga el zip y ponlo en la carpeta del instalador.'
   u_esperando = 'Esperando la descarga de Nexus en la carpeta Descargas... {0} s'
+  u_semanterior = 'No hay una versión anterior guardada para volver.'
  }
  zh = @{
   app_sub = '模组安装器'; busca = '搜索...   Ctrl+F'; nav_mods = '模组'; nav_fix = '错误修复'; nav_ajuda = '安装说明'
@@ -229,6 +232,7 @@ $TXT = @{
   u_semrede = '没有网络，或 GitHub/Nexus 无法访问：显示本机已有的内容。'
   u_falhou = '无法下载 {0}：请检查网络，或手动下载 zip 并放到管理器所在的文件夹。'
   u_esperando = '正在“下载”文件夹中等待 Nexus 的下载…… {0} 秒'
+  u_semanterior = '没有保存可以回退的旧版本。'
  }
 }
 function T([string]$chave) {
@@ -713,6 +717,7 @@ if ($Acao) {
         'corrigir' { [void](Corrigir-Tudo $PastaPort) }
         'verificar' { }
         'atualizar' { foreach ($x in $quero) { [void](Atualizar-Mod $PastaPort $x) } }
+        'voltar' { foreach ($x in $quero) { Voltar-Mod $PastaPort $x } }
         'atualizacoes' {
             # fase 2: o estado de atualização de cada mod (instalada, disponível, notas, fontes), sem cache
             $est = @(Estado-Atualizacoes $PastaPort -Forcar)

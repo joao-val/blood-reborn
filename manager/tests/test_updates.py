@@ -70,7 +70,7 @@ class State(Base):
         self.assertIn('nexus', e['Fontes'])
 
 
-class Update(Base):
+class UpdateBase(Base):
     def _start(self, **cat):
         self.f.package('1.0', {'chr/a.txt': 'one'}, patches=['TestMod.xml'])
         self.f.run('instalar', mods=FOLDER)
@@ -81,6 +81,8 @@ class Update(Base):
     def _update(self, *extra):
         return self.f.run('atualizar', '-Catalogo', self.s.base + '/catalog.json', '-NexusApi', self.s.base, *extra, mods=FOLDER)
 
+
+class Update(UpdateBase):
     def test_from_github(self):
         self._start(download=self.s.base + '/files/Blood_Reborn_Test_Mod_v1.1.zip')
         code, rep, out = self._update()
@@ -117,6 +119,19 @@ class Update(Base):
         self.assertEqual(code, 0, out)
         self.assertIn('nexusmods.com/bloodborne/mods/999?tab=files&file_id=7', out)
         self.assertEqual(self.f.installed('chr/a.txt'), 'two')
+
+
+class Rollback(UpdateBase):
+    def test_back_to_the_previous_version(self):
+        self._start(download=self.s.base + '/files/Blood_Reborn_Test_Mod_v1.1.zip')
+        self._update()
+        code, rep, out = self.f.run('voltar', mods=FOLDER)
+        self.assertEqual(code, 0, out)
+        self.assertEqual(self.f.installed('chr/a.txt'), 'one')
+        self.assertIn('1.0', (self.f.port / 'patches' / 'TestMod.xml').read_text())
+        rec = json.loads((self.f.port / 'mods' / FOLDER / 'blood_reborn_installed.json').read_text(encoding='utf-8-sig'))
+        self.assertEqual(rec['version'], '1.0')
+        self.assertFalse((self.f.data / 'anterior' / FOLDER).exists())
 
 
 if __name__ == '__main__':

@@ -254,3 +254,22 @@ function Atualizar-Mod([string]$porto, [string]$pasta) {
     $script:FonteInstalacao = 'zip'
     return 'ok'
 }
+
+# ---------------------------------------------------------------- voltar para a versão anterior
+function Versao-Anterior([string]$pasta) {
+    $r = Ler-Registro (Join-Path (Join-Path (Join-Path $script:Dados 'anterior') $pasta) 'mod')
+    if ($r) { return [string]$r.version }
+    return $null
+}
+function Voltar-Mod([string]$porto, [string]$pasta) {
+    if (-not $SemTrava -and (Jogo-Aberto)) { throw (T 'aberto') }
+    $src = Join-Path (Join-Path $script:Dados 'anterior') $pasta
+    if (-not [IO.Directory]::Exists((Join-Path $src 'mod'))) { throw (T 'u_semanterior') }
+    $alvo = Join-Path (Join-Path $porto 'mods') $pasta; $dp = Join-Path $porto 'patches'
+    $agora = Ler-Registro $alvo
+    foreach ($x in @($agora.patches)) { $f = Join-Path $dp ([string]$x); if ($x -and [IO.File]::Exists($f)) { Remove-Item -LiteralPath $f -Force } }
+    if ([IO.Directory]::Exists($alvo)) { Remove-Item -LiteralPath $alvo -Recurse -Force }
+    Copy-Item -LiteralPath (Join-Path $src 'mod') -Destination $alvo -Recurse
+    foreach ($f in [IO.Directory]::GetFiles((Join-Path $src 'patches'))) { Copy-Item -LiteralPath $f -Destination $dp -Force }
+    Remove-Item -LiteralPath $src -Recurse -Force
+}
