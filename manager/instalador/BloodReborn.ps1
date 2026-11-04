@@ -98,6 +98,11 @@ $TXT = @{
   u_falhou = 'Não deu para baixar {0}: confira a internet ou baixe o zip e ponha na pasta do instalador.'
   u_esperando = 'Esperando o download do Nexus na pasta Downloads... {0} s'
   u_semanterior = 'Não há versão anterior guardada para voltar.'
+  st_nova = 'Atualização disponível'; st_desc = 'Versão desconhecida'
+  u_procurar = 'PROCURAR ATUALIZAÇÕES'; u_btn = 'Atualizar para v{0}'; u_notas = 'O que mudou'; u_voltar = 'Voltar para v{0}'
+  u_cancelar = 'Cancelar'; u_linha = 'Instalada: v{0}  ·  Disponível: v{1}'; u_nada_novo = 'Todos os mods estão na versão mais nova.'
+  u_titulo_notas = '{0}: o que mudou'; u_chave = 'Conta Premium do Nexus? Cole a sua chave da API (Nexus Mods ➜ Conta ➜ API Keys). Deixe vazio para apagar.'
+  u_btn_chave = 'Chave do Nexus'; u_ok = '{0} atualizado para a versão {1}.'; u_voltou = '{0} voltou para a versão anterior.'
  }
  en = @{
   app_sub = 'Mod installer'; busca = 'Search...   Ctrl+F'; nav_mods = 'Mods'; nav_fix = 'Error repair'; nav_ajuda = 'How to install'
@@ -143,6 +148,11 @@ $TXT = @{
   u_falhou = 'Could not download {0}: check your internet, or download the zip and put it next to the manager.'
   u_esperando = 'Waiting for the Nexus download in your Downloads folder... {0} s'
   u_semanterior = 'There is no previous version saved to go back to.'
+  st_nova = 'Update available'; st_desc = 'Unknown version'
+  u_procurar = 'CHECK FOR UPDATES'; u_btn = 'Update to v{0}'; u_notas = 'What changed'; u_voltar = 'Back to v{0}'
+  u_cancelar = 'Cancel'; u_linha = 'Installed: v{0}  ·  Available: v{1}'; u_nada_novo = 'Every mod is on the latest version.'
+  u_titulo_notas = '{0}: what changed'; u_chave = 'Nexus Premium account? Paste your API key (Nexus Mods ➜ Account ➜ API Keys). Leave it empty to remove it.'
+  u_btn_chave = 'Nexus key'; u_ok = '{0} updated to version {1}.'; u_voltou = '{0} went back to the previous version.'
  }
  es = @{
   app_sub = 'Instalador de mods'; busca = 'Buscar...   Ctrl+F'; nav_mods = 'Mods'; nav_fix = 'Corrección de errores'; nav_ajuda = 'Cómo instalar'
@@ -188,6 +198,11 @@ $TXT = @{
   u_falhou = 'No se pudo descargar {0}: revisa internet, o descarga el zip y ponlo en la carpeta del instalador.'
   u_esperando = 'Esperando la descarga de Nexus en la carpeta Descargas... {0} s'
   u_semanterior = 'No hay una versión anterior guardada para volver.'
+  st_nova = 'Actualización disponible'; st_desc = 'Versión desconocida'
+  u_procurar = 'BUSCAR ACTUALIZACIONES'; u_btn = 'Actualizar a v{0}'; u_notas = 'Qué cambió'; u_voltar = 'Volver a v{0}'
+  u_cancelar = 'Cancelar'; u_linha = 'Instalada: v{0}  ·  Disponible: v{1}'; u_nada_novo = 'Todos los mods están en la versión más nueva.'
+  u_titulo_notas = '{0}: qué cambió'; u_chave = '¿Cuenta Premium de Nexus? Pega tu clave de la API (Nexus Mods ➜ Cuenta ➜ API Keys). Déjalo vacío para borrarla.'
+  u_btn_chave = 'Clave de Nexus'; u_ok = '{0} actualizado a la versión {1}.'; u_voltou = '{0} volvió a la versión anterior.'
  }
  zh = @{
   app_sub = '模组安装器'; busca = '搜索...   Ctrl+F'; nav_mods = '模组'; nav_fix = '错误修复'; nav_ajuda = '安装说明'
@@ -233,6 +248,11 @@ $TXT = @{
   u_falhou = '无法下载 {0}：请检查网络，或手动下载 zip 并放到管理器所在的文件夹。'
   u_esperando = '正在“下载”文件夹中等待 Nexus 的下载…… {0} 秒'
   u_semanterior = '没有保存可以回退的旧版本。'
+  st_nova = '有可用更新'; st_desc = '版本未知'
+  u_procurar = '检查更新'; u_btn = '更新到 v{0}'; u_notas = '更新内容'; u_voltar = '回退到 v{0}'
+  u_cancelar = '取消'; u_linha = '已安装：v{0}  ·  可用：v{1}'; u_nada_novo = '所有模组都已是最新版本。'
+  u_titulo_notas = '{0}：更新内容'; u_chave = '有 Nexus 高级会员？请粘贴你的 API 密钥（Nexus Mods ➜ 账户 ➜ API Keys）。留空即删除。'
+  u_btn_chave = 'Nexus 密钥'; u_ok = '{0} 已更新到版本 {1}。'; u_voltou = '{0} 已回退到之前的版本。'
  }
 }
 function T([string]$chave) {

@@ -1069,6 +1069,8 @@ function Chave-UI {
 
 - [ ] **Step 4: The secondary button on the Mods page**
 
+> **As built:** `BtnSecundario` lives inside the summary box of the *Error repair* page, which is collapsed on the Mods page, so it can never show there. The window got its own button instead: `BtnAtualizacoes`, right of the *Choose your mods* heading (in the `$script:U` list and in `Ocupado`'s list). It does *Check for updates*, turns into *Cancel* during an update, and carries the Nexus key menu. `BtnSecundario` stays as *Verify* only, and `Ocupado` keeps disabling it.
+
 In `Mostrar-Pagina`, case `'mods'`, add:
 
 ```powershell
