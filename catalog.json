@@ -78,14 +78,14 @@
         "zh": "更具挑战、更现代的首领与敌人。 多个首领拥有第二条血条和新的阶段。 攻击间隙更短、AI 更具攻击性，生命值与伤害重新平衡。 包含 1 个代码补丁（修复布料物理）。安装程序会自动启用。"
       },
       "package": "Blood_Reborn_Merciless_Night_v1.32.zip",
-      "sha256": "e9b5bd8b92f3573b6ec64c7c605c064717c838dbd97b0c38940385949a81061c",
+      "sha256": "dd99115650d88d5b941174b554c30b440330425204821dad01a71a7750844959",
       "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-05/Blood_Reborn_Merciless_Night_v1.32.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {
         "1.32": {
-          "en": "Ebrietas reworked: one health bar, final-phase moves from 75%, lightning every 30 s, a 17 s frenzy aura every 60 s, faster grab, +10% Blood Echoes. Unique hunters 10% more aggressive with 12% more Blood Echoes. Brings every boss and enemy change tested since 1.31: health of Logarius, The One Reborn, Celestial Emissary and Mergo's Wet Nurse, chalice bosses, instant phase changes, faster minions, snatchers and hounds.",
-          "pt": "Ebrietas refeita: uma barra de vida, golpes da fase final a partir de 75%, raios a cada 30 s, aura de frenesi de 17 s a cada 60 s, agarrão mais rápido, +10% de Ecos de Sangue. Caçadores únicos 10% mais agressivos e com 12% mais Ecos de Sangue. Traz todas as mudanças de chefes e inimigos testadas desde a 1.31: vida de Logarius, Renascido, Emissário Celestial e Ama de Leite de Mergo, chefes de cálice, fases instantâneas, capangas, sequestradores e cães mais rápidos."
+          "en": "The night got crueler. Find out for yourself.",
+          "pt": "A noite ficou mais cruel. Descubra na caçada."
         },
         "1.31": {
           "en": "Lady Maria tuning approved; clean release package.",
