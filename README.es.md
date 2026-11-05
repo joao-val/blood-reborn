@@ -53,7 +53,7 @@ Una muestra de lo que puedes encontrar:
 
 🔧 Incluye 9 parches de código (el gestor los activa por ti).
 
-### 🌙 Merciless Night — v1.31
+### 🌙 Merciless Night — v1.32
 
 La noche se volvió más cruel. 🌑
 

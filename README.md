@@ -53,7 +53,7 @@ A taste of what you can find:
 
 🔧 Includes 9 code patches (installed for you).
 
-### 🌙 Merciless Night — v1.31
+### 🌙 Merciless Night — v1.32
 
 The night got crueler. 🌑
 
