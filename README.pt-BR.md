@@ -53,7 +53,7 @@ Uma amostra do que você pode encontrar:
 
 🔧 Traz 9 patches de código (o gerenciador liga para você).
 
-### 🌙 Merciless Night — v1.32
+### 🌙 Merciless Night — v1.33
 
 A noite ficou mais cruel. 🌑
 

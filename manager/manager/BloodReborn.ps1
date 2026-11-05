@@ -49,7 +49,7 @@ $EXTRAS = @('', '.txt', '.md', '.ini', '.json', '.pdf', '.rtf', '.nfo', '.url', 
 $SOLTOS = @('instalador.ps1', 'Instalar - Install.bat', 'Desinstalar - Uninstall.bat', 'LEIA-ME_PT.txt', 'README_EN.txt', 'LEAME_ES.txt', 'README_ZH.txt', 'blood_reborn.json')
 $PREFERENCIA = @('Blood Reborn - Hunters Arsenal', 'Blood Reborn - Merciless Night', 'Blood Reborn - Fogside Lantern', 'Blood Reborn - Blood Vial Safety Net')
 $LEIAME = @{ pt = 'LEIA-ME_PT.txt'; en = 'README_EN.txt'; es = 'LEAME_ES.txt'; zh = 'README_ZH.txt' }
-$VERSAO_GERENCIADOR = '2.2.1'
+$VERSAO_GERENCIADOR = '2.2.2'
 $REGISTRO = 'blood_reborn_installed.json'
 # 04/11/2026: os textos do próprio BB Port junto com os dos nossos mods (gerada aqui; ver Compor-Textos)
 $COMPAT_TEXTOS = 'Blood Reborn - zCompat BB Port texts'
@@ -388,19 +388,39 @@ function Ler-Pacotes {
             }
         }
     }
+    # 2.2.2 (05/11/2026): cada zip leva todas as pastinhas, feitas com as versões dos mods do dia em que foi montado.
+    # Vence o zip cuja pastinha foi feita com as versões que ficam instaladas ("versoes" no blood_reborn.json); depois
+    # um zip que diz as versões; por último a ordem, como antes. Até a 2.2.1 vencia sempre o 1º da ordem (o Arsenal,
+    # montado com o Merciless Night 1.31): quem tinha os dois recebia o gameparam velho por cima do novo.
+    $verDe = @{}
+    foreach ($p in $script:Pacotes) { $verDe[$p.Pasta] = $p.Versao }
     foreach ($c in $cs.Values) {
+        $nota = @{}
         foreach ($p in $script:Pacotes) {
-            $pre = $p.Topo + $COMPAT_DIR + '/' + $c.Pasta + '/'; $arq = [IO.Compression.ZipFile]::OpenRead($p.Zip)
-            try {
-                foreach ($e in $arq.Entries) {
-                    if ($e.FullName.StartsWith($pre) -and -not $e.FullName.EndsWith('/')) {
-                        $rel = $e.FullName.Substring($pre.Length)
-                        if ($rel.StartsWith('dvdroot_ps4/')) { [void]$c.Arquivos.Add($rel.Substring(12)) }
-                        $c.Maior = [Math]::Max($c.Maior, $c.Pasta.Length + 1 + $rel.Length)
+            $def = @($p.CompatDef | Where-Object { [string]$_.pasta -eq $c.Pasta })[0]
+            $n = 0
+            if ($def -and $def.versoes) {
+                $n = 1
+                $difere = @($c.Mods | Where-Object { $v = $def.versoes.PSObject.Properties[$_]; -not $v -or [string]$v.Value -ne [string]$verDe[$_] })
+                if ($difere.Count -eq 0) { $n = 2 }
+            }
+            $nota[$p.Zip] = $n
+        }
+        foreach ($quer in 2, 1, 0) {
+            foreach ($p in @($script:Pacotes | Where-Object { $nota[$_.Zip] -eq $quer })) {
+                $pre = $p.Topo + $COMPAT_DIR + '/' + $c.Pasta + '/'; $arq = [IO.Compression.ZipFile]::OpenRead($p.Zip)
+                try {
+                    foreach ($e in $arq.Entries) {
+                        if ($e.FullName.StartsWith($pre) -and -not $e.FullName.EndsWith('/')) {
+                            $rel = $e.FullName.Substring($pre.Length)
+                            if ($rel.StartsWith('dvdroot_ps4/')) { [void]$c.Arquivos.Add($rel.Substring(12)) }
+                            $c.Maior = [Math]::Max($c.Maior, $c.Pasta.Length + 1 + $rel.Length)
+                        }
                     }
-                }
-            } finally { $arq.Dispose() }
-            if ($c.Arquivos.Count -gt 0) { $c.Zip = $p.Zip; $c.Prefixo = $pre; break }
+                } finally { $arq.Dispose() }
+                if ($c.Arquivos.Count -gt 0) { $c.Zip = $p.Zip; $c.Prefixo = $pre; break }
+            }
+            if ($c.Zip) { break }
         }
     }
     $script:Compat = @($cs.Values | Sort-Object Pasta)

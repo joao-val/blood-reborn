@@ -9,11 +9,15 @@
     "game_id": 2708
   },
   "manager": {
-    "version": "2.2.1",
+    "version": "2.2.2",
     "package": "Blood_Reborn_Mod_Manager.zip",
-    "sha256": "318fbd0f9ca0a892d184f54631adaeb9638b64753386bd521d20cabe21163ce8",
-    "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-04.4/Blood_Reborn_Mod_Manager.zip",
+    "sha256": "74e66d09067f2aba9e3df7311d097cd4acba12d1b7e47cd6efcb23101ea00f32",
+    "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-05.2/Blood_Reborn_Mod_Manager.zip",
     "changes": {
+      "2.2.2": {
+        "en": "The compatibility between mods now comes from the right package: with Hunter's Arsenal and Merciless Night together, every Merciless Night change applies.",
+        "pt": "A compatibilidade entre os mods agora vem do pacote certo: com Hunter's Arsenal e Merciless Night juntos, todas as mudanças do Merciless Night valem."
+      },
       "2.2.1": {
         "en": "The window emblem is the red rune of the Hunter's Mark, made from your own game. Mods installed without their zip show as installed, with Update.",
         "pt": "O emblema da janela é a runa vermelha da Marca do Caçador, tirada do seu próprio jogo. Mods instalados sem o zip aparecem como instalados, com Atualizar.",
@@ -69,7 +73,7 @@
       "key": "merciless_night",
       "name": "Merciless Night",
       "folder": "Blood Reborn - Merciless Night",
-      "version": "1.32",
+      "version": "1.33",
       "status": "released",
       "summary": {
         "pt": "Chefes e inimigos mais desafiadores e mais modernos. Segunda barra de vida e novas fases em vários chefes. Menos tempo parado entre os golpes, IA mais agressiva, vida e dano reajustados. Traz 1 patch de código (conserta a física do pano). O instalador já liga.",
@@ -77,12 +81,16 @@
         "es": "Jefes y enemigos más desafiantes y más modernos. Segunda barra de vida y nuevas fases en varios jefes. Menos tiempo de recuperación entre golpes, IA más agresiva, vida y daño reajustados. Incluye 1 parche de código (corrige la física de la tela). El instalador ya lo activa.",
         "zh": "更具挑战、更现代的首领与敌人。 多个首领拥有第二条血条和新的阶段。 攻击间隙更短、AI 更具攻击性，生命值与伤害重新平衡。 包含 1 个代码补丁（修复布料物理）。安装程序会自动启用。"
       },
-      "package": "Blood_Reborn_Merciless_Night_v1.32.zip",
-      "sha256": "dd99115650d88d5b941174b554c30b440330425204821dad01a71a7750844959",
-      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-05/Blood_Reborn_Merciless_Night_v1.32.zip",
+      "package": "Blood_Reborn_Merciless_Night_v1.33.zip",
+      "sha256": "f4d2938b3bc368b2dba5b9c54cdbeaa1403f422a6556576b8f4fce8b0320c80a",
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-05.2/Blood_Reborn_Merciless_Night_v1.33.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {
+        "1.33": {
+          "en": "Adjustments made to Djura.",
+          "pt": "Ajustes realizados no Djura."
+        },
         "1.32": {
           "en": "The night got crueler. Find out for yourself.",
           "pt": "A noite ficou mais cruel. Descubra na caçada."

@@ -53,7 +53,7 @@
 
 🔧 包含 9 个代码补丁（管理器会替你开启）。
 
-### 🌙 Merciless Night — v1.32
+### 🌙 Merciless Night — v1.33
 
 夜晚变得更加残酷。🌑
 
