@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updated": "2026-11-05",
+  "updated": "2026-11-06",
   "github": {
     "repository": "joao-val/blood-reborn"
   },
@@ -73,7 +73,7 @@
       "key": "merciless_night",
       "name": "Merciless Night",
       "folder": "Blood Reborn - Merciless Night",
-      "version": "1.33",
+      "version": "1.34",
       "status": "released",
       "summary": {
         "pt": "Chefes e inimigos mais desafiadores e mais modernos. Segunda barra de vida e novas fases em vários chefes. Menos tempo parado entre os golpes, IA mais agressiva, vida e dano reajustados. Traz 1 patch de código (conserta a física do pano). O instalador já liga.",
@@ -81,12 +81,16 @@
         "es": "Jefes y enemigos más desafiantes y más modernos. Segunda barra de vida y nuevas fases en varios jefes. Menos tiempo de recuperación entre golpes, IA más agresiva, vida y daño reajustados. Incluye 1 parche de código (corrige la física de la tela). El instalador ya lo activa.",
         "zh": "更具挑战、更现代的首领与敌人。 多个首领拥有第二条血条和新的阶段。 攻击间隙更短、AI 更具攻击性，生命值与伤害重新平衡。 包含 1 个代码补丁（修复布料物理）。安装程序会自动启用。"
       },
-      "package": "Blood_Reborn_Merciless_Night_v1.33.zip",
-      "sha256": "f4d2938b3bc368b2dba5b9c54cdbeaa1403f422a6556576b8f4fce8b0320c80a",
-      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-05.2/Blood_Reborn_Merciless_Night_v1.33.zip",
+      "package": "Blood_Reborn_Merciless_Night_v1.34.zip",
+      "sha256": "e583f010af2bc032b43aaefeaf2064473b6f717ad12012ceb5ac2ab3e3e34fb3",
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-06/Blood_Reborn_Merciless_Night_v1.34.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {
+        "1.34": {
+          "en": "Adjustments made to Ebrietas.",
+          "pt": "Ajustes realizados na Ebrietas."
+        },
         "1.33": {
           "en": "Adjustments made to Djura.",
           "pt": "Ajustes realizados no Djura."
