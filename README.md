@@ -63,7 +63,7 @@ Bosses, hunters and beasts were reworked for a **more dynamic, modern and challe
 
 🔧 Includes 1 code patch (installed for you).
 
-### 🏮 Fogside Lantern — v1.6.1 *(testing)*
+### 🏮 Fogside Lantern — v1.7 *(testing)*
 
 Died in a boss fight? You respawn right outside the boss fog. No more long walks back. 🚶‍♂️
 

@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updated": "2026-11-06",
+  "updated": "2026-11-09",
   "github": {
     "repository": "joao-val/blood-reborn"
   },
@@ -54,8 +54,8 @@
         "zh": "为机关武器加入全新的特殊攻击：变形状态下按 R2+L2。 灵感来自《艾尔登法环》的战技，并为《血源诅咒》重新制作。 带有\"契约\"的符文与血宝石：掉落的宝石会随机带上 14 种契约之一。 包含 9 个代码补丁。模组需要它们：安装程序会自动启用。"
       },
       "package": "Blood_Reborn_Hunters_Arsenal_v1.0.1.zip",
-      "sha256": "0359c7996cbae10293b7401de77d79f68038da4f33737d52640713876f833a95",
-      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-04.2/Blood_Reborn_Hunters_Arsenal_v1.0.1.zip",
+      "sha256": "663bba6daac215fc3dd74804a547b8bf4a5a3bddc7d99e961610323670fe686a",
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-09/Blood_Reborn_Hunters_Arsenal_v1.0.1.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {
@@ -82,8 +82,8 @@
         "zh": "更具挑战、更现代的首领与敌人。 多个首领拥有第二条血条和新的阶段。 攻击间隙更短、AI 更具攻击性，生命值与伤害重新平衡。 包含 1 个代码补丁（修复布料物理）。安装程序会自动启用。"
       },
       "package": "Blood_Reborn_Merciless_Night_v1.35.zip",
-      "sha256": "807b93086bf18d49b807b5ca5e9b23172a6f2c71ca72ed742f6cb745c223ce17",
-      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-06.2/Blood_Reborn_Merciless_Night_v1.35.zip",
+      "sha256": "d3e92530b5477d33258c0e05aee6721f9ff643238013267623476e0ddb4b4a02",
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-09/Blood_Reborn_Merciless_Night_v1.35.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {
@@ -113,20 +113,26 @@
       "key": "fogside_lantern",
       "name": "Fogside Lantern",
       "folder": "Blood Reborn - Fogside Lantern",
-      "version": "1.6.1",
+      "version": "1.7",
       "status": "testing",
       "summary": {
-        "pt": "Morreu numa luta de chefe? Você renasce do lado de fora da névoa do chefe, na lanterna do chefe. Nada de fazer o caminho inteiro de novo!",
-        "en": "Died in a boss fight? You respawn right outside the boss fog, at the boss lantern. No more walking the whole way back!",
-        "es": "¿Moriste en una pelea contra un jefe? Reapareces justo fuera de la niebla del jefe, en el farol del jefe. ¡Nada de recorrer todo el camino otra vez!",
-        "zh": "在首领战中死亡？你会在首领雾门外、首领的提灯处复活。 不用再从头跑一遍路了！"
+        "pt": "Morreu numa luta de chefe? Você renasce do lado de fora da névoa do chefe. Nada de fazer o caminho inteiro de novo! A Marca do Caçador e as lanternas continuam como no jogo original.",
+        "en": "Died in a boss fight? You respawn right outside the boss fog. No more walking the whole way back! The Hunter's Mark and the lanterns work just like in the original game.",
+        "es": "¿Moriste en una pelea contra un jefe? Reapareces justo fuera de la niebla del jefe. ¡Nada de recorrer todo el camino otra vez! La Marca del Cazador y los faroles funcionan igual que en el juego original.",
+        "zh": "在首领战中死亡？你会在首领雾门外复活。 不用再从头跑一遍路了！ 猎人印记和提灯的作用与原版游戏相同。"
       },
-      "package": "Blood_Reborn_Fogside_Lantern_v1.6.1.zip",
-      "sha256": "e2f2085c91fec4bd01ebd0fd3782f4c36bea38766e6123df9b49a7e4c240605b",
-      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-04/Blood_Reborn_Fogside_Lantern_v1.6.1.zip",
+      "package": "Blood_Reborn_Fogside_Lantern_v1.7.zip",
+      "sha256": "014a8a3546d1563f7b511f8cdaca3d4f32ff24d972a1adf89e5c8dc7952959c1",
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-09/Blood_Reborn_Fogside_Lantern_v1.7.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {
+        "1.7": {
+          "en": "The Hunter's Mark and travel from the Hunter's Dream take you to the lantern again. Only a death in the boss fight sends you outside the fog, once; killing the boss clears it.",
+          "pt": "A Marca do Caçador e a viagem pelo Sonho do Caçador voltam a levar à lanterna. Só a morte na luta do chefe manda para fora da névoa, uma vez; matar o chefe apaga esse ponto.",
+          "es": "La Marca del Cazador y el viaje desde el Sueño del Cazador vuelven a llevarte al farol. Solo morir en la pelea del jefe te deja fuera de la niebla, una vez; matar al jefe lo borra.",
+          "zh": "猎人印记和从猎人梦境出发的传送重新会把你带到提灯处。只有在首领战中死亡才会让你在雾门外复活一次；击败首领后该复活点会被清除。"
+        },
         "1.6.1": {
           "en": "Version included in the first Blood Reborn package.",
           "pt": "Versão incluída no primeiro pacote do Blood Reborn."
@@ -146,8 +152,8 @@
         "zh": "死亡并复活后，你携带的采血瓶会补满到 11 个。 只补足缺少的数量（0 变 11，7 变 11）。战斗中不会补充。"
       },
       "package": "Blood_Reborn_Blood_Vial_Safety_Net_v1.0.1.zip",
-      "sha256": "ca0aa0f743ea9a03d1ae4011d660b7bf079617558b9937dc591813623033daa3",
-      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-04/Blood_Reborn_Blood_Vial_Safety_Net_v1.0.1.zip",
+      "sha256": "7bf17f771e164b07f6c53412a247e17029ae9dcdd721e46eda2e24d335c477e2",
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-09/Blood_Reborn_Blood_Vial_Safety_Net_v1.0.1.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {

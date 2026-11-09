@@ -63,7 +63,7 @@ Jefes, cazadores y bestias fueron rehechos para un Bloodborne **más dinámico, 
 
 🔧 Incluye 1 parche de código (el gestor lo activa por ti).
 
-### 🏮 Fogside Lantern — v1.6.1 *(en prueba)*
+### 🏮 Fogside Lantern — v1.7 *(en prueba)*
 
 ¿Moriste peleando contra un jefe? Reapareces justo afuera de la niebla del jefe. Se acabaron las largas caminatas de vuelta. 🚶‍♂️
 

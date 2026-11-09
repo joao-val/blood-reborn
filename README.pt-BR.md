@@ -63,7 +63,7 @@ Chefes, caçadores e feras foram refeitos para um Bloodborne **mais dinâmico, m
 
 🔧 Traz 1 patch de código (o gerenciador liga para você).
 
-### 🏮 Fogside Lantern — v1.6.1 *(em teste)*
+### 🏮 Fogside Lantern — v1.7 *(em teste)*
 
 Morreu na luta contra um chefe? Você renasce do lado de fora da névoa do chefe. Nada de caminhada longa de volta. 🚶‍♂️
 
