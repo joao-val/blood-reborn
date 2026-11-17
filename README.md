@@ -24,7 +24,7 @@
 
 ## ⚔️ The mods
 
-### 💎 Hunter's Arsenal: Blood Pacts — v1.1.1
+### 💎 Hunter's Arsenal: Blood Pacts — v1.1.2
 
 New **special attacks** for the trick weapons (R2+L2 in the transformed mode), inspired by Elden Ring skills and rebuilt for Bloodborne. But the heart of this mod is the **Blood Pacts**.
 
