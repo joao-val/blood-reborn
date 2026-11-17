@@ -24,16 +24,16 @@
 
 ## ⚔️ The mods
 
-### 💎 Hunter's Arsenal: Blood Pacts — v1.0.1
+### 💎 Hunter's Arsenal: Blood Pacts — v1.1.0
 
 New **special attacks** for the trick weapons (R2+L2 in the transformed mode), inspired by Elden Ring skills and rebuilt for Bloodborne. But the heart of this mod is the **Blood Pacts**.
 
 🩸 **Every pact is a deal: a power, and a price.**
 
 - 💎 The **gems** you find can come with one of **14 pacts**. The stronger the gem, the stronger the pact (Pact 1, 2 and 3), and the price grows with it.
-- 🏆 The deeper the Chalice, the more pacts: 60% of the gems in the world and in shallow Chalices, 80% in medium depths, 90% in the deepest ones. Farming gems is worth it again.
+- 🏆 60% of the gems that can carry a pact come with one, and the deeper the Chalice, the stronger the pact. Farming gems is worth it again.
 - ✨ **Caryll Runes** carry pacts too.
-- 📜 Each pact shows up as its own line on the gem and weapon screens, in all 21 languages of the game.
+- 📜 Each pact shows up as its own line on the gem screen, in all 21 languages of the game.
 
 A taste of what you can find:
 
@@ -45,15 +45,15 @@ A taste of what you can find:
 | Hitting with a special drinks back some HP | Your health slowly drains |
 | Hitting with a special gives back a Quicksilver Bullet | Fewer max bullets |
 | Each hit in a row raises your attack | Each hit raises the damage you take |
-| A perfect dodge raises your attack for a moment | Dodging costs more stamina |
-| With 40+ Insight, your specials hit harder | Lower frenzy resistance |
+| Dodging raises your attack for 2 seconds | Dodging costs more stamina |
+| A special raises your attack for 3 seconds | Lower frenzy resistance |
 | More damage against beasts | Less damage against everything else |
-| Your rally also restores stamina | You take more damage |
-| More Quicksilver Bullets | Specials cost one more bullet |
+| Every hit restores a little stamina | You take more damage |
+| More Quicksilver Bullets | Specials cost stamina |
 
-🔧 Includes 9 code patches (installed for you).
+🌐 Works online too: no code patches. When you update, the manager removes the old version's patches.
 
-### 🌙 Merciless Night — v1.35
+### 🌙 Merciless Night — v1.36
 
 The night got crueler. 🌑
 

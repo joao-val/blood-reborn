@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updated": "2026-11-09",
+  "updated": "2026-11-17",
   "github": {
     "repository": "joao-val/blood-reborn"
   },
@@ -9,11 +9,15 @@
     "game_id": 2708
   },
   "manager": {
-    "version": "2.2.2",
+    "version": "2.2.3",
     "package": "Blood_Reborn_Mod_Manager.zip",
-    "sha256": "74e66d09067f2aba9e3df7311d097cd4acba12d1b7e47cd6efcb23101ea00f32",
-    "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-05.2/Blood_Reborn_Mod_Manager.zip",
+    "sha256": "abb1569abf7f9b139f89c4b5f2820e8e91114502d042048ad6315d95c1b15ae6",
+    "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-17/Blood_Reborn_Mod_Manager.zip",
     "changes": {
+      "2.2.3": {
+        "en": "Updating a mod now removes the code patches its new version no longer uses.",
+        "pt": "Atualizar um mod agora tira os patches de código que a versão nova não usa mais."
+      },
       "2.2.2": {
         "en": "The compatibility between mods now comes from the right package: with Hunter's Arsenal and Merciless Night together, every Merciless Night change applies.",
         "pt": "A compatibilidade entre os mods agora vem do pacote certo: com Hunter's Arsenal e Merciless Night juntos, todas as mudanças do Merciless Night valem."
@@ -45,20 +49,24 @@
       "key": "arsenal",
       "name": "Hunter's Arsenal: Blood Pacts",
       "folder": "Blood Reborn - Hunters Arsenal",
-      "version": "1.0.1",
+      "version": "1.1.0",
       "status": "released",
       "summary": {
-        "pt": "Golpes especiais novos para as armas de truque: R2+L2 com a arma transformada. Inspirados em habilidades do Elden Ring e refeitos para o Bloodborne. Runas e gemas com PACTO: 14 pactos sorteados nas gemas que caem. Traz 9 patches de código. Eles são necessários: o instalador já liga.",
-        "en": "New special attacks for the trick weapons: R2+L2 in the transformed mode. Inspired by Elden Ring skills and rebuilt for Bloodborne. Runes and gems with PACTS: 14 pacts rolled on the gems you find. Includes 9 code patches. The mod needs them: the installer turns them on.",
-        "es": "Ataques especiales nuevos para las armas de truco: R2+L2 con el arma transformada. Inspirados en habilidades de Elden Ring y rehechos para Bloodborne. Runas y gemas con PACTO: 14 pactos sorteados en las gemas que encuentras. Incluye 9 parches de código. El mod los necesita: el instalador ya los activa.",
-        "zh": "为机关武器加入全新的特殊攻击：变形状态下按 R2+L2。 灵感来自《艾尔登法环》的战技，并为《血源诅咒》重新制作。 带有\"契约\"的符文与血宝石：掉落的宝石会随机带上 14 种契约之一。 包含 9 个代码补丁。模组需要它们：安装程序会自动启用。"
+        "pt": "Golpes especiais novos para as armas de truque: R2+L2 com a arma transformada. Inspirados em habilidades do Elden Ring e refeitos para o Bloodborne. Runas e gemas com PACTO: 14 pactos sorteados nas gemas que caem. Funciona também online: nenhum patch de código.",
+        "en": "New special attacks for the trick weapons: R2+L2 in the transformed mode. Inspired by Elden Ring skills and rebuilt for Bloodborne. Runes and gems with PACTS: 14 pacts rolled on the gems you find. Works online too: no code patches.",
+        "es": "Ataques especiales nuevos para las armas de truco: R2+L2 con el arma transformada. Inspirados en habilidades de Elden Ring y rehechos para Bloodborne. Runas y gemas con PACTO: 14 pactos sorteados en las gemas que encuentras. Funciona también en línea: ningún parche de código.",
+        "zh": "为机关武器加入全新的特殊攻击：变形状态下按 R2+L2。 灵感来自《艾尔登法环》的战技，并为《血源诅咒》重新制作。 带有\"契约\"的符文与血宝石：掉落的宝石会随机带上 14 种契约之一。 也可以联机使用：没有任何代码补丁。"
       },
-      "package": "Blood_Reborn_Hunters_Arsenal_v1.0.1.zip",
-      "sha256": "663bba6daac215fc3dd74804a547b8bf4a5a3bddc7d99e961610323670fe686a",
-      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-09/Blood_Reborn_Hunters_Arsenal_v1.0.1.zip",
+      "package": "Blood_Reborn_Hunters_Arsenal_v1.1.0.zip",
+      "sha256": "5fca838b2823a2ba0e171cd9a878ace363d9a053adbaeb007444bedf7332103d",
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-17/Blood_Reborn_Hunters_Arsenal_v1.1.0.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {
+        "1.1.0": {
+          "en": "Works online too: the 9 code patches were replaced by game files (special costs, pacts and the pacts on the gems you find). Some pacts changed so they can work online: the special's attack bonus no longer needs Insight, the rally pact now gives stamina on every hit, the extra bullets pact costs stamina instead of a bullet, the visceral bullets pact costs damage taken, and the dodge attack bonus lasts 2 seconds. Chikage's R2+L2 reaches farther. Updating removes the old patches.",
+          "pt": "Funciona também online: os 9 patches de código viraram arquivos do jogo (custo dos especiais, pactos e o pacto nas gemas que caem). Alguns pactos mudaram para funcionar online: o bônus de ataque do especial não pede mais Discernimento, o pacto do rally agora devolve vigor a cada acerto, o de balas a mais custa vigor em vez de bala, o de balas no visceral custa dano recebido, e o bônus de ataque da esquiva dura 2 segundos. O R2+L2 da Chikage alcança mais longe. A atualização tira os patches antigos."
+        },
         "1.0.1": {
           "en": "Menu texts: only the Arsenal's own lines (gem and rune effects and pacts); leftover texts of another mod removed. With Mod Manager 2.1 the BB Port's own menu texts (Quit to Desktop, PC Settings, Rebirth) are kept.",
           "pt": "Textos do menu: só as linhas do próprio Arsenal (efeitos e pactos de gemas e runas); saíram textos que eram de outro mod. Com o gerenciador 2.1, os textos do próprio BB Port (Sair para a área de trabalho, Configurações do PC, Renascer) continuam."
@@ -73,7 +81,7 @@
       "key": "merciless_night",
       "name": "Merciless Night",
       "folder": "Blood Reborn - Merciless Night",
-      "version": "1.35",
+      "version": "1.36",
       "status": "released",
       "summary": {
         "pt": "Chefes e inimigos mais desafiadores e mais modernos. Segunda barra de vida e novas fases em vários chefes. Menos tempo parado entre os golpes, IA mais agressiva, vida e dano reajustados. Traz 1 patch de código (conserta a física do pano). O instalador já liga.",
@@ -81,12 +89,16 @@
         "es": "Jefes y enemigos más desafiantes y más modernos. Segunda barra de vida y nuevas fases en varios jefes. Menos tiempo de recuperación entre golpes, IA más agresiva, vida y daño reajustados. Incluye 1 parche de código (corrige la física de la tela). El instalador ya lo activa.",
         "zh": "更具挑战、更现代的首领与敌人。 多个首领拥有第二条血条和新的阶段。 攻击间隙更短、AI 更具攻击性，生命值与伤害重新平衡。 包含 1 个代码补丁（修复布料物理）。安装程序会自动启用。"
       },
-      "package": "Blood_Reborn_Merciless_Night_v1.35.zip",
-      "sha256": "d3e92530b5477d33258c0e05aee6721f9ff643238013267623476e0ddb4b4a02",
-      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-09/Blood_Reborn_Merciless_Night_v1.35.zip",
+      "package": "Blood_Reborn_Merciless_Night_v1.36.zip",
+      "sha256": "521664722a8927f8353c00bbac87555776877a0fbb3d410e06519607ad37c78c",
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-17/Blood_Reborn_Merciless_Night_v1.36.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {
+        "1.36": {
+          "en": "Adjustments made to Ludwig.",
+          "pt": "Ajustes realizados no Ludwig."
+        },
         "1.35": {
           "en": "New adjustments made to Ebrietas.",
           "pt": "Novos ajustes na Ebrietas."
@@ -122,8 +134,8 @@
         "zh": "在首领战中死亡？你会在首领雾门外复活。 不用再从头跑一遍路了！ 猎人印记和提灯的作用与原版游戏相同。"
       },
       "package": "Blood_Reborn_Fogside_Lantern_v1.7.zip",
-      "sha256": "014a8a3546d1563f7b511f8cdaca3d4f32ff24d972a1adf89e5c8dc7952959c1",
-      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-09/Blood_Reborn_Fogside_Lantern_v1.7.zip",
+      "sha256": "01398c18eb5b1fe51b5d2d803a89bc4d28175d300fa70944b93c8f8917e01b39",
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-17/Blood_Reborn_Fogside_Lantern_v1.7.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {
@@ -152,8 +164,8 @@
         "zh": "死亡并复活后，你携带的采血瓶会补满到 11 个。 只补足缺少的数量（0 变 11，7 变 11）。战斗中不会补充。"
       },
       "package": "Blood_Reborn_Blood_Vial_Safety_Net_v1.0.1.zip",
-      "sha256": "7bf17f771e164b07f6c53412a247e17029ae9dcdd721e46eda2e24d335c477e2",
-      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-09/Blood_Reborn_Blood_Vial_Safety_Net_v1.0.1.zip",
+      "sha256": "0ac4c25505561f8a5a19bacf8c8983d8701a52a8bb849881b6b97d90d911265a",
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-17/Blood_Reborn_Blood_Vial_Safety_Net_v1.0.1.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {

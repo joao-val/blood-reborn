@@ -121,6 +121,41 @@ class Update(UpdateBase):
         self.assertEqual(self.f.installed('chr/a.txt'), 'two')
 
 
+class RetiredPatches(UpdateBase):
+    def test_a_patch_the_new_version_dropped_is_removed(self):
+        # 17/11/2026: Hunter's Arsenal 1.1 has no code patches; the ones 1.0.1 installed must not stay on
+        self.f.package('1.0', {'chr/a.txt': 'one'}, patches=['TestMod.xml', 'Old.xml'])
+        self.f.run('instalar', mods=FOLDER)
+        self.assertTrue((self.f.port / 'patches' / 'Old.xml').exists())
+        (self.f.port / 'patches.json').write_text(json.dumps({'enabled': ['Old.xml/Old patch', 'TestMod.xml/Test', 'Other.xml/x'],
+                                                              'disabled': ['Old.xml/Old 2']}), encoding='utf-8')
+        z = self.f.package('1.1', {'chr/a.txt': 'two'}, patches=['TestMod.xml'], where=self.f.web / 'files')
+        self.f.catalog('1.1', sha256(z), download=self.s.base + '/files/Blood_Reborn_Test_Mod_v1.1.zip')
+        code, rep, out = self._update()
+        self.assertEqual(code, 0, out)
+        self.assertEqual(self.f.installed('chr/a.txt'), 'two')
+        self.assertFalse((self.f.port / 'patches' / 'Old.xml').exists())
+        self.assertTrue((self.f.port / 'patches' / 'TestMod.xml').exists())
+        pj = json.loads((self.f.port / 'patches.json').read_text(encoding='utf-8-sig'))
+        self.assertNotIn('Old.xml/Old patch', pj['enabled']); self.assertNotIn('Old.xml/Old 2', pj['disabled'])
+        self.assertIn('Other.xml/x', pj['enabled'])
+
+
+    def test_install_removes_the_retired_patches(self):
+        # a manual or older install left the old patches; the package lists them in "patches_retirados"
+        (self.f.port / 'patches').mkdir(parents=True, exist_ok=True)
+        (self.f.port / 'patches' / 'Old.xml').write_text('<Patch v="old"/>', encoding='utf-8')
+        (self.f.port / 'patches.json').write_text(json.dumps({'enabled': ['Old.xml/Old patch', 'Other.xml/x'], 'disabled': []}),
+                                                  encoding='utf-8')
+        self.f.package('1.1', {'chr/a.txt': 'two'}, patches=['TestMod.xml'], info={'patches_retirados': ['Old.xml']})
+        code, rep, out = self.f.run('instalar', mods=FOLDER)
+        self.assertEqual(code, 0, out)
+        self.assertFalse((self.f.port / 'patches' / 'Old.xml').exists())
+        self.assertTrue((self.f.port / 'patches' / 'TestMod.xml').exists())
+        pj = json.loads((self.f.port / 'patches.json').read_text(encoding='utf-8-sig'))
+        self.assertNotIn('Old.xml/Old patch', pj['enabled']); self.assertIn('Other.xml/x', pj['enabled'])
+
+
 class Rollback(UpdateBase):
     def test_back_to_the_previous_version(self):
         self._start(download=self.s.base + '/files/Blood_Reborn_Test_Mod_v1.1.zip')

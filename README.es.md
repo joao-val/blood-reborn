@@ -24,16 +24,16 @@
 
 ## ⚔️ Los mods
 
-### 💎 Hunter's Arsenal: Blood Pacts — v1.0.1
+### 💎 Hunter's Arsenal: Blood Pacts — v1.1.0
 
 **Ataques especiales** nuevos para las armas de truco (R2+L2 en la forma transformada), inspirados en las habilidades de Elden Ring y rehechos para Bloodborne. Pero el corazón de este mod son los **Pactos de Sangre**.
 
 🩸 **Cada pacto es un trato: un poder, y un precio.**
 
 - 💎 Las **gemas** que encuentras pueden traer uno de **14 pactos**. Cuanto más fuerte la gema, más fuerte el pacto (Pacto 1, 2 y 3), y el precio crece con él.
-- 🏆 Cuanto más profundo el Cáliz, más pactos: 60% de las gemas en el mundo y en los Cálices poco profundos, 80% en los medios, 90% en los más profundos. Farmear gemas vuelve a valer la pena.
+- 🏆 El 60% de las gemas que pueden tener pacto salen con él, y cuanto más profundo el Cáliz, más fuerte el pacto. Farmear gemas vuelve a valer la pena.
 - ✨ Las **Runas de Caryll** también traen pacto.
-- 📜 Cada pacto aparece en su propia línea en las pantallas de la gema y del arma, en los 21 idiomas del juego.
+- 📜 Cada pacto aparece en su propia línea en la pantalla de la gema, en los 21 idiomas del juego.
 
 Una muestra de lo que puedes encontrar:
 
@@ -45,15 +45,15 @@ Una muestra de lo que puedes encontrar:
 | Acertar el especial devuelve un poco de vida | Tu vida se va escurriendo |
 | Acertar el especial devuelve una Bala de Azogue | Menos balas máximas |
 | Cada golpe seguido aumenta tu ataque | Cada golpe aumenta el daño que recibes |
-| La esquiva perfecta aumenta el ataque por un instante | Esquivar gasta más vigor |
-| Con 40 o más de Perspicacia, los especiales pegan más fuerte | Menos resistencia al frenesí |
+| Esquivar aumenta el ataque durante 2 segundos | Esquivar gasta más vigor |
+| El especial aumenta tu ataque durante 3 segundos | Menos resistencia al frenesí |
 | Más daño contra bestias | Menos daño contra todo lo demás |
-| La recuperación (rally) también devuelve vigor | Recibes más daño |
-| Más Balas de Azogue | El especial gasta una bala más |
+| Cada golpe acertado devuelve un poco de vigor | Recibes más daño |
+| Más Balas de Azogue | El especial gasta vigor |
 
-🔧 Incluye 9 parches de código (el gestor los activa por ti).
+🌐 Funciona también en línea: ningún parche de código. Al actualizar, el gestor quita los parches de la versión antigua.
 
-### 🌙 Merciless Night — v1.35
+### 🌙 Merciless Night — v1.36
 
 La noche se volvió más cruel. 🌑
 

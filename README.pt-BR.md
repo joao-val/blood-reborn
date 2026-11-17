@@ -24,16 +24,16 @@
 
 ## ⚔️ Os mods
 
-### 💎 Hunter's Arsenal: Blood Pacts — v1.0.1
+### 💎 Hunter's Arsenal: Blood Pacts — v1.1.0
 
 **Ataques especiais** novos para as armas de truque (R2+L2 no modo transformado), inspirados nas habilidades do Elden Ring e refeitos para o Bloodborne. Mas o coração deste mod são os **Pactos de Sangue**.
 
 🩸 **Todo pacto é um trato: um poder, e um preço.**
 
 - 💎 As **gemas** que você encontra podem vir com um de **14 pactos**. Quanto mais forte a gema, mais forte o pacto (Pacto 1, 2 e 3), e o preço cresce junto.
-- 🏆 Quanto mais fundo o Cálice, mais pactos: 60% das gemas no mundo e nos Cálices rasos, 80% nos médios, 90% nos mais fundos. Farmar gema volta a valer a pena.
+- 🏆 60% das gemas que podem ter pacto saem com ele, e quanto mais fundo o Cálice, mais forte o pacto. Farmar gema volta a valer a pena.
 - ✨ As **Runas de Caryll** também trazem pacto.
-- 📜 Cada pacto aparece numa linha própria nas telas da gema e da arma, nos 21 idiomas do jogo.
+- 📜 Cada pacto aparece numa linha própria na tela da gema, nos 21 idiomas do jogo.
 
 Uma amostra do que você pode encontrar:
 
@@ -45,15 +45,15 @@ Uma amostra do que você pode encontrar:
 | Acertar o especial devolve um pouco de vida | A sua vida vai escorrendo |
 | Acertar o especial devolve uma Bala de Mercúrio | Menos balas máximas |
 | Cada acerto seguido aumenta o seu ataque | Cada acerto aumenta o dano que você recebe |
-| A esquiva perfeita aumenta o ataque por um instante | Esquivar gasta mais vigor |
-| Com 40 ou mais de Discernimento, os especiais batem mais forte | Menos resistência a frenesi |
+| Esquivar aumenta o ataque por 2 segundos | Esquivar gasta mais vigor |
+| O especial aumenta o seu ataque por 3 segundos | Menos resistência a frenesi |
 | Mais dano contra feras | Menos dano contra todo o resto |
-| A recuperação (rally) devolve vigor também | Você recebe mais dano |
-| Mais Balas de Mercúrio | O especial gasta uma bala a mais |
+| Cada acerto devolve um pouco de vigor | Você recebe mais dano |
+| Mais Balas de Mercúrio | O especial gasta vigor |
 
-🔧 Traz 9 patches de código (o gerenciador liga para você).
+🌐 Funciona também online: nenhum patch de código. Ao atualizar, o gerenciador tira os patches da versão antiga.
 
-### 🌙 Merciless Night — v1.35
+### 🌙 Merciless Night — v1.36
 
 A noite ficou mais cruel. 🌑
 

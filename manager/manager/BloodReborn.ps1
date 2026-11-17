@@ -49,7 +49,7 @@ $EXTRAS = @('', '.txt', '.md', '.ini', '.json', '.pdf', '.rtf', '.nfo', '.url', 
 $SOLTOS = @('instalador.ps1', 'Instalar - Install.bat', 'Desinstalar - Uninstall.bat', 'LEIA-ME_PT.txt', 'README_EN.txt', 'LEAME_ES.txt', 'README_ZH.txt', 'blood_reborn.json')
 $PREFERENCIA = @('Blood Reborn - Hunters Arsenal', 'Blood Reborn - Merciless Night', 'Blood Reborn - Fogside Lantern', 'Blood Reborn - Blood Vial Safety Net')
 $LEIAME = @{ pt = 'LEIA-ME_PT.txt'; en = 'README_EN.txt'; es = 'LEAME_ES.txt'; zh = 'README_ZH.txt' }
-$VERSAO_GERENCIADOR = '2.2.2'
+$VERSAO_GERENCIADOR = '2.2.3'
 $REGISTRO = 'blood_reborn_installed.json'
 # 04/11/2026: os textos do próprio BB Port junto com os dos nossos mods (gerada aqui; ver Compor-Textos)
 $COMPAT_TEXTOS = 'Blood Reborn - zCompat BB Port texts'
@@ -366,6 +366,7 @@ function Ler-Pacotes {
                 $pac = [pscustomobject]@{
                     Nome = [string]$info.nome; Versao = [string]$info.versao; Pasta = [string]$info.pasta
                     Patches = @($info.patches | Where-Object { $_ }); CompatDef = @($info.compat | Where-Object { $_ }); Textos = $info.textos
+                    Retirados = @($info.patches_retirados | Where-Object { $_ })
                     Zip = $z; Topo = $topo; Prefixo = $pre; Desc = $desc; Arquivos = $arqs; Maior = $maior }
                 [void]$todos.Add($pac)
                 $velho = $achados[$pac.Pasta]
@@ -756,6 +757,9 @@ function Aplicar-Escolha([string]$porto, [string[]]$quero) {
                     $e = $pv.Topo + 'patches/' + $x; $f = Join-Path $dp $x
                     if (-not (Conferir-Arquivo $pv.Zip $e $f)) { Extrair-Arquivo $pv.Zip $e $f }
                 }
+                # 17/11/2026: patches que versões antigas do mod usavam e esta não usa mais (blood_reborn.json
+                # "patches_retirados"): saem do disco e do patches.json (o Hunter's Arsenal 1.1 não usa os 9 da 1.0.1)
+                Tirar-Patches $porto @($pv.Retirados | Where-Object { @($pv.Patches) -notcontains $_ })
             }
         } else {
             # sai também o patch que só a versão instalada tinha (o registro guarda os patches dela)

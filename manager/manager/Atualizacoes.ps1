@@ -248,11 +248,26 @@ function Atualizar-Mod([string]$porto, [string]$pasta) {
         $script:FonteInstalacao = if ($e.Cat.download) { 'github' } else { 'nexus' }
     }
     $dm = Join-Path $porto 'mods'; $alvo = Join-Path $dm $pasta
+    $rv = Ler-Registro $alvo; $velhos = @(); if ($rv) { $velhos = @($rv.patches | Where-Object { $_ }) }
     if ([IO.Directory]::Exists($alvo)) { Guardar-Anterior $porto $pasta; Remove-Item -LiteralPath $alvo -Recurse -Force }
     $quero = @($script:Pacotes | Where-Object { $_.Pasta -eq $pasta -or [IO.Directory]::Exists((Join-Path $dm $_.Pasta)) } | ForEach-Object { $_.Pasta })
     [void](Aplicar-Escolha $porto $quero)
+    # 17/11/2026: os patches que só a versão antiga tinha saem (o Hunter's Arsenal 1.1 roda sem os 9 patches da 1.0.1;
+    # se ficassem, offline eles somariam efeitos em dobro)
+    Tirar-Patches $porto @($velhos | Where-Object { @($pac.Patches) -notcontains $_ })
     $script:FonteInstalacao = 'zip'
     return 'ok'
+}
+function Tirar-Patches([string]$porto, [string[]]$nomes) {
+    if (-not $nomes -or $nomes.Count -eq 0) { return }
+    $dp = Join-Path $porto 'patches'
+    foreach ($x in $nomes) { $f = Join-Path $dp $x; if ($x -and [IO.File]::Exists($f)) { Remove-Item -LiteralPath $f -Force } }
+    $pc = Join-Path $porto 'patches.json'
+    if ([IO.File]::Exists($pc)) {
+        $j = Ler-Json2 $pc 'enabled' 'disabled'
+        $de = { param($k) foreach ($x in $nomes) { if ($k -eq $x -or $k.StartsWith($x + '/')) { return $true } }; return $false }
+        Gravar-Json2 $pc 'enabled' @($j.A | Where-Object { -not (& $de $_) }) 'disabled' @($j.B | Where-Object { -not (& $de $_) })
+    }
 }
 
 # ---------------------------------------------------------------- voltar para a versão anterior
