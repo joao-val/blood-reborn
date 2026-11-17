@@ -49,7 +49,7 @@ $EXTRAS = @('', '.txt', '.md', '.ini', '.json', '.pdf', '.rtf', '.nfo', '.url', 
 $SOLTOS = @('instalador.ps1', 'Instalar - Install.bat', 'Desinstalar - Uninstall.bat', 'LEIA-ME_PT.txt', 'README_EN.txt', 'LEAME_ES.txt', 'README_ZH.txt', 'blood_reborn.json')
 $PREFERENCIA = @('Blood Reborn - Hunters Arsenal', 'Blood Reborn - Merciless Night', 'Blood Reborn - Fogside Lantern', 'Blood Reborn - Blood Vial Safety Net')
 $LEIAME = @{ pt = 'LEIA-ME_PT.txt'; en = 'README_EN.txt'; es = 'LEAME_ES.txt'; zh = 'README_ZH.txt' }
-$VERSAO_GERENCIADOR = '2.2.3'
+$VERSAO_GERENCIADOR = '2.2.4'
 $REGISTRO = 'blood_reborn_installed.json'
 # 04/11/2026: os textos do próprio BB Port junto com os dos nossos mods (gerada aqui; ver Compor-Textos)
 $COMPAT_TEXTOS = 'Blood Reborn - zCompat BB Port texts'
@@ -61,7 +61,7 @@ $CONFIG = Join-Path $script:Dados 'instalador.json'
 $TXT = @{
  pt = @{
   app_sub = 'Gerenciador de mods'; busca = 'Pesquisar...   Ctrl+F'; nav_mods = 'Mods'; nav_fix = 'Correção de erros'; nav_ajuda = 'Como instalar'
-  idioma = 'Idioma'; rodape = 'Mods grátis para o BB Port'
+  idioma = 'Idioma'; rodape = 'Mods grátis para o BB Port'; p_limpos = 'Patches antigos tirados do BB Port: {0}.'
   t_mods = 'Mods do Blood Reborn'; s_mods = 'Ligue os mods que você quer e clique em Aplicar. Desligar um mod instalado tira ele do BB Port.'
   sec_mods = 'ESCOLHA OS MODS'
   t_fix = 'Correção de erros'; s_fix = 'Confere os arquivos dos mods do Blood Reborn no seu BB Port e conserta o que estiver errado: arquivo estragado, pasta no lugar errado, compatibilidade faltando, patch sem o mod.'
@@ -122,7 +122,7 @@ $TXT = @{
  }
  en = @{
   app_sub = 'Mod manager'; busca = 'Search...   Ctrl+F'; nav_mods = 'Mods'; nav_fix = 'Error repair'; nav_ajuda = 'How to install'
-  idioma = 'Language'; rodape = 'Free mods for the BB Port'
+  idioma = 'Language'; rodape = 'Free mods for the BB Port'; p_limpos = 'Old patches removed from the BB Port: {0}.'
   t_mods = 'Blood Reborn mods'; s_mods = 'Switch on the mods you want and click Apply. Switching off an installed mod removes it from the BB Port.'
   sec_mods = 'CHOOSE YOUR MODS'
   t_fix = 'Error repair'; s_fix = 'Checks the Blood Reborn mod files in your BB Port and fixes what is wrong: damaged files, folders in the wrong place, missing compatibility, patches without their mod.'
@@ -183,7 +183,7 @@ $TXT = @{
  }
  es = @{
   app_sub = 'Gestor de mods'; busca = 'Buscar...   Ctrl+F'; nav_mods = 'Mods'; nav_fix = 'Corrección de errores'; nav_ajuda = 'Cómo instalar'
-  idioma = 'Idioma'; rodape = 'Mods gratuitos para el BB Port'
+  idioma = 'Idioma'; rodape = 'Mods gratuitos para el BB Port'; p_limpos = 'Parches antiguos quitados del BB Port: {0}.'
   t_mods = 'Mods de Blood Reborn'; s_mods = 'Activa los mods que quieras y haz clic en Aplicar. Desactivar un mod instalado lo quita del BB Port.'
   sec_mods = 'ELIGE LOS MODS'
   t_fix = 'Corrección de errores'; s_fix = 'Revisa los archivos de los mods de Blood Reborn en tu BB Port y arregla lo que esté mal: archivos dañados, carpetas en el lugar equivocado, compatibilidad faltante, parches sin su mod.'
@@ -244,7 +244,7 @@ $TXT = @{
  }
  zh = @{
   app_sub = '模组管理器'; busca = '搜索...   Ctrl+F'; nav_mods = '模组'; nav_fix = '错误修复'; nav_ajuda = '安装说明'
-  idioma = '语言'; rodape = 'BB Port 的免费模组'
+  idioma = '语言'; rodape = 'BB Port 的免费模组'; p_limpos = '已从 BB Port 移除旧补丁：{0} 个。'
   t_mods = 'Blood Reborn 模组'; s_mods = '打开你想要的模组，然后点击“应用”。关闭已安装的模组会把它从 BB Port 中移除。'
   sec_mods = '选择模组'
   t_fix = '错误修复'; s_fix = '检查 BB Port 中 Blood Reborn 模组的文件，并修复问题：文件损坏、文件夹位置错误、缺少兼容文件、补丁没有对应的模组。'
@@ -571,6 +571,8 @@ function Achar-Restos([string]$porto) {
         foreach ($f in [IO.Directory]::GetFiles($dm)) {
             $n = [IO.Path]::GetFileName($f)
             if ($SOLTOS -contains $n) { $out += [pscustomobject]@{ Caminho = $f; Nome = $n; Resgate = @() } }
+            # 2.2.4: zip de pacote do Blood Reborn largado dentro de mods\ (o BB Port avisa "still an archive" e não usa)
+            elseif ($n -match '^Blood_Reborn_.+\.zip$') { $out += [pscustomobject]@{ Caminho = $f; Nome = $n; Resgate = @() } }
         }
     }
     if ([IO.File]::Exists((Join-Path $porto 'blood_reborn.json'))) {     # pacote extraído na raiz do BB Port
@@ -970,6 +972,7 @@ if ($Acao) {
         'instalar' { [void](Aplicar-Escolha $PastaPort $quero) }
         'corrigir' { [void](Corrigir-Tudo $PastaPort) }
         'verificar' { }
+        'limpar_patches' { [void](Limpar-Patches-Retirados $PastaPort) }
         'atualizar' { foreach ($x in $quero) { [void](Atualizar-Mod $PastaPort $x) } }
         # 2.2: mods do catálogo, atualizar tudo e o próprio gerenciador
         'baixar' { foreach ($x in $quero) { Baixar-Instalar $PastaPort $x } }

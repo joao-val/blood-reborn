@@ -351,9 +351,9 @@ function Trocar-Arte {
 # ---------------------------------------------------------------- textos
 function Atualizar-Textos {
     $U = $script:U
-    $U.SubApp.Text = T 'app_sub'; $U.DicaBusca.Text = T 'busca'
+    $U.SubApp.Text = (T 'app_sub') + "`nv" + $VERSAO_GERENCIADOR; $U.DicaBusca.Text = T 'busca'   # 2.2.4: a versão no topo (linha própria)
     $U.NavModsTxt.Text = T 'nav_mods'; $U.NavFixTxt.Text = T 'nav_fix'; $U.NavAjudaTxt.Text = T 'nav_ajuda'
-    $U.LblIdioma.Text = T 'idioma'; $U.Rodape.Text = 'Blood Reborn  ·  ' + (T 'rodape')
+    $U.LblIdioma.Text = T 'idioma'; $U.Rodape.Text = 'Blood Reborn  ·  ' + (T 'rodape') + '  ·  v' + $VERSAO_GERENCIADOR
     $U.SecMods.Text = T 'sec_mods'; $U.SecFix.Text = T 'sec_fix'; $U.SecAjuda.Text = T 'sec_ajuda'; $U.TxtDica.Text = T 'dica'
     $U.LblPasta.Text = T 'pasta'; $U.BtnProcurar.Content = T 'procurar'; $U.BtnBuscarPC.Content = T 'buscar'
     foreach ($par in @(@('LingPT', 'pt'), @('LingEN', 'en'), @('LingES', 'es'), @('LingZH', 'zh'))) {
@@ -673,6 +673,36 @@ function Tudo-UI {
         $script:Win.Close()
     } catch { Ocupado $false; Aviso ((T 'erro') -f $_.Exception.Message) 'Error' }
 }
+function Automatico-UI([bool]$trocaFalhou) {
+    # 2.2.4 (17/11/2026, pedido dele: "não quero nada manual: precisa se auto corrigir, atualizar sozinho e limpar qualquer
+    # lixo"): ao abrir, com o jogo fechado e sem perguntar: (1) gerenciador novo -> baixa, troca e reabre (a nova abertura
+    # segue daqui); (2) mods com versão nova -> atualiza; (3) diagnóstico -> corrige tudo o que for corrigível (restos,
+    # zips largados, zCompat, registros, textos do BB Port). Se a troca do gerenciador acabou de falhar, não tenta de novo
+    # nesta abertura (sem laço).
+    if (Jogo-Aberto) { Procurar-UI; return }
+    Ocupado $true; & $script:AoProgredir (T 'conferindo')
+    try { $script:Estados = @(Estado-Atualizacoes $script:Porto -Forcar) } catch { $script:Estados = @() }
+    try { $script:EstadoGer = Estado-Gerenciador } catch { $script:EstadoGer = $null }
+    Ocupado $false; Montar-Cartoes
+    $eg = $script:EstadoGer
+    if ($eg -and $eg.Atualizar -and -not $trocaFalhou) {
+        Ocupado $true; & $script:AoProgredir ((T 'trabalhando') -f ('Blood Reborn Mod Manager v' + $eg.Disponivel))
+        try {
+            $topo = Baixar-Gerenciador $eg
+            [void](Trocar-Gerenciador $topo $eg.Disponivel -Continuar:([bool]$script:Porto))
+            $script:Win.Close(); return
+        } catch { Ocupado $false; Aviso ((T 'erro') -f $_.Exception.Message) 'Error' }
+    }
+    if (-not $script:Porto) { return }
+    if (@($script:Estados | Where-Object { $_.Atualizar }).Count) { Tudo-Mods-UI }
+    try {
+        $itens = @(Diagnosticar $script:Porto)
+        if (@($itens | Where-Object { $_.Corrige }).Count) {
+            Ocupado $true; & $script:AoProgredir (T 'conferindo')
+            [void](Corrigir-Tudo $script:Porto); Ocupado $false; Montar-Cartoes; Aviso (T 'corrigido')
+        }
+    } catch { Ocupado $false; Aviso ((T 'erro') -f $_.Exception.Message) 'Error' }
+}
 function Notas-Ger-UI {
     $eg = $script:EstadoGer; if (-not $eg) { return }
     $t = (@($eg.Notas) | ForEach-Object { 'v' + $_.Versao + "`n" + $_.Texto }) -join "`n`n"
@@ -790,9 +820,12 @@ $script:Win.Add_ContentRendered({
     }
     # 2.2.1: na 1ª vez, a runa da Marca do Caçador sai do jogo da pessoa (menos de 1 s) e vira o emblema
     if ($script:Porto -and -not [IO.File]::Exists((Join-Path $script:Dados 'emblema_marca.png'))) { if (Emblema-Marca $script:Porto) { Carregar-Arte } }
-    Procurar-UI   # usa o cache de 24 h: rápido e calado
-    # aberto pelo ajudante depois de atualizar o gerenciador: segue com os mods
-    if ($Continuar -and $script:Porto -and @($script:Estados | Where-Object { $_.Atualizar }).Count) { Tudo-Mods-UI }
+    # 2.2.4: os patches que a versão instalada de cada mod aposentou saem ao abrir (com o jogo fechado)
+    if ($script:Porto -and -not (Jogo-Aberto)) {
+        try { $n = Limpar-Patches-Retirados $script:Porto; if ($n) { Aviso ((T 'p_limpos') -f $n) } } catch { }
+    }
+    # 2.2.4: tudo automático ao abrir (gerenciador, mods, correção e limpeza); antes era o botão ATUALIZAR TUDO
+    Automatico-UI ([bool]$av.Falhou)
     if ($script:PaginaAtual -eq 'correcao') { Verificar-UI }
 })
 [void]$script:Win.ShowDialog()

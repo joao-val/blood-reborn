@@ -9,11 +9,15 @@
     "game_id": 2708
   },
   "manager": {
-    "version": "2.2.3",
+    "version": "2.2.4",
     "package": "Blood_Reborn_Mod_Manager.zip",
-    "sha256": "abb1569abf7f9b139f89c4b5f2820e8e91114502d042048ad6315d95c1b15ae6",
-    "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-17/Blood_Reborn_Mod_Manager.zip",
+    "sha256": "711ecca2b641d0cd4bbc95384244496f396fc3e1e6722975b69e04262c30c396",
+    "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-17.3/Blood_Reborn_Mod_Manager.zip",
     "changes": {
+      "2.2.4": {
+        "en": "Everything is automatic: every time it opens (game closed), it updates itself and the mods, fixes whatever is wrong and cleans leftovers (old code patches, package zips left in mods). The version shows at the top of the window.",
+        "pt": "Tudo automático: toda vez que abre (com o jogo fechado), ele se atualiza, atualiza os mods, corrige o que estiver errado e limpa os restos (patches de código antigos, zips largados em mods). A versão aparece no topo da janela."
+      },
       "2.2.3": {
         "en": "Updating a mod now removes the code patches its new version no longer uses.",
         "pt": "Atualizar um mod agora tira os patches de código que a versão nova não usa mais."
@@ -49,7 +53,7 @@
       "key": "arsenal",
       "name": "Hunter's Arsenal: Blood Pacts",
       "folder": "Blood Reborn - Hunters Arsenal",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "status": "released",
       "summary": {
         "pt": "Golpes especiais novos para as armas de truque: R2+L2 com a arma transformada. Inspirados em habilidades do Elden Ring e refeitos para o Bloodborne. Runas e gemas com PACTO: 14 pactos sorteados nas gemas que caem. Funciona também online: nenhum patch de código.",
@@ -57,12 +61,16 @@
         "es": "Ataques especiales nuevos para las armas de truco: R2+L2 con el arma transformada. Inspirados en habilidades de Elden Ring y rehechos para Bloodborne. Runas y gemas con PACTO: 14 pactos sorteados en las gemas que encuentras. Funciona también en línea: ningún parche de código.",
         "zh": "为机关武器加入全新的特殊攻击：变形状态下按 R2+L2。 灵感来自《艾尔登法环》的战技，并为《血源诅咒》重新制作。 带有\"契约\"的符文与血宝石：掉落的宝石会随机带上 14 种契约之一。 也可以联机使用：没有任何代码补丁。"
       },
-      "package": "Blood_Reborn_Hunters_Arsenal_v1.1.0.zip",
-      "sha256": "e000a4ee584bb011902cd1a50f8f6075692fad4126248991edd9c1d614c1c6f8",
-      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-17.2/Blood_Reborn_Hunters_Arsenal_v1.1.0.zip",
+      "package": "Blood_Reborn_Hunters_Arsenal_v1.1.1.zip",
+      "sha256": "257b374c707c2724eeb66e69410c93ecb346c879a7fada811cca6b8a41b9b1b0",
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-17.3/Blood_Reborn_Hunters_Arsenal_v1.1.1.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {
+        "1.1.1": {
+          "en": "The description no longer mentions code patches (1.1 has none).",
+          "pt": "A descrição não fala mais em patches de código (a 1.1 não tem nenhum)."
+        },
         "1.1.0": {
           "en": "Works online too: the 9 code patches were replaced by game files (special costs, pacts and the pacts on the gems you find). Some pacts changed so they can work online: the special's attack bonus no longer needs Insight, the rally pact now gives stamina on every hit, the extra bullets pact costs stamina instead of a bullet, the visceral bullets pact costs damage taken, and the dodge attack bonus lasts 2 seconds. Chikage's R2+L2 reaches farther. Updating removes the old patches.",
           "pt": "Funciona também online: os 9 patches de código viraram arquivos do jogo (custo dos especiais, pactos e o pacto nas gemas que caem). Alguns pactos mudaram para funcionar online: o bônus de ataque do especial não pede mais Discernimento, o pacto do rally agora devolve vigor a cada acerto, o de balas a mais custa vigor em vez de bala, o de balas no visceral custa dano recebido, e o bônus de ataque da esquiva dura 2 segundos. O R2+L2 da Chikage alcança mais longe. A atualização tira os patches antigos."
@@ -90,8 +98,8 @@
         "zh": "更具挑战、更现代的首领与敌人。 多个首领拥有第二条血条和新的阶段。 攻击间隙更短、AI 更具攻击性，生命值与伤害重新平衡。 包含 1 个代码补丁（修复布料物理）。安装程序会自动启用。"
       },
       "package": "Blood_Reborn_Merciless_Night_v1.37.zip",
-      "sha256": "df445d7ac8f7bf3cf03bb542b210800f336b6e3654c506d3533d64bb0f1cd0ca",
-      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-17.2/Blood_Reborn_Merciless_Night_v1.37.zip",
+      "sha256": "b5b238a275a00ed155227c4227921f0d014ac06936f4975e0b943a94c937c065",
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-17.3/Blood_Reborn_Merciless_Night_v1.37.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {
@@ -138,8 +146,8 @@
         "zh": "在首领战中死亡？你会在首领雾门外复活。 不用再从头跑一遍路了！ 猎人印记和提灯的作用与原版游戏相同。"
       },
       "package": "Blood_Reborn_Fogside_Lantern_v1.7.zip",
-      "sha256": "b2489aec5345c326397407bc4a07d323a8cc30f852473e31315cdf414d38a6b0",
-      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-17.2/Blood_Reborn_Fogside_Lantern_v1.7.zip",
+      "sha256": "96b71f3df53644e3f684cebba9bc7b045fa2b060f4501de3b5a960f38f7a86e4",
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-17.3/Blood_Reborn_Fogside_Lantern_v1.7.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {
@@ -168,8 +176,8 @@
         "zh": "死亡并复活后，你携带的采血瓶会补满到 11 个。 只补足缺少的数量（0 变 11，7 变 11）。战斗中不会补充。"
       },
       "package": "Blood_Reborn_Blood_Vial_Safety_Net_v1.0.1.zip",
-      "sha256": "89662f1f704d5534705bcd86f1fa75599fedb3b95d35d1343580a4e35b5030d5",
-      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-17.2/Blood_Reborn_Blood_Vial_Safety_Net_v1.0.1.zip",
+      "sha256": "34634b1103af44609bf7564dd4a28b6c7e52bafa436aacbd24c9a9ec4d5223b2",
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-17.3/Blood_Reborn_Blood_Vial_Safety_Net_v1.0.1.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {

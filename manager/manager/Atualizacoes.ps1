@@ -258,6 +258,20 @@ function Atualizar-Mod([string]$porto, [string]$pasta) {
     $script:FonteInstalacao = 'zip'
     return 'ok'
 }
+function Limpar-Patches-Retirados([string]$porto) {
+    # 2.2.4 (17/11/2026): ao abrir, os patches que a versão INSTALADA de cada mod aposentou (blood_reborn.json
+    # "patches_retirados") saem, mesmo que a atualização tenha sido feita por um gerenciador antigo (até 2.2.2 eles ficavam)
+    $dm = Join-Path $porto 'mods'; $dp = Join-Path $porto 'patches'; $sair = @()
+    foreach ($p in $script:Pacotes) {
+        $alvo = Join-Path $dm $p.Pasta
+        if (-not [IO.Directory]::Exists($alvo)) { continue }
+        $reg = Ler-Registro $alvo; $pv = $p
+        if ($reg -and $reg.version) { $x = Pacote-Da-Versao $p.Pasta ([string]$reg.version); if ($x) { $pv = $x } }
+        $sair += @($pv.Retirados | Where-Object { $_ -and @($pv.Patches) -notcontains $_ -and [IO.File]::Exists((Join-Path $dp ([string]$_))) })
+    }
+    if ($sair.Count) { Tirar-Patches $porto $sair }
+    return $sair.Count
+}
 function Tirar-Patches([string]$porto, [string[]]$nomes) {
     if (-not $nomes -or $nomes.Count -eq 0) { return }
     $dp = Join-Path $porto 'patches'

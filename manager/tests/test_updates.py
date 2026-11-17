@@ -156,6 +156,33 @@ class RetiredPatches(UpdateBase):
         self.assertNotIn('Old.xml/Old patch', pj['enabled']); self.assertIn('Other.xml/x', pj['enabled'])
 
 
+    def test_opening_cleans_patches_an_old_manager_left(self):
+        # 2.2.4: the mod is already the new version, but an old manager (2.2.2) left the retired patches behind
+        self.f.package('1.1', {'chr/a.txt': 'two'}, patches=['TestMod.xml'], info={'patches_retirados': ['Old.xml']})
+        self.f.run('instalar', mods=FOLDER)
+        (self.f.port / 'patches' / 'Old.xml').write_text('<Patch v="old"/>', encoding='utf-8')
+        (self.f.port / 'patches.json').write_text(json.dumps({'enabled': ['Old.xml/Old patch', 'TestMod.xml/Test'], 'disabled': []}),
+                                                  encoding='utf-8')
+        code, rep, out = self.f.run('limpar_patches', mods=FOLDER)
+        self.assertEqual(code, 0, out)
+        self.assertFalse((self.f.port / 'patches' / 'Old.xml').exists())
+        self.assertTrue((self.f.port / 'patches' / 'TestMod.xml').exists())
+        pj = json.loads((self.f.port / 'patches.json').read_text(encoding='utf-8-sig'))
+        self.assertEqual(pj['enabled'], ['TestMod.xml/Test'])
+
+
+    def test_a_package_zip_left_in_mods_is_cleaned(self):
+        # 2.2.4: the BB Port shows "still an archive" for it and does not load it
+        self.f.package('1.1', {'chr/a.txt': 'two'}, patches=['TestMod.xml'])
+        (self.f.port / 'mods').mkdir(parents=True, exist_ok=True)
+        (self.f.port / 'mods' / 'Blood_Reborn_Test_Mod_v1.1.zip').write_bytes(b'PK')
+        (self.f.port / 'mods' / 'Someone_Elses_Mod.zip').write_bytes(b'PK')
+        code, rep, out = self.f.run('instalar', mods=FOLDER)
+        self.assertEqual(code, 0, out)
+        self.assertFalse((self.f.port / 'mods' / 'Blood_Reborn_Test_Mod_v1.1.zip').exists())
+        self.assertTrue((self.f.port / 'mods' / 'Someone_Elses_Mod.zip').exists())
+
+
 class Rollback(UpdateBase):
     def test_back_to_the_previous_version(self):
         self._start(download=self.s.base + '/files/Blood_Reborn_Test_Mod_v1.1.zip')
