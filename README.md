@@ -53,7 +53,7 @@ A taste of what you can find:
 
 🌐 Works online too: no code patches. When you update, the manager removes the old version's patches.
 
-### 🌙 Merciless Night — v1.36
+### 🌙 Merciless Night — v1.37
 
 The night got crueler. 🌑
 
