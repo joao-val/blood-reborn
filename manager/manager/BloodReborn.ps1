@@ -49,7 +49,7 @@ $EXTRAS = @('', '.txt', '.md', '.ini', '.json', '.pdf', '.rtf', '.nfo', '.url', 
 $SOLTOS = @('instalador.ps1', 'Instalar - Install.bat', 'Desinstalar - Uninstall.bat', 'LEIA-ME_PT.txt', 'README_EN.txt', 'LEAME_ES.txt', 'README_ZH.txt', 'blood_reborn.json')
 $PREFERENCIA = @('Blood Reborn - Hunters Arsenal', 'Blood Reborn - Merciless Night', 'Blood Reborn - Fogside Lantern', 'Blood Reborn - Blood Vial Safety Net')
 $LEIAME = @{ pt = 'LEIA-ME_PT.txt'; en = 'README_EN.txt'; es = 'LEAME_ES.txt'; zh = 'README_ZH.txt' }
-$VERSAO_GERENCIADOR = '2.2.4'
+$VERSAO_GERENCIADOR = '2.2.5'
 $REGISTRO = 'blood_reborn_installed.json'
 # 04/11/2026: os textos do próprio BB Port junto com os dos nossos mods (gerada aqui; ver Compor-Textos)
 $COMPAT_TEXTOS = 'Blood Reborn - zCompat BB Port texts'
@@ -424,7 +424,10 @@ function Ler-Pacotes {
             if ($c.Zip) { break }
         }
     }
-    $script:Compat = @($cs.Values | Sort-Object Pasta)
+    # 2.2.5 (17/11/2026): as pastas dividem arquivos (o gameparam está em todas) e o BB Port fica com a última; a de 3 mods
+    # tem de vir depois das de 2. Até a 2.2.4 a ordem era só pelo nome: a "Merciless Night + Fogside" ficava por último e
+    # tirava os dados do Arsenal do jogo de quem tinha os três mods
+    $script:Compat = @($cs.Values | Sort-Object @{ Expression = { @($_.Mods).Count } }, Pasta)
 }
 
 # ---------------------------------------------------------------- arquivos
@@ -858,7 +861,12 @@ function Diagnosticar([string]$porto) {
             }
             $i = [array]::IndexOf($sel, $c.Pasta)
             $depois = @($c.Mods | Where-Object { [array]::IndexOf($sel, $_) -gt $i })
-            if ($i -lt 0 -or $depois.Count -gt 0) { [void]$L.Add((Item 'erro' ((T 'd_cordem') -f $c.Pasta) $true)); $ok = $false }
+            # 2.2.5: uma pasta com parte dos mods desta (ex.: "Merciless Night + Fogside" dentro de "Arsenal + Merciless Night
+            # + Fogside") depois dela cobre os arquivos desta
+            $cm = @($c.Mods)
+            $menores = @($script:Compat | Where-Object { $_.Pasta -ne $c.Pasta -and @($_.Mods).Count -lt $cm.Count -and
+                @($_.Mods | Where-Object { $cm -notcontains $_ }).Count -eq 0 -and [array]::IndexOf($sel, $_.Pasta) -gt $i })
+            if ($i -lt 0 -or $depois.Count -gt 0 -or $menores.Count -gt 0) { [void]$L.Add((Item 'erro' ((T 'd_cordem') -f $c.Pasta) $true)); $ok = $false }
             if ($ok) { [void]$L.Add((Item 'ok' ((T 'd_cok') -f $c.Pasta) $false)) }
         }
     }
