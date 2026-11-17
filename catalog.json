@@ -9,11 +9,15 @@
     "game_id": 2708
   },
   "manager": {
-    "version": "2.2.4",
+    "version": "2.2.5",
     "package": "Blood_Reborn_Mod_Manager.zip",
-    "sha256": "711ecca2b641d0cd4bbc95384244496f396fc3e1e6722975b69e04262c30c396",
-    "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-17.3/Blood_Reborn_Mod_Manager.zip",
+    "sha256": "20edf6429a10476c2eccdb893a419ac74e6e508f4ca0b00601527695bc4e9fc5",
+    "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-17.6/Blood_Reborn_Mod_Manager.zip",
     "changes": {
+      "2.2.5": {
+        "en": "With Hunter's Arsenal, Merciless Night and Fogside Lantern installed together, the compatibility folders were in the wrong order and part of the Arsenal was left out of the game. The folder for the three mods now comes last; opening the manager (game closed) fixes it on its own.",
+        "pt": "Com Hunter's Arsenal, Merciless Night e Fogside Lantern instalados juntos, as pastas de compatibilidade ficavam na ordem errada e parte do Arsenal ficava fora do jogo. Agora a pasta dos três mods fica por último; é só abrir o gerenciador (com o jogo fechado) que ele corrige sozinho."
+      },
       "2.2.4": {
         "en": "Everything is automatic: every time it opens (game closed), it updates itself and the mods, fixes whatever is wrong and cleans leftovers (old code patches, package zips left in mods). The version shows at the top of the window.",
         "pt": "Tudo automático: toda vez que abre (com o jogo fechado), ele se atualiza, atualiza os mods, corrige o que estiver errado e limpa os restos (patches de código antigos, zips largados em mods). A versão aparece no topo da janela."
@@ -62,8 +66,8 @@
         "zh": "为机关武器加入全新的特殊攻击：变形状态下按 R2+L2。 灵感来自《艾尔登法环》的战技，并为《血源诅咒》重新制作。 带有\"契约\"的符文与血宝石：掉落的宝石会随机带上 14 种契约之一。 也可以联机使用：没有任何代码补丁。"
       },
       "package": "Blood_Reborn_Hunters_Arsenal_v1.1.2.zip",
-      "sha256": "8f21c2b1834bdaa58385944a8087975c931672836293088790c396c6ba6ecc21",
-      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-17.5/Blood_Reborn_Hunters_Arsenal_v1.1.2.zip",
+      "sha256": "0bc3ecf1a23ed96e00b9e8ee838dc433bd1322447b8315de5e8ae6b219b8c3e7",
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-17.6/Blood_Reborn_Hunters_Arsenal_v1.1.2.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {
@@ -93,7 +97,7 @@
       "key": "merciless_night",
       "name": "Merciless Night",
       "folder": "Blood Reborn - Merciless Night",
-      "version": "1.38",
+      "version": "1.39",
       "status": "released",
       "summary": {
         "pt": "Chefes e inimigos mais desafiadores e mais modernos. Segunda barra de vida e novas fases em vários chefes. Menos tempo parado entre os golpes, IA mais agressiva, vida e dano reajustados. Traz 1 patch de código (conserta a física do pano). O instalador já liga.",
@@ -101,12 +105,16 @@
         "es": "Jefes y enemigos más desafiantes y más modernos. Segunda barra de vida y nuevas fases en varios jefes. Menos tiempo de recuperación entre golpes, IA más agresiva, vida y daño reajustados. Incluye 1 parche de código (corrige la física de la tela). El instalador ya lo activa.",
         "zh": "更具挑战、更现代的首领与敌人。 多个首领拥有第二条血条和新的阶段。 攻击间隙更短、AI 更具攻击性，生命值与伤害重新平衡。 包含 1 个代码补丁（修复布料物理）。安装程序会自动启用。"
       },
-      "package": "Blood_Reborn_Merciless_Night_v1.38.zip",
-      "sha256": "6e15e2d1da15e45f0507f19cecf6452e987833135ffa254becccbc554444f4a2",
-      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-17.5/Blood_Reborn_Merciless_Night_v1.38.zip",
+      "package": "Blood_Reborn_Merciless_Night_v1.39.zip",
+      "sha256": "b05f8438dac2ef8e53f1253138a97409293256868e88557a922b85030c327cfc",
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-17.6/Blood_Reborn_Merciless_Night_v1.39.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {
+        "1.39": {
+          "en": "Adjustments made to Lady Maria.",
+          "pt": "Ajustes realizados na Lady Maria."
+        },
         "1.38": {
           "en": "Adjustments made to Laurence.",
           "pt": "Ajustes realizados no Laurence."
@@ -154,8 +162,8 @@
         "zh": "在首领战中死亡？你会在首领雾门外复活。 不用再从头跑一遍路了！ 猎人印记和提灯的作用与原版游戏相同。"
       },
       "package": "Blood_Reborn_Fogside_Lantern_v1.7.zip",
-      "sha256": "3f605c588b7d022ab518d81e2d5026942f635e1bc9564ce146b52c0037447d8a",
-      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-17.5/Blood_Reborn_Fogside_Lantern_v1.7.zip",
+      "sha256": "c47efe3009e42702dbe08c167de1df981e189eee883196f50f63e96d7dae1927",
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-17.6/Blood_Reborn_Fogside_Lantern_v1.7.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {
@@ -184,8 +192,8 @@
         "zh": "死亡并复活后，你携带的采血瓶会补满到 11 个。 只补足缺少的数量（0 变 11，7 变 11）。战斗中不会补充。"
       },
       "package": "Blood_Reborn_Blood_Vial_Safety_Net_v1.0.1.zip",
-      "sha256": "4cc816ee6abf3dd958eae18073011d333df5ec8654e24668ef5451fd3b83e3a0",
-      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-17.5/Blood_Reborn_Blood_Vial_Safety_Net_v1.0.1.zip",
+      "sha256": "64a04540605ae8fd41c91e455d840db71333924d74a45511a829544aeadaa695",
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-17.6/Blood_Reborn_Blood_Vial_Safety_Net_v1.0.1.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {
