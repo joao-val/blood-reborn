@@ -421,6 +421,56 @@ function Emblema-Marca([string]$porto) {
     if ([IO.File]::Exists($png)) { Remove-Item -LiteralPath $png -Force -ErrorAction SilentlyContinue }
     return $null
 }
+function Icone-Gerenciador {
+    # 2.2.6 (18/11/2026): o .ico do atalho, da mesma runa da janela (<dados>\emblema_marca.png; sem ela, o símbolo do BB
+    # Port), em 256/64/48/32/16 px (entradas PNG dentro do ICO). Refeito quando a imagem é mais nova que ele.
+    $png = Join-Path $script:Dados 'emblema_marca.png'
+    if (-not [IO.File]::Exists($png) -and $script:Porto) {
+        $a = Join-Path $script:Porto '_internal\assets\emblem.png'; if ([IO.File]::Exists($a)) { $png = $a }
+    }
+    if (-not [IO.File]::Exists($png)) { return $null }
+    $ico = Join-Path $script:Dados 'BloodReborn.ico'
+    if ([IO.File]::Exists($ico) -and [IO.File]::GetLastWriteTimeUtc($ico) -ge [IO.File]::GetLastWriteTimeUtc($png)) { return $ico }
+    Add-Type -AssemblyName System.Drawing
+    $orig = [Drawing.Image]::FromFile($png); $imgs = @()
+    try {
+        foreach ($t in 256, 64, 48, 32, 16) {
+            $b = New-Object Drawing.Bitmap $t, $t; $g = [Drawing.Graphics]::FromImage($b)
+            $g.InterpolationMode = 'HighQualityBicubic'; $g.SmoothingMode = 'HighQuality'; $g.PixelOffsetMode = 'HighQuality'
+            $g.DrawImage($orig, 0, 0, $t, $t); $g.Dispose()
+            $ms = New-Object IO.MemoryStream; $b.Save($ms, [Drawing.Imaging.ImageFormat]::Png); $b.Dispose()
+            $imgs += , @($t, $ms.ToArray())
+        }
+    } finally { $orig.Dispose() }
+    $ms = New-Object IO.MemoryStream; $w = New-Object IO.BinaryWriter $ms
+    $w.Write([uint16]0); $w.Write([uint16]1); $w.Write([uint16]$imgs.Count)
+    $off = 6 + 16 * $imgs.Count
+    foreach ($i in $imgs) {
+        $lado = [byte]($i[0] % 256)                       # 256 px = 0 no cabeçalho do ICO
+        $w.Write($lado); $w.Write($lado); $w.Write([byte]0); $w.Write([byte]0)
+        $w.Write([uint16]1); $w.Write([uint16]32); $w.Write([uint32]$i[1].Length); $w.Write([uint32]$off); $off += $i[1].Length
+    }
+    foreach ($i in $imgs) { $w.Write([byte[]]$i[1]) }
+    $w.Flush(); [void][IO.Directory]::CreateDirectory($script:Dados); [IO.File]::WriteAllBytes($ico, $ms.ToArray())
+    return $ico
+}
+function Atalho-Gerenciador {
+    # 2.2.6 (18/11/2026, pedido dele): um .bat não pode ter ícone no Windows. Ao abrir, o gerenciador mantém na PRÓPRIA
+    # pasta o atalho "Blood Reborn Mod Manager" com a runa da Marca do Caçador; ele abre o PowerShell direto (sem a janela
+    # preta do .bat). Refeito se faltar ou apontar para outro lugar (ex.: a pasta mudou). Falhar aqui não atrapalha nada.
+    try {
+        $ico = Icone-Gerenciador; if (-not $ico) { return $null }
+        $topo = Split-Path -Parent $script:Aqui
+        $lnk = Join-Path $topo 'Blood Reborn Mod Manager.lnk'
+        $ps = Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
+        $argumentos = '-NoProfile -ExecutionPolicy Bypass -STA -WindowStyle Hidden -File "' + (Join-Path $script:Aqui 'BloodReborn.ps1') + '"'
+        $s = (New-Object -ComObject WScript.Shell).CreateShortcut($lnk)
+        if ([IO.File]::Exists($lnk) -and $s.TargetPath -eq $ps -and $s.Arguments -eq $argumentos -and $s.IconLocation -eq ($ico + ',0')) { return $lnk }
+        $s.TargetPath = $ps; $s.Arguments = $argumentos; $s.WorkingDirectory = $topo; $s.IconLocation = $ico + ',0'
+        $s.WindowStyle = 7; $s.Description = 'Blood Reborn Mod Manager'; $s.Save()
+        return $lnk
+    } catch { return $null }
+}
 function Avisos-Da-Troca {
     # o que o ajudante deixou (a janela mostra ao abrir): @{ Ok = versão; Falhou = motivo }
     $dir = Join-Path $script:Dados 'gerenciador'; $r = @{ Ok = $null; Falhou = $null }

@@ -820,6 +820,8 @@ $script:Win.Add_ContentRendered({
     }
     # 2.2.1: na 1ª vez, a runa da Marca do Caçador sai do jogo da pessoa (menos de 1 s) e vira o emblema
     if ($script:Porto -and -not [IO.File]::Exists((Join-Path $script:Dados 'emblema_marca.png'))) { if (Emblema-Marca $script:Porto) { Carregar-Arte } }
+    # 2.2.6: o atalho com a runa na pasta do gerenciador (o .bat não pode ter ícone); criado ou consertado sozinho
+    [void](Atalho-Gerenciador)
     # 2.2.4: os patches que a versão instalada de cada mod aposentou saem ao abrir (com o jogo fechado)
     if ($script:Porto -and -not (Jogo-Aberto)) {
         try { $n = Limpar-Patches-Retirados $script:Porto; if ($n) { Aviso ((T 'p_limpos') -f $n) } } catch { }

@@ -49,7 +49,7 @@ $EXTRAS = @('', '.txt', '.md', '.ini', '.json', '.pdf', '.rtf', '.nfo', '.url', 
 $SOLTOS = @('instalador.ps1', 'Instalar - Install.bat', 'Desinstalar - Uninstall.bat', 'LEIA-ME_PT.txt', 'README_EN.txt', 'LEAME_ES.txt', 'README_ZH.txt', 'blood_reborn.json')
 $PREFERENCIA = @('Blood Reborn - Hunters Arsenal', 'Blood Reborn - Merciless Night', 'Blood Reborn - Fogside Lantern', 'Blood Reborn - Blood Vial Safety Net')
 $LEIAME = @{ pt = 'LEIA-ME_PT.txt'; en = 'README_EN.txt'; es = 'LEAME_ES.txt'; zh = 'README_ZH.txt' }
-$VERSAO_GERENCIADOR = '2.2.5'
+$VERSAO_GERENCIADOR = '2.2.6'
 $REGISTRO = 'blood_reborn_installed.json'
 # 04/11/2026: os textos do próprio BB Port junto com os dos nossos mods (gerada aqui; ver Compor-Textos)
 $COMPAT_TEXTOS = 'Blood Reborn - zCompat BB Port texts'
@@ -985,6 +985,7 @@ if ($Acao) {
         # 2.2: mods do catálogo, atualizar tudo e o próprio gerenciador
         'baixar' { foreach ($x in $quero) { Baixar-Instalar $PastaPort $x } }
         'emblema' { if (-not (Emblema-Marca $PastaPort)) { throw 'emblema' } }
+        'atalho' { $script:Porto = $PastaPort; if (-not (Atalho-Gerenciador)) { throw 'atalho' } }
         'atualizar_tudo' { [void](Atualizar-Todos $PastaPort) }
         'gerenciador' {
             $json = ConvertTo-Json -InputObject (Estado-Gerenciador -Forcar) -Depth 8
