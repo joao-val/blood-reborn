@@ -70,8 +70,8 @@
         "zh": "为机关武器加入全新的特殊攻击：变形状态下按 R2+L2。 灵感来自《艾尔登法环》的战技，并为《血源诅咒》重新制作。 带有\"契约\"的符文与血宝石：掉落的宝石会随机带上 14 种契约之一。 也可以联机使用：没有任何代码补丁。"
       },
       "package": "Blood_Reborn_Hunters_Arsenal_v1.1.2.zip",
-      "sha256": "372d78f83c52d28a7980aa27dd773e0bf105312aa781c109eab9e5e6cee2e056",
-      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-18.1/Blood_Reborn_Hunters_Arsenal_v1.1.2.zip",
+      "sha256": "0182fb2a1fc4b27f8eef05af01cf1d71b2edeff91b6872087b3921949c9071cd",
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-18.2/Blood_Reborn_Hunters_Arsenal_v1.1.2.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {
@@ -101,7 +101,7 @@
       "key": "merciless_night",
       "name": "Merciless Night",
       "folder": "Blood Reborn - Merciless Night",
-      "version": "1.41",
+      "version": "1.42",
       "status": "released",
       "summary": {
         "pt": "Chefes e inimigos mais desafiadores e mais modernos. Segunda barra de vida e novas fases em vários chefes. Menos tempo parado entre os golpes, IA mais agressiva, vida e dano reajustados. Traz 1 patch de código (conserta a física do pano). O instalador já liga.",
@@ -109,12 +109,16 @@
         "es": "Jefes y enemigos más desafiantes y más modernos. Segunda barra de vida y nuevas fases en varios jefes. Menos tiempo de recuperación entre golpes, IA más agresiva, vida y daño reajustados. Incluye 1 parche de código (corrige la física de la tela). El instalador ya lo activa.",
         "zh": "更具挑战、更现代的首领与敌人。 多个首领拥有第二条血条和新的阶段。 攻击间隙更短、AI 更具攻击性，生命值与伤害重新平衡。 包含 1 个代码补丁（修复布料物理）。安装程序会自动启用。"
       },
-      "package": "Blood_Reborn_Merciless_Night_v1.41.zip",
-      "sha256": "226e136f0f04899b2b214891540c66ece70ea61cef34bbc719756e2a9c438456",
-      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-18.1/Blood_Reborn_Merciless_Night_v1.41.zip",
+      "package": "Blood_Reborn_Merciless_Night_v1.42.zip",
+      "sha256": "91bc8e3382a341bb069bbbfdf673f8e4cf77f08878887a24a0d130aa39b8943e",
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-18.2/Blood_Reborn_Merciless_Night_v1.42.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {
+        "1.42": {
+          "en": "Adjustments made to the Orphan of Kos.",
+          "pt": "Ajustes realizados no Órfão de Kos."
+        },
         "1.41": {
           "en": "Adjustments made to Lady Maria.",
           "pt": "Ajustes realizados na Lady Maria."
@@ -174,8 +178,8 @@
         "zh": "在首领战中死亡？你会在首领雾门外复活。 不用再从头跑一遍路了！ 猎人印记和提灯的作用与原版游戏相同。"
       },
       "package": "Blood_Reborn_Fogside_Lantern_v1.7.zip",
-      "sha256": "8da35ad2ba3670231d7a284c9e2bb2021fbb8b916608e46330022a820c451ae3",
-      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-18.1/Blood_Reborn_Fogside_Lantern_v1.7.zip",
+      "sha256": "688a2a46254d66ce6a479ef582902384a09786a90c19c6afd1c6817fd14ed7a3",
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-18.2/Blood_Reborn_Fogside_Lantern_v1.7.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {
@@ -204,8 +208,8 @@
         "zh": "死亡并复活后，你携带的采血瓶会补满到 11 个。 只补足缺少的数量（0 变 11，7 变 11）。战斗中不会补充。"
       },
       "package": "Blood_Reborn_Blood_Vial_Safety_Net_v1.0.1.zip",
-      "sha256": "1a1c90d7e21ae818349dee215588090f28a39315a99c656c1fba15f376a04c0f",
-      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-18.1/Blood_Reborn_Blood_Vial_Safety_Net_v1.0.1.zip",
+      "sha256": "fd023a3635be9f0314b4589d57c8e8986ff1e5d08af7e39ab8e2fd28b84329b4",
+      "download": "https://github.com/joao-val/blood-reborn/releases/download/2026-11-18.2/Blood_Reborn_Blood_Vial_Safety_Net_v1.0.1.zip",
       "nexus_mod_id": null,
       "nexus_file_id": null,
       "changes": {
